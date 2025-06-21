@@ -1,15 +1,21 @@
+using System;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] private Color color;
     [SerializeField] private SpriteRenderer tileVisual;
-    [SerializeField] private Vector2Int coordinates;
     
+    private Vector2Int _coordinates;
+
+    private void Awake()
+    {
+        _coordinates = Vector2Int.zero;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        tileVisual.color = color;
+        
     }
 
     // Update is called once per frame
@@ -17,4 +23,8 @@ public class Tile : MonoBehaviour
     {
         
     }
+
+    public Vector2Int GetCoordinates() => _coordinates;
+    public void SetCoordinates(Vector2Int coordinates) => _coordinates = coordinates;
+    public bool CoordinatesSet() => _coordinates != Vector2Int.zero;
 }
