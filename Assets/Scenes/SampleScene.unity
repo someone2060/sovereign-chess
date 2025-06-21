@@ -225,7 +225,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 160
+  orthographic size: 200
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -340,7 +340,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &5519872966950728383
+--- !u!1001 &2997034616501067988
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -348,47 +348,47 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2944548621232356200, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+    - target: {fileID: 3091683982696438082, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: Board
       objectReference: {fileID: 0}
-    - target: {fileID: 6363656013432031762, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+    - target: {fileID: 4591640131201733052, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.77
+      value: -160
       objectReference: {fileID: 0}
-    - target: {fileID: 6363656013432031762, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+    - target: {fileID: 4591640131201733052, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.07
+      value: -140
       objectReference: {fileID: 0}
-    - target: {fileID: 6363656013432031762, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+    - target: {fileID: 4591640131201733052, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6363656013432031762, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+    - target: {fileID: 4591640131201733052, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6363656013432031762, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+    - target: {fileID: 4591640131201733052, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6363656013432031762, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+    - target: {fileID: 4591640131201733052, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6363656013432031762, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+    - target: {fileID: 4591640131201733052, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6363656013432031762, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+    - target: {fileID: 4591640131201733052, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6363656013432031762, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+    - target: {fileID: 4591640131201733052, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6363656013432031762, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+    - target: {fileID: 4591640131201733052, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
@@ -396,11 +396,11 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8f37e4742c71b7187be5380113c13515, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 5519872966950728383}
+  - {fileID: 2997034616501067988}
