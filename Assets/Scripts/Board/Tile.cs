@@ -3,6 +3,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer tileVisual;
+    [SerializeField] private Piece piece;
     
     private Coordinates _coordinates;
 
@@ -24,4 +25,19 @@ public class Tile : MonoBehaviour
 
     public Coordinates GetCoordinates() => _coordinates;
     public bool CoordinatesSet() => !_coordinates.GetCoordinates().Equals(Vector2Int.down);
+    
+    public bool HasPiece() => piece is not null;
+    public Piece GetPiece() => piece;
+
+    public void SetPiece(Piece newPiece)
+    {
+        if (newPiece is null)
+        {
+            piece = null;
+            return;
+        }
+        if (piece == newPiece) return;
+        piece = newPiece;
+        newPiece.MoveTile(this);
+    }
 }

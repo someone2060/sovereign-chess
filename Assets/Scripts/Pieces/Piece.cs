@@ -10,19 +10,30 @@ public abstract class Piece : MonoBehaviour
         Black
     }
     
-    [SerializeField] private Tile tile;
-    [SerializeField] private Alignment alignment;
+    [SerializeField] protected Tile tile;
+    [SerializeField] protected Alignment alignment;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected void Start()
     {
         transform.position = tile.transform.position;
+        tile.SetPiece(this);
     }
 
     // Update is called once per frame
     protected abstract void Update();
 
     public abstract List<Vector2Int> LegalMoves();
+
+    public void SetAlignment(Alignment alignment) => this.alignment = alignment;
+
+    public void MoveTile(Tile newTile)
+    {
+        if (tile == newTile) return;
+        tile.SetPiece(null);
+        tile = newTile;
+        newTile.SetPiece(this);
+    }
 
     public bool CanBeMoved(Alignment alignmentMoving)
     {

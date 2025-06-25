@@ -9,13 +9,13 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
-        _size = rows.Count;
+        _size = rows.Count; // Assumes each row's # of tiles is the same size as rows.Count, forming a square board
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        for (int i = 0; i < rows.Count; i++)
+        for (var i = 0; i < rows.Count; i++)
         {
             rows[i].SetTilesCoordinateX(i);
         }
