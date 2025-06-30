@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,8 +13,14 @@ public abstract class Piece : MonoBehaviour
     
     [SerializeField] protected Tile tile;
     [SerializeField] protected Alignment alignment;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private bool _selected;
+
+    private void Awake()
+    {
+        _selected = false;
+    }
+
     protected void Start()
     {
         transform.position = tile.transform.position;
@@ -21,7 +28,10 @@ public abstract class Piece : MonoBehaviour
     }
 
     // Update is called once per frame
-    protected abstract void Update();
+    protected void Update()
+    {
+        
+    }
 
     public abstract List<Vector2Int> LegalMoves();
 
@@ -53,5 +63,10 @@ public abstract class Piece : MonoBehaviour
         }
         
         return (alignmentCapturing != alignment);
+    }
+
+    public void SetSelected(bool selected)
+    {
+        _selected = selected;
     }
 }

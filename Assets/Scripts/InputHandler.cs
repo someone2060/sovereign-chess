@@ -31,4 +31,16 @@ public class InputHandler : MonoBehaviour
     {
         OnSelectCanceled?.Invoke(this, EventArgs.Empty);
     }
+
+    // Returns the mouse/touchscreen position in screen space
+    public Vector2 GetPositionScreen()
+    {
+        return _actions.Gameplay.Position.ReadValue<Vector2>();
+    }
+    
+    // Returns the mouse/touchscreen position in world space with given camera
+    public Vector2 GetPositionWorld(Camera camera)
+    {
+        return camera.ScreenToWorldPoint(_actions.Gameplay.Position.ReadValue<Vector2>());
+    }
 }
