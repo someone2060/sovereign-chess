@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 402eb053ae143cb10ab0a85d47339b04, type: 3}
   m_Name: 9PinkPiece
   m_EditorClassIdentifier: 
-  id: 0
-  kingSprite: {fileID: 0}
-  queenSprite: {fileID: 0}
-  bishopSprite: {fileID: 0}
-  knightSprite: {fileID: 0}
-  rookSprite: {fileID: 0}
-  pawnSprite: {fileID: 0}
+  id: 9
+  kingSprite: {fileID: 5899747271569243657, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  queenSprite: {fileID: 7301717818124748463, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  bishopSprite: {fileID: 7502018980972640058, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  knightSprite: {fileID: -1450345294422161467, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  rookSprite: {fileID: -200114818213683683, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  pawnSprite: {fileID: 2030046942156479817, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}

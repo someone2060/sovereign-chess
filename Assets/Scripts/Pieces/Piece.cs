@@ -13,6 +13,8 @@ public abstract class Piece : MonoBehaviour
     
     [SerializeField] protected Tile tile;
     [SerializeField] protected Alignment alignment;
+    [SerializeField] protected SovereignPieceSO sovereignPiece;
+    [SerializeField] protected SpriteRenderer spriteRenderer;
 
     private bool _selected;
 
@@ -27,10 +29,11 @@ public abstract class Piece : MonoBehaviour
         tile.SetPiece(this);
     }
 
-    // Update is called once per frame
+    // TODO
     protected void Update()
     {
-        
+        if (!_selected) return;
+        transform.position = InputHandler.Instance.GetPositionWorld(Camera.main);
     }
 
     public abstract List<Vector2Int> LegalMoves();
@@ -65,8 +68,23 @@ public abstract class Piece : MonoBehaviour
         return (alignmentCapturing != alignment);
     }
 
-    public void SetSelected(bool selected)
+    public void SelectPiece()
     {
-        _selected = selected;
+        _selected = true;
+        InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
+    }
+
+    private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
+    {
+        var selectedTile = TileSelector.GetTileOnWorld(transform.position);
+        _selected = false;
+
+        if (selectedTile is null)
+        {
+            transform.position = tile.transform.position;
+            return;
+        }
+        
+        MoveTile(selectedTile);
     }
 }
