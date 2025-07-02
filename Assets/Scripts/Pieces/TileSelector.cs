@@ -16,25 +16,24 @@ public class TileSelector : MonoBehaviour
         InputHandler.Instance.OnSelectPerformed += InputHandler_OnSelectPerformed;
     }
 
+    // On selecting a tile with a piece on it, selection event is sent to piece
     private void InputHandler_OnSelectPerformed(object sender, EventArgs e)
     {
-        var positionWorld = InputHandler.Instance.GetPositionWorld(Camera.main);
-        
-        Debug.Log("Clicked " + positionWorld); //TODO DEBUG
+        Vector2 positionWorld = InputHandler.Instance.GetPositionWorld(Camera.main);
 
-        var tile = GetTileOnWorld(positionWorld);
+        Tile tile = GetTileOnWorld(positionWorld);
         if (tile is null) return;
         
         Debug.Log("Collision happened with tile at " + tile.GetCoordinates()); //TODO DEBUG
         
         if (!tile.HasPiece()) return;
 
-        tile.GetPiece().SelectPiece();
+        tile.GetPiece().Select();
     }
 
     public static Tile GetTileOnWorld(Vector2 position)
     {
-        var collided = Physics2D.OverlapPoint(position);
+        Collider2D collided = Physics2D.OverlapPoint(position);
         
         return collided?.GetComponent<Tile>();
     }

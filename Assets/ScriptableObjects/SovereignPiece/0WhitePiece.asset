@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 0
   kingSprite: {fileID: 2345153007411270213, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
   queenSprite: {fileID: 1300236440515893987, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
-  bishopSprite: {fileID: -1857470605627858951, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
-  knightSprite: {fileID: -4197028434145729271, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
-  rookSprite: {fileID: 7738711885865770159, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
-  pawnSprite: {fileID: -8026644488414195101, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  bishopSprite: {fileID: 7801617480813344082, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  knightSprite: {fileID: 4323883219751066921, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  rookSprite: {fileID: -4487637112201145566, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  pawnSprite: {fileID: -1904287428556695798, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}

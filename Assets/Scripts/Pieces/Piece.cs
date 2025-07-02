@@ -16,9 +16,9 @@ public abstract class Piece : MonoBehaviour
     [SerializeField] protected SovereignPieceSO sovereignPiece;
     [SerializeField] protected SpriteRenderer spriteRenderer;
 
-    private bool _selected;
+    protected bool _selected;
 
-    private void Awake()
+    protected void Awake()
     {
         _selected = false;
     }
@@ -35,8 +35,10 @@ public abstract class Piece : MonoBehaviour
         if (!_selected) return;
         transform.position = InputHandler.Instance.GetPositionWorld(Camera.main);
     }
+    
+    public Coordinates GetCoordinates() => tile.GetCoordinates();
 
-    public abstract List<Vector2Int> LegalMoves();
+    public abstract HashSet<Vector2Int> LegalMoves();
 
     public void SetAlignment(Alignment alignment) => this.alignment = alignment;
 
@@ -68,7 +70,7 @@ public abstract class Piece : MonoBehaviour
         return (alignmentCapturing != alignment);
     }
 
-    public void SelectPiece()
+    public void Select()
     {
         _selected = true;
         InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
@@ -77,13 +79,13 @@ public abstract class Piece : MonoBehaviour
     private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
     {
         InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
-        var selectedTile = TileSelector.GetTileOnWorld(transform.position);
+        Tile selectedTile = TileSelector.GetTileOnWorld(transform.position);
         _selected = false;
 
         do
         {
             if (selectedTile is null) break;
-            if (selectedTile.HasPiece())
+            if (selectedTile.HasPiece() && selectedTile.GetPiece() != this)
             {
                 selectedTile.DestroyPiece();
             }

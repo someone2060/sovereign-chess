@@ -5,24 +5,17 @@ public class Row : MonoBehaviour
 {
     [SerializeField] private List<Tile> tiles;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        for (var i = 0; i < tiles.Count; i++)
+        for (int i = 0; i < tiles.Count; i++)
         {
             tiles[i].GetCoordinates().SetY(i);
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SetTilesCoordinateX(int x)
     {
-        foreach (var t in tiles)
+        foreach (Tile t in tiles)
         {
             t.GetCoordinates().SetX(x);
         }

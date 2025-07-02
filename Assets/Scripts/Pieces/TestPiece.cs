@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TestPiece : Piece
 {
-    public override List<Vector2Int> LegalMoves()
+    public override HashSet<Vector2Int> LegalMoves()
     {
         throw new System.NotImplementedException();
     }
