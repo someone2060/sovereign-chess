@@ -76,15 +76,21 @@ public abstract class Piece : MonoBehaviour
 
     private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
     {
+        InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
         var selectedTile = TileSelector.GetTileOnWorld(transform.position);
         _selected = false;
 
-        if (selectedTile is null)
+        do
         {
-            transform.position = tile.transform.position;
-            return;
-        }
+            if (selectedTile is null) break;
+            if (selectedTile.HasPiece())
+            {
+                selectedTile.DestroyPiece();
+            }
+            
+            MoveTile(selectedTile);
+        } while (false);
         
-        MoveTile(selectedTile);
+        transform.position = tile.transform.position;
     }
 }

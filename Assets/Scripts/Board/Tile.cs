@@ -40,4 +40,10 @@ public class Tile : MonoBehaviour
         piece = newPiece;
         newPiece.MoveTile(this);
     }
+
+    public void DestroyPiece()
+    {
+        Destroy(piece.gameObject);
+        piece = null;
+    }
 }
