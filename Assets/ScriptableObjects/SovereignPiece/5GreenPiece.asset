@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402eb053ae143cb10ab0a85d47339b04, type: 3}
+  m_Name: 5GreenPiece
+  m_EditorClassIdentifier: 
+  id: 5
+  kingSprite: {fileID: -1051446853857180623, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  queenSprite: {fileID: 6822157273567248457, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  bishopSprite: {fileID: 1109444192686318521, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  knightSprite: {fileID: -9152189172399714115, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  rookSprite: {fileID: -5246439048992978073, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  pawnSprite: {fileID: -49866804924846508, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}

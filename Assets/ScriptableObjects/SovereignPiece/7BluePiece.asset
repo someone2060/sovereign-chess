@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402eb053ae143cb10ab0a85d47339b04, type: 3}
+  m_Name: 7BluePiece
+  m_EditorClassIdentifier: 
+  id: 7
+  kingSprite: {fileID: -4488163675592676294, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  queenSprite: {fileID: -974321099470835634, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  bishopSprite: {fileID: -4261396084960969631, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  knightSprite: {fileID: -2939174740595444860, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  rookSprite: {fileID: 3694131948378318549, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  pawnSprite: {fileID: 3104088488132111071, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}

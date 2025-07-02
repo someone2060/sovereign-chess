@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402eb053ae143cb10ab0a85d47339b04, type: 3}
+  m_Name: 11GreyDPiece
+  m_EditorClassIdentifier: 
+  id: 11
+  kingSprite: {fileID: -7454198158008594613, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  queenSprite: {fileID: 7953742918557225424, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  bishopSprite: {fileID: -3965518425700252216, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  knightSprite: {fileID: 636084330522639200, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  rookSprite: {fileID: 8908252945855355190, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  pawnSprite: {fileID: -8391159068875028524, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}

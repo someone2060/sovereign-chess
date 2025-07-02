@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402eb053ae143cb10ab0a85d47339b04, type: 3}
+  m_Name: 3OrangePiece
+  m_EditorClassIdentifier: 
+  id: 3
+  kingSprite: {fileID: -5644065763883167484, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  queenSprite: {fileID: -6756053615094916662, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  bishopSprite: {fileID: -8584044665569649333, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  knightSprite: {fileID: -2117197653609174116, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  rookSprite: {fileID: -8810804147971130726, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  pawnSprite: {fileID: 6054839610104319555, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}

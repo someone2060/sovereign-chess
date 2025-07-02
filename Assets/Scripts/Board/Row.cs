@@ -8,9 +8,9 @@ public class Row : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        for (int i = 0; i < tiles.Count; i++)
+        for (var i = 0; i < tiles.Count; i++)
         {
-            tiles[i].SetCoordinatesY(i);
+            tiles[i].GetCoordinates().SetY(i);
         }
     }
 
@@ -24,7 +24,7 @@ public class Row : MonoBehaviour
     {
         foreach (var t in tiles)
         {
-            t.SetCoordinatesX(x);
+            t.GetCoordinates().SetX(x);
         }
     }
 
