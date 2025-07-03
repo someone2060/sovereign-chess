@@ -7,7 +7,7 @@ public class Queen : Piece
     protected new void Start()
     {
         base.Start();
-        spriteRenderer.sprite = sovereignPiece.bishopSprite;
+        spriteRenderer.sprite = sovereignPiece.queenSprite;
     }
     
     public override HashSet<Vector2Int> LegalMoves()
