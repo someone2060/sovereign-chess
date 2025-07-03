@@ -16,10 +16,10 @@ public class Rook : Piece
         
         Vector2Int coordsVec = GetCoordinates().GetVector2Int();
         
-        legalMoves.AddRange(SearchInDirection(coordsVec, Vector2Int.right));
-        legalMoves.AddRange(SearchInDirection(coordsVec, Vector2Int.left));
-        legalMoves.AddRange(SearchInDirection(coordsVec, Vector2Int.up));
-        legalMoves.AddRange(SearchInDirection(coordsVec, Vector2Int.down));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.up));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.down));
         return legalMoves;
     }
 }

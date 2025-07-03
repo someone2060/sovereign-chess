@@ -16,10 +16,10 @@ public class Bishop : Piece
         
         Vector2Int coordsVec = GetCoordinates().GetVector2Int();
         
-        legalMoves.AddRange(SearchInDirection(coordsVec, Vector2Int.right + Vector2Int.up));
-        legalMoves.AddRange(SearchInDirection(coordsVec, Vector2Int.left + Vector2Int.up));
-        legalMoves.AddRange(SearchInDirection(coordsVec, Vector2Int.right + Vector2Int.down));
-        legalMoves.AddRange(SearchInDirection(coordsVec, Vector2Int.left + Vector2Int.down));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right + Vector2Int.up));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left + Vector2Int.up));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right + Vector2Int.down));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left + Vector2Int.down));
         return legalMoves;
     }
 }
