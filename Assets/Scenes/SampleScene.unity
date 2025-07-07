@@ -3025,6 +3025,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1249704095}
     - target: {fileID: -6126874284852567113, guid: 4dc4640cde1b54b9fb8c110caeb5edd2, type: 3}
+      propertyPath: alignment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6126874284852567113, guid: 4dc4640cde1b54b9fb8c110caeb5edd2, type: 3}
       propertyPath: sovereignPiece
       value: 
       objectReference: {fileID: 11400000, guid: a59649a6607d51a38933795a8e117ca4, type: 2}

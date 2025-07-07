@@ -5,21 +5,13 @@ using UnityEngine;
 
 public class Pawn : Piece
 {
-    private static Vector2Int[] PawnHorizontalMovePositions { get; } = {
-        new(1, 0)
-    };
-    private static Vector2Int[] PawnHorizontalCapturePositions { get; } = {
-        new(1, 1),
-        new(1, -1)
-    };
+    private static Vector2Int[] HorizontalMove { get; } = { new(1, 0) };
+    private static Vector2Int[] HorizontalStartingMove { get; } = { new Vector2Int(2, 0) };
+    private static Vector2Int[] HorizontalCaptures { get; } = { new(1, 1), new(1, -1) };
     
-    private static Vector2Int[] PawnVerticalMovePositions { get; } = {
-        new(0, 1)
-    };
-    private static Vector2Int[] PawnVerticalCapturePositions { get; } = {
-        new(1, 1),
-        new(-1, 1)
-    };
+    private static Vector2Int[] VerticalMove { get; } = { new(0, 1) };
+    private static Vector2Int[] VerticalStartingMove { get; } = { new Vector2Int(0, 2) };
+    private static Vector2Int[] VerticalCaptures { get; } = { new(1, 1), new(-1, 1) };
 
     private bool _canMoveHorizontal;
     private bool _canMoveVertical;
@@ -45,14 +37,14 @@ public class Pawn : Piece
         
         if (quadrant.x == potentialQuadrant.x)
         {
-            movePositions.AddRange(PawnHorizontalMovePositions);
-            capturePositions.AddRange(PawnHorizontalCapturePositions);
+            movePositions.AddRange(HorizontalMove);
+            capturePositions.AddRange(HorizontalCaptures);
         }
 
         if (quadrant.y == potentialQuadrant.y)
         {
-            movePositions.AddRange(PawnVerticalMovePositions);
-            capturePositions.AddRange(PawnVerticalCapturePositions);
+            movePositions.AddRange(VerticalMove);
+            capturePositions.AddRange(VerticalCaptures);
         }
         
         Debug.Log("movePositions: " + DebugHashSetLog(movePositions));
