@@ -12,19 +12,12 @@ public class Tile : MonoBehaviour
         _coordinates = new Coordinates(Vector2Int.down);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     public Coordinates GetCoordinates() => _coordinates;
-    public bool CoordinatesSet() => !_coordinates.GetCoordinates().Equals(Vector2Int.down);
+    public void SetCoordinates(Coordinates coordinates)
+    {
+        _coordinates = new Coordinates(coordinates);
+    }
+    public bool CoordinatesSet() => !_coordinates.GetVector2Int().Equals(Vector2Int.down);
     
     public bool HasPiece() => piece is not null;
     public Piece GetPiece() => piece;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Piece : MonoBehaviour
@@ -18,7 +19,7 @@ public abstract class Piece : MonoBehaviour
 
     private bool _selected;
 
-    private void Awake()
+    protected void Awake()
     {
         _selected = false;
     }
@@ -35,8 +36,10 @@ public abstract class Piece : MonoBehaviour
         if (!_selected) return;
         transform.position = InputHandler.Instance.GetPositionWorld(Camera.main);
     }
+    
+    public Coordinates GetCoordinates() => tile.GetCoordinates();
 
-    public abstract List<Vector2Int> LegalMoves();
+    public abstract HashSet<Vector2Int> LegalMoves();
 
     public void SetAlignment(Alignment alignment) => this.alignment = alignment;
 
@@ -68,22 +71,31 @@ public abstract class Piece : MonoBehaviour
         return (alignmentCapturing != alignment);
     }
 
-    public void SelectPiece()
+    public void Select()
     {
         _selected = true;
         InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
+        
+        //TODO DEBUG
+        HashSet<Vector2Int> legalMoves = LegalMoves();
+        List<string> coordStr = legalMoves.Select(legalMove => Board.Instance.GetTile(legalMove).GetCoordinates().ToString()).ToList();
+        coordStr.Sort();
+        
+        String debugString = coordStr.Aggregate("Legal moves: ", (current, coords) => current + coords + ", ");
+        Debug.Log(debugString);
     }
 
     private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
     {
         InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
-        var selectedTile = TileSelector.GetTileOnWorld(transform.position);
+        Tile selectedTile = TileSelector.GetTileOnWorld(transform.position);
         _selected = false;
 
         do
         {
-            if (selectedTile is null) break;
-            if (selectedTile.HasPiece())
+            if (selectedTile is null) break; // no tile on where user stopped selecting 
+            if (!LegalMoves().Contains(selectedTile.GetCoordinates().GetVector2Int())) break; // invalid movement square
+            if (selectedTile.HasPiece() && selectedTile.GetPiece() != this) // moved to a different tile that has another piece
             {
                 selectedTile.DestroyPiece();
             }
@@ -92,5 +104,37 @@ public abstract class Piece : MonoBehaviour
         } while (false);
         
         transform.position = tile.transform.position;
+    }
+
+    // Extends 8 tiles in search direction until colliding with another piece or reaching end of board,
+    // returning valid squares that can be occupied (including capturing)
+    protected HashSet<Vector2Int> SearchLegalTilesInDirection(Vector2Int coordsVec, Vector2Int dir)
+    {
+        Vector2Int incrementVec = Vector2Int.zero;
+        HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
+        for (int i = 0; i < 8; i++)
+        {
+            incrementVec += dir;
+            Tile testTile = Board.Instance.GetTile(coordsVec + incrementVec);
+
+            if (!LegalTile(testTile)) break;
+            
+            legalMoves.Add(coordsVec + incrementVec);
+        }
+        return legalMoves;
+    }
+    
+    // Returns true/false depending on whether the square can be occupied,
+    // with capturing and moving optionally disabled
+    protected bool LegalTile(Tile testTile, bool canMove = true, bool canCapture = true)
+    {
+        if (testTile is null) return false;
+        if (!testTile.HasPiece() && canMove) return true;
+        if (testTile.HasPiece() && canCapture)
+        {
+            return testTile.GetPiece().CanBeCaptured(alignment);
+        }
+
+        return false;
     }
 }

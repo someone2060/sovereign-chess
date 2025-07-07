@@ -38,6 +38,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Tile visual
+    uniqueID: 1256588703
+    locked: 0
+  - name: Board visual (pawn moves)
+    uniqueID: 2188064043
+    locked: 0
+  - name: Board visual (promotion)
+    uniqueID: 1602947755
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
