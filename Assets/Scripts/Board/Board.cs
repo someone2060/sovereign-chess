@@ -25,23 +25,33 @@ public class Board : MonoBehaviour
 
     // Returns a Vector2Int pointing to the closest quadrant from the center
     // with range from (-1, -1) to (1, 1)
-    public Vector2Int GetQuadrant(Vector2Int pos)
+    public Vector2Int GetQuadrant(Vector2Int coords)
     {
         Vector2Int quadrant = Vector2Int.zero;
 
-        quadrant.x = (pos.x < _size / 2) ? 1 : -1;
-        quadrant.y = (pos.y < _size / 2) ? 1 : -1;
+        quadrant.x = (coords.x < _size / 2) ? 1 : -1;
+        quadrant.y = (coords.y < _size / 2) ? 1 : -1;
         
         return quadrant;
     }
 
-    public Tile GetTile(Vector2Int coordinates)
+    public bool OnOuterTwoX(Vector2Int coords)
     {
-        return !ValidCoordinates(coordinates) ? null : rows[coordinates.y].GetTile(coordinates.x);
+        return coords.x < 2 || coords.x >= _size - 2;
     }
 
-    private bool ValidCoordinates(Vector2Int coordinates)
+    public bool OnOuterTwoY(Vector2Int coords)
     {
-        return coordinates.y >= 0 && coordinates.y < _size && coordinates.x >= 0 && coordinates.x < _size;
+        return coords.y < 2 || coords.y >= _size - 2;
+    }
+    
+    public Tile GetTile(Vector2Int coords)
+    {
+        return !ValidCoordinates(coords) ? null : rows[coords.y].GetTile(coords.x);
+    }
+
+    private bool ValidCoordinates(Vector2Int coords)
+    {
+        return coords.y >= 0 && coords.y < _size && coords.x >= 0 && coords.x < _size;
     }
 }

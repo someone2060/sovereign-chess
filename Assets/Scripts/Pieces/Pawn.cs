@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class Pawn : Piece
 {
-    private static Vector2Int[] HorizontalMove { get; } = { new(1, 0) };
-    private static Vector2Int[] HorizontalStartingMove { get; } = { new Vector2Int(2, 0) };
+    private static readonly Vector2Int HorizontalMove = new(1, 0);
+    private static readonly Vector2Int HorizontalStartingMove = new(2, 0);
     private static Vector2Int[] HorizontalCaptures { get; } = { new(1, 1), new(1, -1) };
     
-    private static Vector2Int[] VerticalMove { get; } = { new(0, 1) };
-    private static Vector2Int[] VerticalStartingMove { get; } = { new Vector2Int(0, 2) };
+    private static readonly Vector2Int VerticalMove = new(0, 1);
+    private static readonly Vector2Int VerticalStartingMove = new(0, 2);
     private static Vector2Int[] VerticalCaptures { get; } = { new(1, 1), new(-1, 1) };
 
     private bool _canMoveHorizontal;
@@ -26,8 +26,8 @@ public class Pawn : Piece
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         
-        HashSet<Vector2Int> movePositions = new HashSet<Vector2Int>(); 
-        HashSet<Vector2Int> capturePositions = new HashSet<Vector2Int>();
+        HashSet<Vector2Int> moveTests = new HashSet<Vector2Int>(); 
+        HashSet<Vector2Int> captureTests = new HashSet<Vector2Int>();
 
         Vector2Int position = GetCoordinates().GetVector2Int();
         Vector2Int quadrant = Board.Instance.GetQuadrant(position);
@@ -37,22 +37,25 @@ public class Pawn : Piece
         
         if (quadrant.x == potentialQuadrant.x)
         {
-            movePositions.AddRange(HorizontalMove);
-            capturePositions.AddRange(HorizontalCaptures);
+            moveTests.Add(HorizontalMove);
+            captureTests.AddRange(HorizontalCaptures);
         }
 
         if (quadrant.y == potentialQuadrant.y)
         {
-            movePositions.AddRange(VerticalMove);
-            capturePositions.AddRange(VerticalCaptures);
+            moveTests.Add(VerticalMove);
+            captureTests.AddRange(VerticalCaptures);
         }
+
+        if (Board.Instance.OnOuterTwoX(position)) moveTests.Add(HorizontalStartingMove);
+        if (Board.Instance.OnOuterTwoY(position)) moveTests.Add(VerticalStartingMove);
         
-        Debug.Log("movePositions: " + DebugHashSetLog(movePositions));
-        Debug.Log("capturePositions: " + DebugHashSetLog(capturePositions));
+        Debug.Log("movePositions: " + DebugHashSetLog(moveTests));
+        Debug.Log("capturePositions: " + DebugHashSetLog(captureTests));
         
         legalMoves.AddRange(CheckForPawnMoves(position, quadrant, 
-            movePositions, 
-            capturePositions));
+            moveTests, 
+            captureTests));
         
         return legalMoves;
     }
