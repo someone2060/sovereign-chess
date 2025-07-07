@@ -125,12 +125,16 @@ public abstract class Piece : MonoBehaviour
     }
     
     // Returns true/false depending on whether the square can be occupied,
-    // with capturing optionally disabled
-    protected bool LegalTile(Tile testTile, bool canCapture = true)
+    // with capturing and moving optionally disabled
+    protected bool LegalTile(Tile testTile, bool canMove = true, bool canCapture = true)
     {
         if (testTile is null) return false;
-        if (!testTile.HasPiece()) return true;
-        if (!canCapture) return false;
-        return testTile.GetPiece().CanBeCaptured(alignment);
+        if (!testTile.HasPiece() && canMove) return true;
+        if (testTile.HasPiece() && canCapture)
+        {
+            return testTile.GetPiece().CanBeCaptured(alignment);
+        }
+
+        return false;
     }
 }

@@ -9,15 +9,15 @@ public class Row : MonoBehaviour
     {
         for (int i = 0; i < tiles.Count; i++)
         {
-            tiles[i].GetCoordinates().SetY(i);
+            tiles[i].GetCoordinates().SetX(i);
         }
     }
 
-    public void SetTilesCoordinateX(int x)
+    public void SetTilesCoordinateY(int x)
     {
         foreach (Tile t in tiles)
         {
-            t.GetCoordinates().SetX(x);
+            t.GetCoordinates().SetY(x);
         }
     }
 

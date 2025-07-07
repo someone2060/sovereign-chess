@@ -19,13 +19,25 @@ public class Board : MonoBehaviour
     {
         for (int i = 0; i < rows.Count; i++)
         {
-            rows[i].SetTilesCoordinateX(i);
+            rows[i].SetTilesCoordinateY(i);
         }
+    }
+
+    // Returns a Vector2Int pointing to the closest quadrant from the center
+    // with range from (-1, -1) to (1, 1)
+    public Vector2Int GetQuadrant(Vector2Int pos)
+    {
+        Vector2Int quadrant = Vector2Int.zero;
+
+        quadrant.x = (pos.x < _size / 2) ? 1 : -1;
+        quadrant.y = (pos.y < _size / 2) ? 1 : -1;
+        
+        return quadrant;
     }
 
     public Tile GetTile(Vector2Int coordinates)
     {
-        return !ValidCoordinates(coordinates) ? null : rows[coordinates.x].GetTile(coordinates.y);
+        return !ValidCoordinates(coordinates) ? null : rows[coordinates.y].GetTile(coordinates.x);
     }
 
     private bool ValidCoordinates(Vector2Int coordinates)
