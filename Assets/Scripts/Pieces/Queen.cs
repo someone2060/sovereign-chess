@@ -12,7 +12,10 @@ public class Queen : Piece
     
     public override HashSet<Vector2Int> LegalMoves()
     {
-        HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
+        if (legalMovesCheckTile.Equals(tile)) return legalMoves;
+        base.LegalMoves();
+        
+        legalMoves = new HashSet<Vector2Int>();
         
         Vector2Int coordsVec = GetCoordinates().GetVector2Int();
         

@@ -18,6 +18,8 @@ public abstract class Piece : MonoBehaviour
     [SerializeField] protected SpriteRenderer spriteRenderer;
 
     private bool _selected;
+    protected Tile legalMovesCheckTile;
+    protected HashSet<Vector2Int> legalMoves;
 
     protected void Awake()
     {
@@ -39,7 +41,11 @@ public abstract class Piece : MonoBehaviour
     
     public Coordinates GetCoordinates() => tile.GetCoordinates();
 
-    public abstract HashSet<Vector2Int> LegalMoves();
+    public virtual HashSet<Vector2Int> LegalMoves()
+    {
+        legalMovesCheckTile = tile;
+        return null;
+    }
 
     public void SetAlignment(Alignment alignment) => this.alignment = alignment;
 
