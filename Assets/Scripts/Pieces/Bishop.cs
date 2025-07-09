@@ -11,7 +11,7 @@ public class Bishop : Piece
     }
     
     public override HashSet<Vector2Int> LegalMoves()
-    {
+    {        
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         
         Vector2Int coordsVec = GetCoordinates().GetVector2Int();
