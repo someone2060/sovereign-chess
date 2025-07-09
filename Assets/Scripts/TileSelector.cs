@@ -5,6 +5,12 @@ using UnityEngine;
 public class TileSelector : MonoBehaviour
 {
     public static TileSelector Instance { get; private set; }
+    
+    public event EventHandler<OnPieceSelectedEventArgs> OnPieceSelected;
+    public class OnPieceSelectedEventArgs : EventArgs
+    {
+        public Piece piece;
+    }
 
     private void Awake()
     {
@@ -28,7 +34,9 @@ public class TileSelector : MonoBehaviour
         
         if (!tile.HasPiece()) return;
 
-        tile.GetPiece().Select();
+        Piece piece = tile.GetPiece();
+        piece.Select();
+        OnPieceSelected?.Invoke(this, new OnPieceSelectedEventArgs { piece = piece });
     }
 
     public static Tile GetTileOnWorld(Vector2 position)
