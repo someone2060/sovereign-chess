@@ -37,6 +37,7 @@ public class PieceMover : MonoBehaviour
     private void Start()
     {
         InputHandler.Instance.OnSelectPerformed += InputHandler_OnSelectPerformed;
+        PawnPromoter.Instance.OnPawnPromotion += PawnPromoter_OnPawnPromotion;
     }
   
     // On selecting a tile with a piece on it, selection event is sent to piece
@@ -128,14 +129,12 @@ public class PieceMover : MonoBehaviour
         _piece.CentreOnTile(selectedTile);
         _state = State.PieceChanging;
         
-        PawnPromoter.Instance.OnPawnPromotion += PawnPromoter_OnPawnPromotion;
         PawnPromoter.Instance.PromptPawnPromotion(pawn, selectedTile);
     }
 
     private void PawnPromoter_OnPawnPromotion(object sender, PawnPromoter.OnPawnPromotionEventArgs e)
     {
-        PawnPromoter.Instance.OnPawnPromotion -= PawnPromoter_OnPawnPromotion;
-        TryMovePiece(e.promotionTile);
+        TryMovePiece(e.tile);
         _piece.CentreOnTile();
     }
 
@@ -143,13 +142,14 @@ public class PieceMover : MonoBehaviour
     {
         InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
 
-        if (_state == State.PieceChanging && selectedTile.Equals(_piece.GetTile()))
+        if (_state == State.PieceChanging && _piece.GetTile().Equals(selectedTile))
         {
             _piece.SetTile(selectedTile);
         }
         
         do
         {
+            if (selectedTile is null) break;
             if (!_legalMoves.Contains(selectedTile.GetCoordinates().GetVector2Int())) break;
             if (selectedTile.HasPiece() && selectedTile.GetPiece() != _piece)
             {

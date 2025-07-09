@@ -15,7 +15,7 @@ public class PawnPromoter : MonoBehaviour
     
     public event EventHandler OnShow;
     public event EventHandler<OnPawnPromotionEventArgs> OnPawnPromotion;
-    public class OnPawnPromotionEventArgs : EventArgs { public Tile promotionTile; }
+    public class OnPawnPromotionEventArgs : EventArgs { public Tile tile; }
     
     private void Awake()
     {
@@ -46,14 +46,14 @@ public class PawnPromoter : MonoBehaviour
 
         if (collided is null)
         {
-            OnPawnPromotion?.Invoke(this, new OnPawnPromotionEventArgs { promotionTile = _pawn.GetTile() });
+            OnPawnPromotion?.Invoke(this, new OnPawnPromotionEventArgs { tile = _pawn.GetTile() });
             return;
         }
 
         PromotionCollider promotionCollider = collided.GetComponent<PromotionCollider>();
-        Transform piece = promotionCollider.GetPieceTransform();
+        GameObject piece = promotionCollider.GetPiece().gameObject;
 
-        Transform newPiece = Instantiate(piece, pawnParent);
+        GameObject newPiece = Instantiate(piece, pawnParent);
         newPiece.GetComponent<Piece>().SetAlignment(_pawn.GetAlignment());
         newPiece.GetComponent<Piece>().SetSovereignPiece(_sovereignPiece);
         newPiece.GetComponent<Piece>().InitializeSprite();
@@ -61,9 +61,7 @@ public class PawnPromoter : MonoBehaviour
         newPiece.GetComponent<Piece>().SetTile(_promotionTile);
         newPiece.GetComponent<Piece>().CentreOnTile();
         
-
-        // Debug.Log(piece.GetSpriteRenderer().sprite.name);
-        OnPawnPromotion?.Invoke(this, new OnPawnPromotionEventArgs { promotionTile = _promotionTile });
+        OnPawnPromotion?.Invoke(this, new OnPawnPromotionEventArgs { tile = null });
         
     }
 }

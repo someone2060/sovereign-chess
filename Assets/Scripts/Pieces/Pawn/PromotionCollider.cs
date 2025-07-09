@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PromotionCollider : MonoBehaviour
 {
-    [SerializeField] private Transform promotionPieceTransform;
+    [SerializeField] private Piece promotionPiece;
     [SerializeField] private new Collider2D collider;
 
-    public Transform GetPieceTransform() => promotionPieceTransform;
+    public Piece GetPiece() => promotionPiece;
 }
