@@ -3248,10 +3248,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1566305462180778706, guid: 8a103b8545c3bbd0eadf4afa56216697, type: 3}
+      propertyPath: sovereignPiece
+      value: 
+      objectReference: {fileID: 11400000, guid: 693a48d04bb2cd84b9c2685308709043, type: 2}
+    - target: {fileID: 2799488012858917459, guid: 8a103b8545c3bbd0eadf4afa56216697, type: 3}
+      propertyPath: sovereignPiece
+      value: 
+      objectReference: {fileID: 11400000, guid: 693a48d04bb2cd84b9c2685308709043, type: 2}
+    - target: {fileID: 3399354193033995364, guid: 8a103b8545c3bbd0eadf4afa56216697, type: 3}
+      propertyPath: sovereignPieceSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 693a48d04bb2cd84b9c2685308709043, type: 2}
+    - target: {fileID: 3902274025787350916, guid: 8a103b8545c3bbd0eadf4afa56216697, type: 3}
+      propertyPath: sovereignPiece
+      value: 
+      objectReference: {fileID: 11400000, guid: 693a48d04bb2cd84b9c2685308709043, type: 2}
     - target: {fileID: 5966583286255423523, guid: 8a103b8545c3bbd0eadf4afa56216697, type: 3}
       propertyPath: m_Name
       value: PawnPromoter
       objectReference: {fileID: 0}
+    - target: {fileID: 6852728837618954232, guid: 8a103b8545c3bbd0eadf4afa56216697, type: 3}
+      propertyPath: sovereignPiece
+      value: 
+      objectReference: {fileID: 11400000, guid: 693a48d04bb2cd84b9c2685308709043, type: 2}
+    - target: {fileID: 8145457349383348016, guid: 8a103b8545c3bbd0eadf4afa56216697, type: 3}
+      propertyPath: sovereignPiece
+      value: 
+      objectReference: {fileID: 11400000, guid: 693a48d04bb2cd84b9c2685308709043, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

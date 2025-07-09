@@ -54,4 +54,11 @@ public class Board : MonoBehaviour
     {
         return coords.y >= 0 && coords.y < _size && coords.x >= 0 && coords.x < _size;
     }
+
+    public bool InPromotionArea(Vector2Int coords)
+    {
+        int leftBound = _size / 2 - 2;
+        int rightBound = _size / 2 + 2;
+        return coords.x > leftBound && coords.x <= rightBound && coords.y > leftBound && coords.y <= rightBound;
+    }
 }

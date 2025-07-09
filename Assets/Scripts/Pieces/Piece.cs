@@ -26,6 +26,7 @@ public abstract class Piece : MonoBehaviour
 
     protected void Start()
     {
+        if (tile is null) return;
         transform.position = tile.transform.position;
         tile.SetPiece(this);
     }
@@ -36,6 +37,8 @@ public abstract class Piece : MonoBehaviour
         transform.position = InputHandler.Instance.GetPositionWorld(Camera.main);
     }
 
+    public SovereignPieceSO GetSovereignPiece() => sovereignPiece;
+    
     public Tile GetTile() => tile;
 
     public abstract HashSet<Vector2Int> LegalMoves();
@@ -53,6 +56,7 @@ public abstract class Piece : MonoBehaviour
     public void SetSelected(bool selected) => _selected = selected;
 
     public void CentreOnTile() => transform.position = tile.transform.position;
+    public void CentreOnTile(Tile selectedTile) => transform.position = selectedTile.transform.position;
 
     public bool CanBeMoved(Alignment alignmentMoving)
     {

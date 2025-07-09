@@ -96,6 +96,19 @@ public class PieceMover : MonoBehaviour
                 _state = State.ClickSelecting;
                 break;
             }
+
+            do
+            {
+                Pawn pawn = _piece.GetComponent<Pawn>(); 
+                if (pawn is null) break;
+
+                if (!Board.Instance.InPromotionArea(_piece.GetTile().GetCoordinates().GetVector2Int())) break;
+                
+                PawnPromoter.Instance.PromptPawnPromotion(pawn, selectedTile);
+                _piece.CentreOnTile(selectedTile);
+                _state = State.PieceChanging;
+                return;
+            } while (false);
             
             TryMovePiece(selectedTile);
         } while (false);
