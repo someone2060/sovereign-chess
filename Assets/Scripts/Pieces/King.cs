@@ -25,7 +25,7 @@ public class King : Piece
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
 
-        Vector2Int position = GetCoordinates().GetVector2Int();
+        Vector2Int position = tile.GetCoordinates().GetVector2Int();
 
         foreach (Vector2Int offset in KingPositions)
         {

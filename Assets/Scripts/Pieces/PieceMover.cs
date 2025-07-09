@@ -9,16 +9,22 @@ public class PieceMover : MonoBehaviour
 
     private Piece _piece;
     private HashSet<Vector2Int> _legalMoves;
+    private bool _selectedSameTile;
     
     public event EventHandler<OnPieceSelectedEventArgs> OnPieceSelected;
     public class OnPieceSelectedEventArgs : EventArgs { public HashSet<Vector2Int> legalMoves; }
     
     public event EventHandler<OnPieceSelectedEventArgs> OnPieceDeselected;
+
+    private void Awake()
+    {
+        _selectedSameTile = false;
+        Instance = this;
+    }
     
     private void Start()
     {
         InputHandler.Instance.OnSelectPerformed += InputHandler_OnSelectPerformed;
-        Instance = this;
     }
     
     // On selecting a tile with a piece on it, selection event is sent to piece
@@ -28,18 +34,31 @@ public class PieceMover : MonoBehaviour
 
         Tile tile = TileSelector.GetTileOnWorld(positionWorld);
         if (tile is null) return;
-        
+
         if (!tile.HasPiece()) return;
 
         Piece piece = tile.GetPiece();
+
+        if (_selectedSameTile && piece.Equals(_piece))
+        {
+            _piece.SetSelected(true);
+            return;
+        }
+        
         SelectPiece(piece);
     }
 
     private void SelectPiece(Piece piece)
     {
+        if (_selectedSameTile)
+        {
+            InputHandler_OnSelectCanceled(this, EventArgs.Empty);
+        }
+        
         _piece = piece;
         _piece.SetSelected(true);
         _legalMoves = _piece.LegalMoves();
+        _selectedSameTile = false;
         
         InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
         
@@ -48,13 +67,35 @@ public class PieceMover : MonoBehaviour
 
     private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
     {
-        InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
         Tile selectedTile = TileSelector.GetTileOnWorld(InputHandler.Instance.GetPositionWorld(Camera.main));
         _piece.SetSelected(false);
+
+        do
+        {
+            if (selectedTile is null) break; // no tile on where user stopped selecting
+            
+            Debug.Log("selectedSameTile: " + _selectedSameTile);
+            // selected tile is same as tile piece is on; not done before
+            if (selectedTile.Equals(_piece.GetTile()) && !_selectedSameTile)
+            {
+                Debug.Log("changing selectedSameTile");
+                _selectedSameTile = true;
+                break;
+            }
+            
+            TryMovePiece(selectedTile);
+        } while (false);
+        
+        _piece.CentreOnTile();
+    }
+
+    private void TryMovePiece(Tile selectedTile)
+    {
+        InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
+        _selectedSameTile = false;
         
         do
         {
-            if (selectedTile is null) break; // no tile on where user stopped selecting 
             if (!_legalMoves.Contains(selectedTile.GetCoordinates().GetVector2Int())) break; // invalid movement square
             if (selectedTile.HasPiece() && selectedTile.GetPiece() != _piece) // moved to a different tile that has another piece
             {
@@ -64,8 +105,7 @@ public class PieceMover : MonoBehaviour
             _piece.SetTile(selectedTile);
         } while (false);
         
-        _piece.CentreOnTile();
-        OnPieceDeselected?.Invoke(this, null);
+        OnPieceDeselected?.Invoke(this, null);        
     }
 
     private void DebugLegalMoves()

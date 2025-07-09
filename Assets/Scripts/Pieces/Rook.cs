@@ -14,7 +14,7 @@ public class Rook : Piece
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         
-        Vector2Int coordsVec = GetCoordinates().GetVector2Int();
+        Vector2Int coordsVec = tile.GetCoordinates().GetVector2Int();
         
         legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right));
         legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left));

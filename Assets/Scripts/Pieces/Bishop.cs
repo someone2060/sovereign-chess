@@ -14,7 +14,7 @@ public class Bishop : Piece
     {        
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         
-        Vector2Int coordsVec = GetCoordinates().GetVector2Int();
+        Vector2Int coordsVec = tile.GetCoordinates().GetVector2Int();
         
         legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right + Vector2Int.up));
         legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left + Vector2Int.up));

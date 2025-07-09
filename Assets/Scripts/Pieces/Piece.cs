@@ -35,8 +35,9 @@ public abstract class Piece : MonoBehaviour
         if (!_selected) return;
         transform.position = InputHandler.Instance.GetPositionWorld(Camera.main);
     }
-    
-    public Coordinates GetCoordinates() => tile.GetCoordinates();
+
+    public Tile GetTile() => tile;
+    // public Coordinates GetCoordinates() => tile.GetCoordinates();
 
     public abstract HashSet<Vector2Int> LegalMoves();
 

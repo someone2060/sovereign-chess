@@ -29,7 +29,7 @@ public class Pawn : Piece
         HashSet<Vector2Int> moveTests = new HashSet<Vector2Int>(); 
         HashSet<Vector2Int> captureTests = new HashSet<Vector2Int>();
 
-        Vector2Int position = GetCoordinates().GetVector2Int();
+        Vector2Int position = tile.GetCoordinates().GetVector2Int();
         Vector2Int quadrant = Board.Instance.GetQuadrant(position);
 
         Vector2Int potentialPosition = position + quadrant;
