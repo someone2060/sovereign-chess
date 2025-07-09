@@ -20,7 +20,12 @@ public class PieceMover : MonoBehaviour
     private State _state;
     
     public event EventHandler<OnPieceSelectedEventArgs> OnPieceSelected;
-    public class OnPieceSelectedEventArgs : EventArgs { public HashSet<Vector2Int> legalMoves; }
+
+    public class OnPieceSelectedEventArgs : EventArgs
+    {
+        public HashSet<Vector2Int> legalMoves;
+        public Piece piece;
+    }
     
     public event EventHandler<OnPieceSelectedEventArgs> OnPieceDeselected;
 
@@ -70,7 +75,11 @@ public class PieceMover : MonoBehaviour
         
         InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
         
-        OnPieceSelected?.Invoke(this, new OnPieceSelectedEventArgs { legalMoves = _legalMoves });
+        OnPieceSelected?.Invoke(this, new OnPieceSelectedEventArgs
+        {
+            legalMoves = _legalMoves,
+            piece = _piece
+        });
     }
 
     private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
@@ -80,9 +89,9 @@ public class PieceMover : MonoBehaviour
 
         do
         {
-            if (selectedTile is null) break; // no tile on where user stopped selecting
+            if (selectedTile is null) break;
             
-            if (selectedTile.Equals(_piece.GetTile()) && _state == State.DragSelecting) // selected tile is same as piece's tile and not done before
+            if (selectedTile.Equals(_piece.GetTile()) && _state == State.DragSelecting)
             {
                 _state = State.ClickSelecting;
                 break;
@@ -101,8 +110,8 @@ public class PieceMover : MonoBehaviour
         
         do
         {
-            if (!_legalMoves.Contains(selectedTile.GetCoordinates().GetVector2Int())) break; // invalid movement square
-            if (selectedTile.HasPiece() && selectedTile.GetPiece() != _piece) // moved to a different tile that has another piece
+            if (!_legalMoves.Contains(selectedTile.GetCoordinates().GetVector2Int())) break;
+            if (selectedTile.HasPiece() && selectedTile.GetPiece() != _piece)
             {
                 selectedTile.DestroyPiece();
             }

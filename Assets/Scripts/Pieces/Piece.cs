@@ -37,7 +37,6 @@ public abstract class Piece : MonoBehaviour
     }
 
     public Tile GetTile() => tile;
-    // public Coordinates GetCoordinates() => tile.GetCoordinates();
 
     public abstract HashSet<Vector2Int> LegalMoves();
 

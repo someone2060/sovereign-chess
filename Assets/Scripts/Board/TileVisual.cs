@@ -5,6 +5,7 @@ public class TileVisual : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer selectedEmptyVisual;
     [SerializeField] private SpriteRenderer selectedPieceVisual;
+    [SerializeField] private SpriteRenderer highlightVisual;
     [SerializeField] private Tile tile;
     
     private void Start()
@@ -15,6 +16,12 @@ public class TileVisual : MonoBehaviour
 
     private void PieceMover_OnPieceSelected(object sender, PieceMover.OnPieceSelectedEventArgs e)
     {
+        if (e.piece.GetTile().Equals(tile))
+        {
+            highlightVisual.gameObject.SetActive(true);
+            PieceMover.Instance.OnPieceDeselected += PieceMover_OnPieceDeselected;
+            return;
+        }
         if (!e.legalMoves.Contains(tile.GetCoordinates().GetVector2Int())) return;
         
         PieceMover.Instance.OnPieceDeselected += PieceMover_OnPieceDeselected;
@@ -37,5 +44,6 @@ public class TileVisual : MonoBehaviour
     {
         selectedEmptyVisual.gameObject.SetActive(false);
         selectedPieceVisual.gameObject.SetActive(false);
+        highlightVisual.gameObject.SetActive(false);
     }
 }
