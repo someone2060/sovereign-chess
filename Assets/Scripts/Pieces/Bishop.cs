@@ -12,7 +12,7 @@ public class Bishop : Piece
     
     public override HashSet<Vector2Int> LegalMoves()
     {
-        if (legalMovesCheckTile.Equals(tile)) return legalMoves;
+        if (tile.Equals(legalMovesCheckTile)) return legalMoves;
         base.LegalMoves();
         
         legalMoves = new HashSet<Vector2Int>();

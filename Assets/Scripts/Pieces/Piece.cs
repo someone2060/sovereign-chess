@@ -32,7 +32,6 @@ public abstract class Piece : MonoBehaviour
         tile.SetPiece(this);
     }
 
-    // TODO
     protected void Update()
     {
         if (!_selected) return;
@@ -67,7 +66,7 @@ public abstract class Piece : MonoBehaviour
         return (alignmentMoving == alignment); 
     }
 
-    public bool CanBeCaptured(Alignment alignmentCapturing)
+    private bool CanBeCaptured(Alignment alignmentCapturing)
     {
         if (alignmentCapturing == Alignment.Neutral || alignment == Alignment.Neutral)
         {
@@ -81,14 +80,6 @@ public abstract class Piece : MonoBehaviour
     {
         _selected = true;
         InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
-        
-        //TODO DEBUG
-        HashSet<Vector2Int> legalMoves = LegalMoves();
-        List<string> coordStr = legalMoves.Select(legalMove => Board.Instance.GetTile(legalMove).GetCoordinates().ToString()).ToList();
-        coordStr.Sort();
-        
-        String debugString = coordStr.Aggregate("Legal moves: ", (current, coords) => current + coords + ", ");
-        Debug.Log(debugString);
     }
 
     private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
@@ -126,6 +117,8 @@ public abstract class Piece : MonoBehaviour
             if (!LegalTile(testTile)) break;
             
             legalMoves.Add(coordsVec + incrementVec);
+
+            if (testTile.HasPiece()) break;
         }
         return legalMoves;
     }

@@ -24,7 +24,7 @@ public class Pawn : Piece
     
     public override HashSet<Vector2Int> LegalMoves()
     {
-        if (legalMovesCheckTile.Equals(tile)) return legalMoves;
+        if (tile.Equals(legalMovesCheckTile)) return legalMoves;
         base.LegalMoves();
         
         legalMoves = new HashSet<Vector2Int>();
@@ -53,9 +53,6 @@ public class Pawn : Piece
         if (Board.Instance.OnOuterTwoX(position)) moveTests.Add(HorizontalStartingMove);
         if (Board.Instance.OnOuterTwoY(position)) moveTests.Add(VerticalStartingMove);
         
-        Debug.Log("movePositions: " + DebugHashSetLog(moveTests));
-        Debug.Log("capturePositions: " + DebugHashSetLog(captureTests));
-        
         legalMoves.AddRange(CheckForPawnMoves(position, quadrant, 
             moveTests, 
             captureTests));
@@ -82,7 +79,6 @@ public class Pawn : Piece
             Vector2Int testVec = position + offset * quadrant;
             Tile testTile = Board.Instance.GetTile(testVec);
             
-            Debug.Log("testTile: " + testTile.GetCoordinates());
             if (!LegalTile(testTile, canMove: false)) continue;
             legalMoves.Add(testVec);
         }

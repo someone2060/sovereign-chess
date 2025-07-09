@@ -30,7 +30,7 @@ public class TileVisual : MonoBehaviour
     private void ShowSelectVisuals()
     {
         if (tile.HasPiece()) selectedPieceVisual.gameObject.SetActive(true);
-        else selectedEmptyVisual.gameObject.SetActive(false);
+        else selectedEmptyVisual.gameObject.SetActive(true);
     }
 
     private void HideSelectVisuals()

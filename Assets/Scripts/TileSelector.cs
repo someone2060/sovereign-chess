@@ -30,8 +30,6 @@ public class TileSelector : MonoBehaviour
         Tile tile = GetTileOnWorld(positionWorld);
         if (tile is null) return;
         
-        Debug.Log("Collision happened with tile at " + tile.GetCoordinates()); //TODO DEBUG
-        
         if (!tile.HasPiece()) return;
 
         Piece piece = tile.GetPiece();
