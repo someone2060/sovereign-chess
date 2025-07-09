@@ -16,12 +16,17 @@ public class Pawn : Piece
     private bool _canMoveHorizontal;
     private bool _canMoveVertical;
     
-    protected new void Start()
+    public override void InitializeSprite()
     {
-        base.Start();
         spriteRenderer.sprite = sovereignPiece.pawnSprite;
     }
-    
+
+    public override void DestroySelf()
+    {
+        base.DestroySelf();
+        Destroy(gameObject);
+    }
+
     public override HashSet<Vector2Int> LegalMoves()
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();

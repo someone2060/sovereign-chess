@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class Queen : Piece
 {
-    protected new void Start()
+    public override void InitializeSprite()
     {
-        base.Start();
         spriteRenderer.sprite = sovereignPiece.queenSprite;
     }
-    
+
     public override HashSet<Vector2Int> LegalMoves()
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();

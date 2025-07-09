@@ -15,12 +15,11 @@ public class King : Piece
         new(-1, 1)
     };
 
-    protected new void Start()
+    public override void InitializeSprite()
     {
-        base.Start();
         spriteRenderer.sprite = sovereignPiece.kingSprite;
     }
-    
+
     public override HashSet<Vector2Int> LegalMoves()
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();

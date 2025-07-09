@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class Bishop : Piece
 {
-    protected new void Start()
+    public override void InitializeSprite()
     {
-        base.Start();
         spriteRenderer.sprite = sovereignPiece.bishopSprite;
     }
-    
+
     public override HashSet<Vector2Int> LegalMoves()
     {        
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();

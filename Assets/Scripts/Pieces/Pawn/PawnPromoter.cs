@@ -5,6 +5,8 @@ using UnityEngine;
 public class PawnPromoter : MonoBehaviour
 {
     public static PawnPromoter Instance { get; private set; }
+
+    [SerializeField] private Transform pawnParent;
     
     private SovereignPieceSO _sovereignPiece;
     private static LayerMask _layerMask;
@@ -42,15 +44,26 @@ public class PawnPromoter : MonoBehaviour
         Collider2D collided = Physics2D.OverlapPoint(
             InputHandler.Instance.GetPositionWorld(Camera.main), _layerMask);
 
-        if (collided is not null)
-        {
-            PromotionCollider promotionCollider = collided.GetComponent<PromotionCollider>();
-            Piece piece = promotionCollider.GetPiece();
-            Debug.Log(piece.GetSpriteRenderer().sprite.name);
-            OnPawnPromotion?.Invoke(this, new OnPawnPromotionEventArgs { promotionTile = _promotionTile });
-        } else
+        if (collided is null)
         {
             OnPawnPromotion?.Invoke(this, new OnPawnPromotionEventArgs { promotionTile = _pawn.GetTile() });
+            return;
         }
+
+        PromotionCollider promotionCollider = collided.GetComponent<PromotionCollider>();
+        Transform piece = promotionCollider.GetPieceTransform();
+
+        Transform newPiece = Instantiate(piece, pawnParent);
+        newPiece.GetComponent<Piece>().SetAlignment(_pawn.GetAlignment());
+        newPiece.GetComponent<Piece>().SetSovereignPiece(_sovereignPiece);
+        newPiece.GetComponent<Piece>().InitializeSprite();
+        _pawn.DestroySelf();
+        newPiece.GetComponent<Piece>().SetTile(_promotionTile);
+        newPiece.GetComponent<Piece>().CentreOnTile();
+        
+
+        // Debug.Log(piece.GetSpriteRenderer().sprite.name);
+        OnPawnPromotion?.Invoke(this, new OnPawnPromotionEventArgs { promotionTile = _promotionTile });
+        
     }
 }

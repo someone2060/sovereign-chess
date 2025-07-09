@@ -19,9 +19,13 @@ public abstract class Piece : MonoBehaviour
 
     private bool _selected;
 
+    public abstract void InitializeSprite();
+    public abstract HashSet<Vector2Int> LegalMoves();
+    
     protected void Awake()
     {
         _selected = false;
+        InitializeSprite();
     }
 
     protected void Start()
@@ -37,18 +41,23 @@ public abstract class Piece : MonoBehaviour
         transform.position = InputHandler.Instance.GetPositionWorld(Camera.main);
     }
 
-    public SovereignPieceSO GetSovereignPiece() => sovereignPiece;
-    public SpriteRenderer GetSpriteRenderer() => spriteRenderer;
-    public Tile GetTile() => tile;
+    public virtual void DestroySelf()
+    {
+        tile?.SetPiece(null);
+        Destroy(gameObject);
+    }
 
-    public abstract HashSet<Vector2Int> LegalMoves();
-
+    public Alignment GetAlignment() => alignment;
     public void SetAlignment(Alignment alignment) => this.alignment = alignment;
 
+    public SovereignPieceSO GetSovereignPiece() => sovereignPiece;
+    public void SetSovereignPiece(SovereignPieceSO sovereignPiece) => this.sovereignPiece = sovereignPiece;
+    
+    public Tile GetTile() => tile;
     public void SetTile(Tile newTile)
     {
         if (tile == newTile) return;
-        tile.SetPiece(null);
+        tile?.SetPiece(null);
         tile = newTile;
         newTile.SetPiece(this);
     }
