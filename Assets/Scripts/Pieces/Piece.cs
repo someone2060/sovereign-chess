@@ -42,13 +42,17 @@ public abstract class Piece : MonoBehaviour
 
     public void SetAlignment(Alignment alignment) => this.alignment = alignment;
 
-    public void MoveTile(Tile newTile)
+    public void SetTile(Tile newTile)
     {
         if (tile == newTile) return;
         tile.SetPiece(null);
         tile = newTile;
         newTile.SetPiece(this);
     }
+    
+    public void SetSelected(bool selected) => _selected = selected;
+
+    public void CentreOnTile() => transform.position = tile.transform.position;
 
     public bool CanBeMoved(Alignment alignmentMoving)
     {
@@ -70,32 +74,6 @@ public abstract class Piece : MonoBehaviour
         return (alignmentCapturing != alignment);
     }
 
-    public void Select()
-    {
-        _selected = true;
-        InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
-    }
-
-    private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
-    {
-        InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
-        Tile selectedTile = TileSelector.GetTileOnWorld(transform.position);
-        _selected = false;
-
-        do
-        {
-            if (selectedTile is null) break; // no tile on where user stopped selecting 
-            if (!LegalMoves().Contains(selectedTile.GetCoordinates().GetVector2Int())) break; // invalid movement square
-            if (selectedTile.HasPiece() && selectedTile.GetPiece() != this) // moved to a different tile that has another piece
-            {
-                selectedTile.DestroyPiece();
-            }
-            
-            MoveTile(selectedTile);
-        } while (false);
-        
-        transform.position = tile.transform.position;
-    }
 
     // Extends 8 tiles in search direction until colliding with another piece or reaching end of board,
     // returning valid squares that can be occupied (including capturing)

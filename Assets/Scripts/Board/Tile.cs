@@ -31,7 +31,7 @@ public class Tile : MonoBehaviour
         }
         if (piece == newPiece) return;
         piece = newPiece;
-        newPiece.MoveTile(this);
+        newPiece.SetTile(this);
     }
 
     public void DestroyPiece()

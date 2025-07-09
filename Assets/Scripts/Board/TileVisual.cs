@@ -10,20 +10,20 @@ public class TileVisual : MonoBehaviour
     private void Start()
     {
         HideSelectVisuals();
-        TileSelector.Instance.OnPieceSelected += TileSelector_OnPieceSelected;
+        PieceMover.Instance.OnPieceSelected += PieceMover_OnPieceSelected;
     }
 
-    private void TileSelector_OnPieceSelected(object sender, TileSelector.OnPieceSelectedEventArgs e)
+    private void PieceMover_OnPieceSelected(object sender, PieceMover.OnPieceSelectedEventArgs e)
     {
-        if (!e.piece.LegalMoves().Contains(tile.GetCoordinates().GetVector2Int())) return;
+        if (!e.legalMoves.Contains(tile.GetCoordinates().GetVector2Int())) return;
         
-        InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
+        PieceMover.Instance.OnPieceDeselected += PieceMover_OnPieceDeselected;
         ShowSelectVisuals();
     }
 
-    private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
+    private void PieceMover_OnPieceDeselected(object sender, EventArgs e)
     {
-        InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
+        InputHandler.Instance.OnSelectCanceled -= PieceMover_OnPieceDeselected;
         HideSelectVisuals();
     }
 
