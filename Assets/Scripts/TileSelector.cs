@@ -6,6 +6,8 @@ public class TileSelector : MonoBehaviour
 {
     public static TileSelector Instance { get; private set; }
     
+    private static LayerMask _layerMask;
+    
     public event EventHandler<OnPieceSelectedEventArgs> OnPieceSelected;
     public class OnPieceSelectedEventArgs : EventArgs
     {
@@ -15,6 +17,7 @@ public class TileSelector : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        _layerMask = 1 << LayerMask.NameToLayer("Tile");
     }
 
     private void Start()
@@ -39,7 +42,7 @@ public class TileSelector : MonoBehaviour
 
     public static Tile GetTileOnWorld(Vector2 position)
     {
-        Collider2D collided = Physics2D.OverlapPoint(position);
+        Collider2D collided = Physics2D.OverlapPoint(position, _layerMask);
         
         return collided?.GetComponent<Tile>();
     }

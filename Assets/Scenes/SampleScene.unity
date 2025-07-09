@@ -2940,7 +2940,7 @@ GameObject:
   - component: {fileID: 524985401}
   - component: {fileID: 524985400}
   m_Layer: 0
-  m_Name: PieceSelectInput
+  m_Name: TileSelector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
