@@ -59,6 +59,6 @@ public class Board : MonoBehaviour
     {
         int leftBound = _size / 2 - 2;
         int rightBound = _size / 2 + 2;
-        return coords.x > leftBound && coords.x <= rightBound && coords.y > leftBound && coords.y <= rightBound;
+        return coords.x >= leftBound && coords.x < rightBound && coords.y >= leftBound && coords.y < rightBound;
     }
 }

@@ -12,6 +12,7 @@ public class TileVisual : MonoBehaviour
     {
         HideSelectVisuals();
         PieceMover.Instance.OnPieceSelected += PieceMover_OnPieceSelected;
+        PieceMover.Instance.OnPieceDeselected += PieceMover_OnPieceDeselected;
     }
 
     private void PieceMover_OnPieceSelected(object sender, PieceMover.OnPieceSelectedEventArgs e)
@@ -19,18 +20,15 @@ public class TileVisual : MonoBehaviour
         if (e.piece.GetTile().Equals(tile))
         {
             highlightVisual.gameObject.SetActive(true);
-            PieceMover.Instance.OnPieceDeselected += PieceMover_OnPieceDeselected;
             return;
         }
         if (!e.legalMoves.Contains(tile.GetCoordinates().GetVector2Int())) return;
         
-        PieceMover.Instance.OnPieceDeselected += PieceMover_OnPieceDeselected;
         ShowSelectVisuals();
     }
 
     private void PieceMover_OnPieceDeselected(object sender, EventArgs e)
     {
-        InputHandler.Instance.OnSelectCanceled -= PieceMover_OnPieceDeselected;
         HideSelectVisuals();
     }
 

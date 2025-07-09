@@ -20,14 +20,13 @@ public class PieceMover : MonoBehaviour
     private State _state;
     
     public event EventHandler<OnPieceSelectedEventArgs> OnPieceSelected;
-
     public class OnPieceSelectedEventArgs : EventArgs
     {
         public HashSet<Vector2Int> legalMoves;
         public Piece piece;
     }
     
-    public event EventHandler<OnPieceSelectedEventArgs> OnPieceDeselected;
+    public event EventHandler OnPieceDeselected;
 
     private void Awake()
     {
@@ -39,10 +38,12 @@ public class PieceMover : MonoBehaviour
     {
         InputHandler.Instance.OnSelectPerformed += InputHandler_OnSelectPerformed;
     }
-    
+  
     // On selecting a tile with a piece on it, selection event is sent to piece
     private void InputHandler_OnSelectPerformed(object sender, EventArgs e)
     {
+        if (_state == State.PieceChanging) return;
+        
         Vector2 positionWorld = InputHandler.Instance.GetPositionWorld(Camera.main);
 
         Tile tile = TileSelector.GetTileOnWorld(positionWorld);
@@ -84,6 +85,8 @@ public class PieceMover : MonoBehaviour
 
     private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
     {
+        if (_state == State.PieceChanging) return;
+        
         Tile selectedTile = TileSelector.GetTileOnWorld(InputHandler.Instance.GetPositionWorld(Camera.main));
         _piece.SetSelected(false);
 
@@ -97,29 +100,53 @@ public class PieceMover : MonoBehaviour
                 break;
             }
 
-            do
+            if (PawnCanPromote(selectedTile))
             {
-                Pawn pawn = _piece.GetComponent<Pawn>(); 
-                if (pawn is null) break;
-
-                if (!Board.Instance.InPromotionArea(_piece.GetTile().GetCoordinates().GetVector2Int())) break;
-                
-                PawnPromoter.Instance.PromptPawnPromotion(pawn, selectedTile);
-                _piece.CentreOnTile(selectedTile);
-                _state = State.PieceChanging;
+                PromptPawnPromotion(selectedTile);
+                Debug.Log("can promote!");
                 return;
-            } while (false);
+            }
             
+            Debug.Log("trying to move");
             TryMovePiece(selectedTile);
         } while (false);
         
         _piece.CentreOnTile();
     }
 
+    private bool PawnCanPromote(Tile selectedTile)
+    {
+        Pawn pawn = _piece.GetComponent<Pawn>();
+        if (pawn is null) return false;
+        return Board.Instance.InPromotionArea(selectedTile.GetCoordinates().GetVector2Int());
+    }
+
+    private void PromptPawnPromotion(Tile selectedTile)
+    {
+        Pawn pawn = _piece.GetComponent<Pawn>();
+        
+        _piece.CentreOnTile(selectedTile);
+        _state = State.PieceChanging;
+        
+        PawnPromoter.Instance.OnPawnPromotion += PawnPromoter_OnPawnPromotion;
+        PawnPromoter.Instance.PromptPawnPromotion(pawn, selectedTile);
+    }
+
+    private void PawnPromoter_OnPawnPromotion(object sender, PawnPromoter.OnPawnPromotionEventArgs e)
+    {
+        PawnPromoter.Instance.OnPawnPromotion -= PawnPromoter_OnPawnPromotion;
+        TryMovePiece(e.promotionTile);
+        _piece.CentreOnTile();
+    }
+
     private void TryMovePiece(Tile selectedTile)
     {
         InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
-        _state = State.Unselected;
+
+        if (_state == State.PieceChanging && selectedTile.Equals(_piece.GetTile()))
+        {
+            _piece.SetTile(selectedTile);
+        }
         
         do
         {
@@ -134,7 +161,8 @@ public class PieceMover : MonoBehaviour
             
         } while (false);
         
-        OnPieceDeselected?.Invoke(this, null);        
+        _state = State.Unselected;
+        OnPieceDeselected?.Invoke(this, null);
     }
 
     private void DebugLegalMoves()

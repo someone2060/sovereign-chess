@@ -21,22 +21,22 @@ public class PawnPromoterVisual : MonoBehaviour
     {
         gameObject.SetActive(false);
         PawnPromoter.Instance.OnShow += PawnPromoter_OnShow;
-        PawnPromoter.Instance.OnHide += PawnPromoter_OnHide;
+        PawnPromoter.Instance.OnPawnPromotion += PawnPromoter_OnPawnPromotion;
     }
 
-    private void PawnPromoter_OnHide(object sender, EventArgs e)
+    private void PawnPromoter_OnPawnPromotion(object sender, EventArgs e)
     {
         gameObject.SetActive(false);
     }
 
     private void PawnPromoter_OnShow(object sender, EventArgs e)
     {
-        SovereignPieceSO sovereignPieceSO = PawnPromoter.Instance.GetSovereignPiece();
-        queenSprite.sprite = sovereignPieceSO.queenSprite;
-        rookSprite.sprite = sovereignPieceSO.rookSprite;
-        bishopSprite.sprite = sovereignPieceSO.bishopSprite;
-        kingSprite.sprite = sovereignPieceSO.kingSprite;
-        knightSprite.sprite = sovereignPieceSO.knightSprite;
+        SovereignPieceSO sovereignPiece = PawnPromoter.Instance.GetSovereignPiece();
+        queenSprite.sprite = sovereignPiece.queenSprite;
+        rookSprite.sprite = sovereignPiece.rookSprite;
+        bishopSprite.sprite = sovereignPiece.bishopSprite;
+        kingSprite.sprite = sovereignPiece.kingSprite;
+        knightSprite.sprite = sovereignPiece.knightSprite;
 
         gameObject.SetActive(true);
     }

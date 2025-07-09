@@ -38,7 +38,7 @@ public abstract class Piece : MonoBehaviour
     }
 
     public SovereignPieceSO GetSovereignPiece() => sovereignPiece;
-    
+    public SpriteRenderer GetSpriteRenderer() => spriteRenderer;
     public Tile GetTile() => tile;
 
     public abstract HashSet<Vector2Int> LegalMoves();

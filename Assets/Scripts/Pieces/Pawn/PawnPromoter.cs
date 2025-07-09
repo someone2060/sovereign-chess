@@ -8,11 +8,12 @@ public class PawnPromoter : MonoBehaviour
     
     private SovereignPieceSO _sovereignPiece;
     private static LayerMask _layerMask;
+    private Pawn _pawn;
+    private Tile _promotionTile;
     
     public event EventHandler OnShow;
-    public event EventHandler OnHide;
-    
-    public event EventHandler OnPawnPromotion;
+    public event EventHandler<OnPawnPromotionEventArgs> OnPawnPromotion;
+    public class OnPawnPromotionEventArgs : EventArgs { public Tile promotionTile; }
     
     private void Awake()
     {
@@ -26,6 +27,8 @@ public class PawnPromoter : MonoBehaviour
     {
         transform.position = promotionTile.transform.position;
         _sovereignPiece = pawn.GetSovereignPiece();
+        _pawn = pawn;
+        _promotionTile = promotionTile;
         
         InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
         
@@ -34,6 +37,20 @@ public class PawnPromoter : MonoBehaviour
 
     private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
     {
-        Physics2D.OverlapPoint(InputHandler.Instance.GetPositionWorld(Camera.main));
+        InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
+        
+        Collider2D collided = Physics2D.OverlapPoint(
+            InputHandler.Instance.GetPositionWorld(Camera.main), _layerMask);
+
+        if (collided is not null)
+        {
+            PromotionCollider promotionCollider = collided.GetComponent<PromotionCollider>();
+            Piece piece = promotionCollider.GetPiece();
+            Debug.Log(piece.GetSpriteRenderer().sprite.name);
+            OnPawnPromotion?.Invoke(this, new OnPawnPromotionEventArgs { promotionTile = _promotionTile });
+        } else
+        {
+            OnPawnPromotion?.Invoke(this, new OnPawnPromotionEventArgs { promotionTile = _pawn.GetTile() });
+        }
     }
 }
