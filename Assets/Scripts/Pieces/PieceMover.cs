@@ -5,11 +5,19 @@ using UnityEngine;
 
 public class PieceMover : MonoBehaviour
 {
+    private enum State
+    {
+        Unselected,
+        DragSelecting,
+        ClickSelecting,
+        PieceChanging
+    }
+    
     public static PieceMover Instance { get; private set; }
 
     private Piece _piece;
     private HashSet<Vector2Int> _legalMoves;
-    private bool _selectedSameTile;
+    private State _state;
     
     public event EventHandler<OnPieceSelectedEventArgs> OnPieceSelected;
     public class OnPieceSelectedEventArgs : EventArgs { public HashSet<Vector2Int> legalMoves; }
@@ -18,8 +26,8 @@ public class PieceMover : MonoBehaviour
 
     private void Awake()
     {
-        _selectedSameTile = false;
         Instance = this;
+        _state = State.Unselected;
     }
     
     private void Start()
@@ -39,7 +47,7 @@ public class PieceMover : MonoBehaviour
 
         Piece piece = tile.GetPiece();
 
-        if (_selectedSameTile && piece.Equals(_piece))
+        if (_state == State.ClickSelecting && piece.Equals(_piece))
         {
             _piece.SetSelected(true);
             return;
@@ -50,7 +58,7 @@ public class PieceMover : MonoBehaviour
 
     private void SelectPiece(Piece piece)
     {
-        if (_selectedSameTile)
+        if (_state == State.ClickSelecting)
         {
             InputHandler_OnSelectCanceled(this, EventArgs.Empty);
         }
@@ -58,7 +66,7 @@ public class PieceMover : MonoBehaviour
         _piece = piece;
         _piece.SetSelected(true);
         _legalMoves = _piece.LegalMoves();
-        _selectedSameTile = false;
+        _state = State.DragSelecting;
         
         InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
         
@@ -74,12 +82,9 @@ public class PieceMover : MonoBehaviour
         {
             if (selectedTile is null) break; // no tile on where user stopped selecting
             
-            Debug.Log("selectedSameTile: " + _selectedSameTile);
-            // selected tile is same as tile piece is on; not done before
-            if (selectedTile.Equals(_piece.GetTile()) && !_selectedSameTile)
+            if (selectedTile.Equals(_piece.GetTile()) && _state == State.DragSelecting) // selected tile is same as piece's tile and not done before
             {
-                Debug.Log("changing selectedSameTile");
-                _selectedSameTile = true;
+                _state = State.ClickSelecting;
                 break;
             }
             
@@ -92,7 +97,7 @@ public class PieceMover : MonoBehaviour
     private void TryMovePiece(Tile selectedTile)
     {
         InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
-        _selectedSameTile = false;
+        _state = State.Unselected;
         
         do
         {
@@ -103,6 +108,8 @@ public class PieceMover : MonoBehaviour
             }
 
             _piece.SetTile(selectedTile);
+            
+            
         } while (false);
         
         OnPieceDeselected?.Invoke(this, null);        
