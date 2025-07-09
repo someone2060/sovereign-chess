@@ -24,10 +24,7 @@ public class Pawn : Piece
     
     public override HashSet<Vector2Int> LegalMoves()
     {
-        if (tile.Equals(legalMovesCheckTile)) return legalMoves;
-        base.LegalMoves();
-        
-        legalMoves = new HashSet<Vector2Int>();
+        HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         
         HashSet<Vector2Int> moveTests = new HashSet<Vector2Int>(); 
         HashSet<Vector2Int> captureTests = new HashSet<Vector2Int>();

@@ -23,10 +23,7 @@ public class Knight : Piece
     
     public override HashSet<Vector2Int> LegalMoves()
     {
-        if (tile.Equals(legalMovesCheckTile)) return legalMoves;
-        base.LegalMoves();
-        
-        legalMoves = new HashSet<Vector2Int>();
+        HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
 
         Vector2Int position = GetCoordinates().GetVector2Int();
 
