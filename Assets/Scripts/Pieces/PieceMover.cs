@@ -85,8 +85,6 @@ public class PieceMover : MonoBehaviour
 
     private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
     {
-        if (_state == State.PieceChanging) return;
-        
         Tile selectedTile = TileSelector.GetTileOnWorld(InputHandler.Instance.GetPositionWorld(Camera.main));
         _piece.SetSelected(false);
 
@@ -98,12 +96,6 @@ public class PieceMover : MonoBehaviour
             {
                 _state = State.ClickSelecting;
                 break;
-            }
-
-            if (PawnCanPromote(selectedTile))
-            {
-                PromptPawnPromotion(selectedTile);
-                return;
             }
             
             TryMovePiece(selectedTile);
@@ -131,7 +123,7 @@ public class PieceMover : MonoBehaviour
 
     private void PawnPromoter_OnPawnPromotion(object sender, PawnPromoter.OnPawnPromotionEventArgs e)
     {
-        TryMovePiece(e.tile);
+        SetPieceTile(e.tile);
         _piece.CentreOnTile();
     }
 
@@ -139,27 +131,34 @@ public class PieceMover : MonoBehaviour
     {
         InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
         
-        do
+        if (!_legalMoves.Contains(selectedTile.GetCoordinates().GetVector2Int()))
         {
-            if (selectedTile is null) break;
-            if (_state == State.PieceChanging && _piece.GetTile().Equals(selectedTile))
-            {
-                _piece.SetTile(selectedTile);
-                break;
-            }
-            if (!_legalMoves.Contains(selectedTile.GetCoordinates().GetVector2Int())) break;
-            if (selectedTile.HasPiece() && selectedTile.GetPiece() != _piece)
-            {
-                selectedTile.DestroyPiece();
-            }
+            SetPieceTile(_piece.GetTile());
+            return;
+        }
 
-            _piece.SetTile(selectedTile);
-            
-            
-        } while (false);
+        if (PawnCanPromote(selectedTile))
+        {
+            PromptPawnPromotion(selectedTile);
+            return;
+        }
         
+        SetPieceTile(selectedTile);
+    }
+
+    private void SetPieceTile(Tile selectedTile)
+    {
         _state = State.Unselected;
         OnPieceDeselected?.Invoke(this, null);
+        
+        if (selectedTile is null) return;
+        
+        if (selectedTile.HasPiece() && !selectedTile.GetPiece().Equals(_piece))
+        {
+            selectedTile.DestroyPiece();
+        }
+
+        _piece.SetTile(selectedTile);
     }
 
     private void DebugLegalMoves()

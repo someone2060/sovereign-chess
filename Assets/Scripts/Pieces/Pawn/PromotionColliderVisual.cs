@@ -5,16 +5,11 @@ using UnityEngine;
 public class PromotionColliderVisual : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer highlightSprite;
-
-    private bool _isActive;
-
-    private void Awake()
-    {
-        highlightSprite.gameObject.SetActive(false);
-    }
-
+    
     private void Start()
     {
+        highlightSprite.gameObject.SetActive(false);
+        
         PawnPromoter.Instance.OnShow += PawnPromoter_OnShow;
         PawnPromoterVisual.Instance.OnHover += PawnPromoterVisual_OnHover;
     }
