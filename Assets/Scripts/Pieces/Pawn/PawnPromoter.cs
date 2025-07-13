@@ -7,9 +7,9 @@ public class PawnPromoter : MonoBehaviour
     public static PawnPromoter Instance { get; private set; }
 
     [SerializeField] private Transform pawnParent;
+    [SerializeField] private LayerMask layerMask;
     
     private SovereignPieceSO _sovereignPiece;
-    private static LayerMask _layerMask;
     private Pawn _pawn;
     private Tile _promotionTile;
     
@@ -20,7 +20,6 @@ public class PawnPromoter : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        _layerMask = 1 << LayerMask.NameToLayer("Pawn Promotion");
     }
     
     public SovereignPieceSO GetSovereignPiece() => _sovereignPiece;
@@ -42,7 +41,7 @@ public class PawnPromoter : MonoBehaviour
         InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
         
         Collider2D collided = Physics2D.OverlapPoint(
-            InputHandler.Instance.GetPositionWorld(Camera.main), _layerMask);
+            InputHandler.Instance.GetPositionWorld(Camera.main), layerMask);
 
         if (collided is null)
         {

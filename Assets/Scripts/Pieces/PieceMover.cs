@@ -39,8 +39,7 @@ public class PieceMover : MonoBehaviour
         InputHandler.Instance.OnSelectPerformed += InputHandler_OnSelectPerformed;
         PawnPromoter.Instance.OnPawnPromotion += PawnPromoter_OnPawnPromotion;
     }
-  
-    // On selecting a tile with a piece on it, selection event is sent to piece
+    
     private void InputHandler_OnSelectPerformed(object sender, EventArgs e)
     {
         if (_state == State.PieceChanging) return;
@@ -104,11 +103,9 @@ public class PieceMover : MonoBehaviour
             if (PawnCanPromote(selectedTile))
             {
                 PromptPawnPromotion(selectedTile);
-                Debug.Log("can promote!");
                 return;
             }
             
-            Debug.Log("trying to move");
             TryMovePiece(selectedTile);
         } while (false);
         
@@ -141,15 +138,15 @@ public class PieceMover : MonoBehaviour
     private void TryMovePiece(Tile selectedTile)
     {
         InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
-
-        if (_state == State.PieceChanging && _piece.GetTile().Equals(selectedTile))
-        {
-            _piece.SetTile(selectedTile);
-        }
         
         do
         {
             if (selectedTile is null) break;
+            if (_state == State.PieceChanging && _piece.GetTile().Equals(selectedTile))
+            {
+                _piece.SetTile(selectedTile);
+                break;
+            }
             if (!_legalMoves.Contains(selectedTile.GetCoordinates().GetVector2Int())) break;
             if (selectedTile.HasPiece() && selectedTile.GetPiece() != _piece)
             {
