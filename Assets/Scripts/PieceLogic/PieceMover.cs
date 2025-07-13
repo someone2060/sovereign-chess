@@ -16,7 +16,7 @@ public class PieceMover : MonoBehaviour
     public static PieceMover Instance { get; private set; }
 
     private Piece _piece;
-    private HashSet<Coordinates> _legalMoves;
+    private HashSet<Vector2Int> _legalMoves;
     private State _state;
     
     public event EventHandler<OnPieceEventArgs> OnPieceSelected;
@@ -24,7 +24,7 @@ public class PieceMover : MonoBehaviour
     public event EventHandler<OnPieceEventArgs> OnPieceDeselected;
     public class OnPieceEventArgs : EventArgs
     {
-        public HashSet<Coordinates> legalMoves;
+        public HashSet<Vector2Int> legalMoves;
         public Piece piece;
     }
 

@@ -9,7 +9,7 @@ public class Row : MonoBehaviour
     {
         for (int i = 0; i < tiles.Count; i++)
         {
-            tiles[i].GetCoordinates().SetX(i);
+            tiles[i].SetX(i);
         }
     }
 
@@ -17,9 +17,9 @@ public class Row : MonoBehaviour
     {
         foreach (Tile t in tiles)
         {
-            t.GetCoordinates().SetY(x);
+            t.SetY(x);
         }
     }
 
-    public Tile GetTile(int y) => tiles[y];
+    public Tile GetTile(int x) => tiles[x];
 }

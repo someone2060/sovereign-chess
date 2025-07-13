@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class King : Piece
 {
-    private static Coordinates[] KingPositions { get; } = {
+    private static Vector2Int[] KingPositions { get; } = {
         new(1, -1), 
         new(1, 0), 
         new(1, 1), 
@@ -48,15 +48,15 @@ public class King : Piece
         spriteRenderer.sprite = sovereignPiece.kingSprite;
     }
 
-    public override HashSet<Coordinates> LegalMoves()
+    public override HashSet<Vector2Int> LegalMoves()
     {
-        HashSet<Coordinates> legalMoves = new HashSet<Coordinates>();
+        HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
 
-        Coordinates position = tile.GetCoordinates();
+        Vector2Int position = tile.GetCoordinates();
 
-        foreach (Coordinates offset in KingPositions)
+        foreach (Vector2Int offset in KingPositions)
         {
-            Coordinates testCoords = position.Add(offset);
+            Vector2Int testCoords = position + offset;
             Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (!LegalTile(testTile)) continue;

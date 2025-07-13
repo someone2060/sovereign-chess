@@ -5,14 +5,16 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer tileVisual;
     [SerializeField] private Piece piece;
     
-    private Coordinates _coordinates;
+    private Vector2Int _coordinates;
 
     private void Awake()
     {
-        _coordinates = new Coordinates(Vector2Int.down);
+        _coordinates = Vector2Int.down;
     }
 
-    public Coordinates GetCoordinates() => _coordinates;
+    public Vector2Int GetCoordinates() => _coordinates;
+    public void SetX(int x) => _coordinates.x = x;
+    public void SetY(int y) => _coordinates.y = y;
     
     public bool HasPiece() => piece is not null;
     public Piece GetPiece() => piece;

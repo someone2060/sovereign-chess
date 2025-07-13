@@ -23,46 +23,47 @@ public class Board : MonoBehaviour
         }
     }
     
-    public Tile GetTile(Coordinates coords)
+    public Tile GetTile(Vector2Int coords)
     {
-        return !ValidCoordinates(coords) ? null : rows[coords.GetY()].GetTile(coords.GetX());
+        return !ValidCoordinates(coords) ? null : rows[coords.y].GetTile(coords.x);
     }
 
     // Returns a Vector2Int pointing to the closest quadrant from the center
     // with range from (-1, -1) to (1, 1)
-    public Coordinates GetQuadrant(Coordinates coords)
+    public Vector2Int GetQuadrant(Vector2Int coords)
     {
-        Coordinates quadrant = new Coordinates(0, 0);
+        Vector2Int quadrant = new Vector2Int
+        {
+            x = (coords.x < _size / 2) ? 1 : -1,
+            y = (coords.y < _size / 2) ? 1 : -1
+        };
 
-        quadrant.SetX((coords.GetX() < _size / 2) ? 1 : -1);
-        quadrant.SetY((coords.GetY() < _size / 2) ? 1 : -1);
-        
         return quadrant;
     }
 
-    public bool OnOuterTwoX(Coordinates coords)
+    public bool OnOuterTwoX(Vector2Int coords)
     {
-        return coords.GetX() < 2 || coords.GetX() >= _size - 2;
+        return coords.x < 2 || coords.x >= _size - 2;
     }
 
-    public bool OnOuterTwoY(Coordinates coords)
+    public bool OnOuterTwoY(Vector2Int coords)
     {
-        return coords.GetY() < 2 || coords.GetY() >= _size - 2;
+        return coords.y < 2 || coords.y >= _size - 2;
     }
 
-    private bool ValidCoordinates(Coordinates coords)
+    private bool ValidCoordinates(Vector2Int coords)
     {
-        return coords.GetY() >= 0 && coords.GetY() < _size && coords.GetX() >= 0 && coords.GetX() < _size;
+        return coords.y >= 0 && coords.y < _size && coords.x >= 0 && coords.x < _size;
     }
 
-    public bool InPromotionArea(Coordinates coords)
+    public bool InPromotionArea(Vector2Int coords)
     {
         int leftBound = _size / 2 - 2;
         int rightBound = _size / 2 + 2;
-        return coords.GetX() >= leftBound 
-               && coords.GetX() < rightBound 
-               && coords.GetY() >= leftBound
-               && coords.GetY() < rightBound;
+        return coords.x >= leftBound 
+               && coords.x < rightBound 
+               && coords.y >= leftBound
+               && coords.y < rightBound;
     }
 
     public Piece FindFirstPieceInDirection()// TODO

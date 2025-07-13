@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class Pawn : Piece
 {
-    private static readonly Coordinates HorizontalMove = new(1, 0);
-    private static readonly Coordinates HorizontalStartingMove = new(2, 0);
-    private static Coordinates[] HorizontalCaptures { get; } = { new(1, 1), new(1, -1) };
+    private static readonly Vector2Int HorizontalMove = new(1, 0);
+    private static readonly Vector2Int HorizontalStartingMove = new(2, 0);
+    private static Vector2Int[] HorizontalCaptures { get; } = { new(1, 1), new(1, -1) };
     
-    private static readonly Coordinates VerticalMove = new(0, 1);
-    private static readonly Coordinates VerticalStartingMove = new(0, 2);
-    private static Coordinates[] VerticalCaptures { get; } = { new(1, 1), new(-1, 1) };
+    private static readonly Vector2Int VerticalMove = new(0, 1);
+    private static readonly Vector2Int VerticalStartingMove = new(0, 2);
+    private static Vector2Int[] VerticalCaptures { get; } = { new(1, 1), new(-1, 1) };
 
     private bool _canMoveHorizontal;
     private bool _canMoveVertical;
@@ -27,26 +27,26 @@ public class Pawn : Piece
         Destroy(gameObject);
     }
 
-    public override HashSet<Coordinates> LegalMoves()
+    public override HashSet<Vector2Int> LegalMoves()
     {
-        HashSet<Coordinates> legalMoves = new HashSet<Coordinates>();
+        HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         
-        HashSet<Coordinates> moveTests = new HashSet<Coordinates>(); 
-        HashSet<Coordinates> captureTests = new HashSet<Coordinates>();
+        HashSet<Vector2Int> moveTests = new HashSet<Vector2Int>(); 
+        HashSet<Vector2Int> captureTests = new HashSet<Vector2Int>();
 
-        Coordinates position = tile.GetCoordinates();
-        Coordinates quadrant = Board.Instance.GetQuadrant(position);
+        Vector2Int position = tile.GetCoordinates();
+        Vector2Int quadrant = Board.Instance.GetQuadrant(position);
 
-        Coordinates potentialPosition = position.Add(quadrant);
-        Coordinates potentialQuadrant = Board.Instance.GetQuadrant(potentialPosition);
+        Vector2Int potentialPosition = position + quadrant;
+        Vector2Int potentialQuadrant = Board.Instance.GetQuadrant(potentialPosition);
         
-        if (quadrant.GetX() == potentialQuadrant.GetX())
+        if (quadrant.x == potentialQuadrant.x)
         {
             moveTests.Add(HorizontalMove);
             captureTests.AddRange(HorizontalCaptures);
         }
 
-        if (quadrant.GetY() == potentialQuadrant.GetY())
+        if (quadrant.y == potentialQuadrant.y)
         {
             moveTests.Add(VerticalMove);
             captureTests.AddRange(VerticalCaptures);
@@ -62,23 +62,23 @@ public class Pawn : Piece
         return legalMoves;
     }
 
-    private HashSet<Coordinates> CheckForPawnMoves(
-        Coordinates position, Coordinates quadrant, 
-        HashSet<Coordinates> movePositions, HashSet<Coordinates> capturePositions)
+    private HashSet<Vector2Int> CheckForPawnMoves(
+        Vector2Int position, Vector2Int quadrant, 
+        HashSet<Vector2Int> movePositions, HashSet<Vector2Int> capturePositions)
     {
-        HashSet<Coordinates> legalMoves = new HashSet<Coordinates>();
-        foreach (Coordinates offset in movePositions)
+        HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
+        foreach (Vector2Int offset in movePositions)
         {
-            Coordinates testCoords = position.Add(offset.Mult(quadrant));
+            Vector2Int testCoords = position + offset * quadrant;
             Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (!LegalTile(testTile, canCapture: false)) continue;
             legalMoves.Add(testCoords);
         }
 
-        foreach (Coordinates offset in capturePositions)
+        foreach (Vector2Int offset in capturePositions)
         {
-            Coordinates testCoords = position.Add(offset.Mult(quadrant));
+            Vector2Int testCoords = position + offset * quadrant;
             Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (!LegalTile(testTile, canMove: false)) continue;
@@ -88,11 +88,11 @@ public class Pawn : Piece
         return legalMoves;
     }
 
-    private String DebugHashSetLog(HashSet<Coordinates> hashSet)
+    private String DebugHashSetLog(HashSet<Vector2Int> hashSet)
     {
         String output = "";
 
-        foreach (Coordinates vector in hashSet)
+        foreach (Vector2Int vector in hashSet)
         {
             output += vector + ", ";
         }
