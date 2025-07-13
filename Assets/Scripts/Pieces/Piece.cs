@@ -20,7 +20,7 @@ public abstract class Piece : MonoBehaviour
     private bool _selected;
 
     public abstract void InitializeSprite();
-    public abstract HashSet<Vector2Int> LegalMoves();
+    public abstract HashSet<Coordinates> LegalMoves();
     
     protected void Awake()
     {
@@ -86,22 +86,22 @@ public abstract class Piece : MonoBehaviour
         
         return (alignmentCapturing != alignment);
     }
-
-
+    
     // Extends 8 tiles in search direction until colliding with another piece or reaching end of board,
     // returning valid squares that can be occupied (including capturing)
-    protected HashSet<Vector2Int> SearchLegalTilesInDirection(Vector2Int coordsVec, Vector2Int dir)
+    protected HashSet<Coordinates> SearchLegalTilesInDirection(Coordinates start, Coordinates dir)
     {
-        Vector2Int incrementVec = Vector2Int.zero;
-        HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
+        Coordinates increment = new Coordinates(0, 0);
+        HashSet<Coordinates> legalMoves = new HashSet<Coordinates>();
         for (int i = 0; i < 8; i++)
         {
-            incrementVec += dir;
-            Tile testTile = Board.Instance.GetTile(coordsVec + incrementVec);
+            increment = increment.Add(dir);
+            Coordinates testCoordinate = start.Add(increment);
+            Tile testTile = Board.Instance.GetTile(testCoordinate);
 
             if (!LegalTile(testTile)) break;
             
-            legalMoves.Add(coordsVec + incrementVec);
+            legalMoves.Add(testCoordinate);
 
             if (testTile.HasPiece()) break;
         }

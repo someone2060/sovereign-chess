@@ -13,11 +13,6 @@ public class Coordinates
     {
         _coordinates = coordinates;
     }
-
-    public Coordinates(Coordinates coordinates)
-    {
-        _coordinates = coordinates.GetVector2Int();
-    }
     
     private bool Equals(Coordinates other)
     {
@@ -42,9 +37,18 @@ public class Coordinates
         return (char)(_coordinates.x + 97) + (_coordinates.y + 1).ToString();
     }
     
-    public Vector2Int GetVector2Int() => _coordinates;
     public int GetX() => _coordinates.x;
     public int GetY() => _coordinates.y;
     public void SetX(int x) => _coordinates.x = x;
     public void SetY(int y) => _coordinates.y = y;
+
+    public Coordinates Add(Coordinates other)
+    {
+        return new Coordinates(GetX() + other.GetX(), GetY() + other.GetY());
+    }
+
+    public Coordinates Mult(Coordinates other)
+    {
+        return new Coordinates(GetX() * other.GetX(), GetY() * other.GetY());
+    }
 }

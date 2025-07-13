@@ -16,7 +16,7 @@ public class PieceMover : MonoBehaviour
     public static PieceMover Instance { get; private set; }
 
     private Piece _piece;
-    private HashSet<Vector2Int> _legalMoves;
+    private HashSet<Coordinates> _legalMoves;
     private State _state;
     
     public event EventHandler<OnPieceEventArgs> OnPieceSelected;
@@ -24,7 +24,7 @@ public class PieceMover : MonoBehaviour
     public event EventHandler<OnPieceEventArgs> OnPieceDeselected;
     public class OnPieceEventArgs : EventArgs
     {
-        public HashSet<Vector2Int> legalMoves;
+        public HashSet<Coordinates> legalMoves;
         public Piece piece;
     }
 
@@ -114,7 +114,7 @@ public class PieceMover : MonoBehaviour
     {
         Pawn pawn = _piece.GetComponent<Pawn>();
         if (pawn is null) return false;
-        return Board.Instance.InPromotionArea(selectedTile.GetCoordinates().GetVector2Int());
+        return Board.Instance.InPromotionArea(selectedTile.GetCoordinates());
     }
 
     private void PromptPawnPromotion(Tile selectedTile)
@@ -131,7 +131,7 @@ public class PieceMover : MonoBehaviour
     {
         InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
         
-        if (!_legalMoves.Contains(selectedTile.GetCoordinates().GetVector2Int()))
+        if (!_legalMoves.Contains(selectedTile.GetCoordinates()))
         {
             SetPieceTile(_piece.GetTile());
             return;

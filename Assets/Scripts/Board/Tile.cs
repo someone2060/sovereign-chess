@@ -13,11 +13,6 @@ public class Tile : MonoBehaviour
     }
 
     public Coordinates GetCoordinates() => _coordinates;
-    public void SetCoordinates(Coordinates coordinates)
-    {
-        _coordinates = new Coordinates(coordinates);
-    }
-    public bool CoordinatesSet() => !_coordinates.GetVector2Int().Equals(Vector2Int.down);
     
     public bool HasPiece() => piece is not null;
     public Piece GetPiece() => piece;
@@ -38,5 +33,13 @@ public class Tile : MonoBehaviour
     {
         Destroy(piece.gameObject);
         piece = null;
+    }
+
+    // Returns true if there are any pieces targeting this tile hostile to the inputted alignment;
+    // no pieces can ever attack neutral alignment, and white/black alignments are hostile to each other  
+    public bool IsAttacked(Piece.Alignment alignment)
+    {
+        if (alignment == Piece.Alignment.Neutral) return false;
+        throw new System.NotImplementedException();
     }
 }

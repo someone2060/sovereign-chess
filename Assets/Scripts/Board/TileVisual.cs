@@ -22,7 +22,7 @@ public class TileVisual : MonoBehaviour
             highlightVisual.gameObject.SetActive(true);
             return;
         }
-        if (!e.legalMoves.Contains(tile.GetCoordinates().GetVector2Int())) return;
+        if (!e.legalMoves.Contains(tile.GetCoordinates())) return;
         
         ShowSelectVisuals();
     }

@@ -9,20 +9,21 @@ public class Queen : Piece
         spriteRenderer.sprite = sovereignPiece.queenSprite;
     }
 
-    public override HashSet<Vector2Int> LegalMoves()
+    public override HashSet<Coordinates> LegalMoves()
     {
-        HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
+        HashSet<Coordinates> legalMoves = new HashSet<Coordinates>();
+        Coordinates coordinates = tile.GetCoordinates();
         
-        Vector2Int coordsVec = tile.GetCoordinates().GetVector2Int();
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Coordinates(-1,  0)));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Coordinates( 1,  0)));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Coordinates( 0, -1)));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Coordinates( 0,  1)));
         
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.up));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.down));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right + Vector2Int.up));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left + Vector2Int.up));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right + Vector2Int.down));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left + Vector2Int.down));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Coordinates(-1, -1)));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Coordinates( 1, -1)));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Coordinates(-1,  1)));
+        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Coordinates( 1,  1)));
+        
         return legalMoves;
     }
 }
