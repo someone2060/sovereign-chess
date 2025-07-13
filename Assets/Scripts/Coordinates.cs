@@ -43,6 +43,8 @@ public class Coordinates
     }
     
     public Vector2Int GetVector2Int() => _coordinates;
+    public int GetX() => _coordinates.x;
+    public int GetY() => _coordinates.y;
     public void SetX(int x) => _coordinates.x = x;
     public void SetY(int y) => _coordinates.y = y;
 }

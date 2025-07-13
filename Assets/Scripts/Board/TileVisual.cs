@@ -15,7 +15,7 @@ public class TileVisual : MonoBehaviour
         PieceMover.Instance.OnPieceDeselected += PieceMover_OnPieceDeselected;
     }
 
-    private void PieceMover_OnPieceSelected(object sender, PieceMover.OnPieceSelectedEventArgs e)
+    private void PieceMover_OnPieceSelected(object sender, PieceMover.OnPieceEventArgs e)
     {
         if (e.piece.GetTile().Equals(tile))
         {

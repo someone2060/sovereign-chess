@@ -19,14 +19,14 @@ public class PieceMover : MonoBehaviour
     private HashSet<Vector2Int> _legalMoves;
     private State _state;
     
-    public event EventHandler<OnPieceSelectedEventArgs> OnPieceSelected;
-    public class OnPieceSelectedEventArgs : EventArgs
+    public event EventHandler<OnPieceEventArgs> OnPieceSelected;
+    
+    public event EventHandler<OnPieceEventArgs> OnPieceDeselected;
+    public class OnPieceEventArgs : EventArgs
     {
         public HashSet<Vector2Int> legalMoves;
         public Piece piece;
     }
-    
-    public event EventHandler OnPieceDeselected;
 
     private void Awake()
     {
@@ -103,7 +103,7 @@ public class PieceMover : MonoBehaviour
         
         InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
         
-        OnPieceSelected?.Invoke(this, new OnPieceSelectedEventArgs
+        OnPieceSelected?.Invoke(this, new OnPieceEventArgs
         {
             legalMoves = _legalMoves,
             piece = _piece
@@ -149,7 +149,11 @@ public class PieceMover : MonoBehaviour
     private void SetPieceTile(Tile selectedTile)
     {
         _state = State.Unselected;
-        OnPieceDeselected?.Invoke(this, null);
+        OnPieceDeselected?.Invoke(this, new OnPieceEventArgs
+        {
+            legalMoves = null,
+            piece = _piece 
+        });
         
         if (selectedTile is null) return;
         
