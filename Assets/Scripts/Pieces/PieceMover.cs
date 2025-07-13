@@ -62,27 +62,6 @@ public class PieceMover : MonoBehaviour
         SelectPiece(piece);
     }
 
-    private void SelectPiece(Piece piece)
-    {
-        if (_state == State.ClickSelecting)
-        {
-            InputHandler_OnSelectCanceled(this, EventArgs.Empty);
-        }
-        
-        _piece = piece;
-        _piece.SetSelected(true);
-        _legalMoves = _piece.LegalMoves();
-        _state = State.DragSelecting;
-        
-        InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
-        
-        OnPieceSelected?.Invoke(this, new OnPieceSelectedEventArgs
-        {
-            legalMoves = _legalMoves,
-            piece = _piece
-        });
-    }
-
     private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
     {
         Tile selectedTile = TileSelector.GetTileOnWorld(InputHandler.Instance.GetPositionWorld(Camera.main));
@@ -104,6 +83,33 @@ public class PieceMover : MonoBehaviour
         _piece.CentreOnTile();
     }
 
+    private void PawnPromoter_OnPawnPromotion(object sender, PawnPromoter.OnPawnPromotionEventArgs e)
+    {
+        SetPieceTile(e.tile);
+        _piece.CentreOnTile();
+    }
+
+    private void SelectPiece(Piece piece)
+    {
+        if (_state == State.ClickSelecting)
+        {
+            InputHandler_OnSelectCanceled(this, EventArgs.Empty);
+        }
+        
+        _piece = piece;
+        _piece.SetSelected(true);
+        _legalMoves = _piece.LegalMoves();
+        _state = State.DragSelecting;
+        
+        InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
+        
+        OnPieceSelected?.Invoke(this, new OnPieceSelectedEventArgs
+        {
+            legalMoves = _legalMoves,
+            piece = _piece
+        });
+    }
+
     private bool PawnCanPromote(Tile selectedTile)
     {
         Pawn pawn = _piece.GetComponent<Pawn>();
@@ -119,12 +125,6 @@ public class PieceMover : MonoBehaviour
         _state = State.PieceChanging;
         
         PawnPromoter.Instance.PromptPawnPromotion(pawn, selectedTile);
-    }
-
-    private void PawnPromoter_OnPawnPromotion(object sender, PawnPromoter.OnPawnPromotionEventArgs e)
-    {
-        SetPieceTile(e.tile);
-        _piece.CentreOnTile();
     }
 
     private void TryMovePiece(Tile selectedTile)

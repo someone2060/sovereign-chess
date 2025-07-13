@@ -52,19 +52,23 @@ public class PawnPromoter : MonoBehaviour
         PromotionCollider promotionCollider = collided.GetComponent<PromotionCollider>();
         GameObject piece = promotionCollider.GetPiece().gameObject;
 
+        InstantiateNewPiece(piece);
+        _pawn.DestroySelf();
+        
+        OnPawnPromotion?.Invoke(this, new OnPawnPromotionEventArgs { tile = null });
+    }
+
+    private void InstantiateNewPiece(GameObject piece)
+    {
         GameObject newPiece = Instantiate(piece, pawnParent);
         newPiece.GetComponent<Piece>().SetAlignment(_pawn.GetAlignment());
         newPiece.GetComponent<Piece>().SetSovereignPiece(_sovereignPiece);
         newPiece.GetComponent<Piece>().InitializeSprite();
-        _pawn.DestroySelf();
         if (_promotionTile.HasPiece())
         {
             _promotionTile.DestroyPiece();
         }
         newPiece.GetComponent<Piece>().SetTile(_promotionTile);
         newPiece.GetComponent<Piece>().CentreOnTile();
-        
-        OnPawnPromotion?.Invoke(this, new OnPawnPromotionEventArgs { tile = null });
-        
     }
 }
