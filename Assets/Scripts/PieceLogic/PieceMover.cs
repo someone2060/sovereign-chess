@@ -108,13 +108,17 @@ public class PieceMover : MonoBehaviour
             legalMoves = _legalMoves,
             piece = _piece
         });
+        
+        //TODO DEBUG
+        King king = _piece.gameObject.GetComponent<King>();
+        if (king is not null) Debug.Log("attacked? " + king.GetTile().IsAttacked(king.GetAlignment()));
     }
 
     private bool PawnCanPromote(Tile selectedTile)
     {
         Pawn pawn = _piece.GetComponent<Pawn>();
         if (pawn is null) return false;
-        return Board.Instance.InPromotionArea(selectedTile.GetCoordinates());
+        return Board.Instance.InPawnPromotionArea(selectedTile.GetCoordinates());
     }
 
     private void PromptPawnPromotion(Tile selectedTile)

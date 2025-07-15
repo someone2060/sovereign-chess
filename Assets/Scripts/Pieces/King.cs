@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class King : Piece
 {
-    private static Vector2Int[] KingPositions { get; } = {
+    public static readonly Vector2Int[] KingMoves = {
         new(1, -1), 
         new(1, 0), 
         new(1, 1), 
@@ -54,7 +54,7 @@ public class King : Piece
 
         Vector2Int position = tile.GetCoordinates();
 
-        foreach (Vector2Int offset in KingPositions)
+        foreach (Vector2Int offset in KingMoves)
         {
             Vector2Int testCoords = position + offset;
             Tile testTile = Board.Instance.GetTile(testCoords);
@@ -65,4 +65,6 @@ public class King : Piece
         
         return legalMoves;
     }
+    
+    // public 
 }

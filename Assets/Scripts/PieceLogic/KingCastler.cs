@@ -16,9 +16,10 @@ public class KingCastler : MonoBehaviour
     {
         HashSet<Vector2Int> legalCastles = new HashSet<Vector2Int>();
         
-        if (king.HasMoved() || rook.HasMoved() 
-                            || king.GetAlignment() == Piece.Alignment.Neutral 
-                            || king.GetAlignment() != rook.GetAlignment())
+        if (king.HasMoved() 
+            || rook.HasMoved()
+            || king.GetAlignment() == global::Piece.Alignment.Neutral
+            || king.GetAlignment() != rook.GetAlignment())
         {
             return legalCastles;
         }
@@ -55,9 +56,6 @@ public class KingCastler : MonoBehaviour
     public void CastleKing(King king, Rook rook, Vector2Int targetCoordinates)
     {
         // TODO
+        
     }
-}
-
-public class InvalidCastleX : Exception
-{
 }

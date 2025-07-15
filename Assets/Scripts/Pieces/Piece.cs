@@ -77,14 +77,14 @@ public abstract class Piece : MonoBehaviour
         return (alignmentMoving == alignment); 
     }
 
-    private bool CanBeCaptured(Alignment alignmentCapturing)
+    public bool CanBeCaptured(Alignment alignmentCapturing)
     {
         if (alignmentCapturing == Alignment.Neutral || alignment == Alignment.Neutral)
         {
             return false;
         }
         
-        return (alignmentCapturing != alignment);
+        return alignmentCapturing != alignment;
     }
     
     // Extends 8 tiles in search direction until colliding with another piece or reaching end of board,

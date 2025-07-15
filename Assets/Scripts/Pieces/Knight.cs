@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Knight : Piece
 {
-    private static Vector2Int[] KnightPositions { get; } = {
+    public static readonly Vector2Int[] KnightMoves = {
         new(2, -1), 
         new(2, 1), 
         new(1, -2), 
@@ -26,7 +26,7 @@ public class Knight : Piece
 
         Vector2Int position = tile.GetCoordinates();
 
-        foreach (Vector2Int offset in KnightPositions)
+        foreach (Vector2Int offset in KnightMoves)
         {
             Vector2Int testCoords = position + offset;
             Tile testTile = Board.Instance.GetTile(testCoords);

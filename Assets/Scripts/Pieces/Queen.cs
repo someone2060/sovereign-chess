@@ -13,16 +13,16 @@ public class Queen : Piece
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         Vector2Int coordinates = tile.GetCoordinates();
-        
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int(-1,  0)));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int( 1,  0)));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int( 0, -1)));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int( 0,  1)));
-        
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int(-1, -1)));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int( 1, -1)));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int(-1,  1)));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int( 1,  1)));
+
+        foreach (Vector2Int direction in Bishop.Diagonals)
+        {
+            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction));
+        }
+
+        foreach (Vector2Int direction in Rook.Orthogonals)
+        {
+            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction));
+        }
         
         return legalMoves;
     }

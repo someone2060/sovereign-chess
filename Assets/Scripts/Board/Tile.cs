@@ -41,7 +41,51 @@ public class Tile : MonoBehaviour
     // no pieces can ever attack neutral alignment, and white/black alignments are hostile to each other  
     public bool IsAttacked(Piece.Alignment alignment)
     {
+        Piece testPiece;
+        
         if (alignment == Piece.Alignment.Neutral) return false;
-        throw new System.NotImplementedException();
+        
+        // Search for rooks, queens along orthogonals
+        foreach (Vector2Int direction in Rook.Orthogonals)
+        {
+            testPiece = Board.Instance.FindFirstPieceInDirection(GetCoordinates(), direction, 8);
+            if (testPiece?.gameObject.GetComponent<Queen>() is null 
+                && testPiece?.gameObject.GetComponent<Rook>() is null) continue;
+            if (!testPiece.CanBeCaptured(alignment)) continue;
+            return true;
+        }
+        
+        // Search for bishops, queens along diagonals
+        foreach (Vector2Int direction in Bishop.Diagonals)
+        {
+            testPiece = Board.Instance.FindFirstPieceInDirection(GetCoordinates(), direction, 8);
+            if (testPiece?.gameObject.GetComponent<Queen>() is null
+                && testPiece?.gameObject.GetComponent<Bishop>() is null) continue;
+            if (!testPiece.CanBeCaptured(alignment)) continue;
+            return true;
+        }
+
+        // Search for knights
+        foreach (Vector2Int knightMove in Knight.KnightMoves)
+        {
+            Tile testTile = Board.Instance.GetTile(_coordinates + knightMove);
+            testPiece = testTile?.GetPiece();
+            if (testPiece?.gameObject.GetComponent<Knight>() is null) continue;
+            if (!testPiece.CanBeCaptured(alignment)) continue;
+            return true;
+        }
+        
+        // Search for pawns
+        foreach (Vector2Int direction in Bishop.Diagonals)
+        {
+            testPiece = Board.Instance.FindFirstPieceInDirection(GetCoordinates(), direction, 1);
+            if (testPiece?.gameObject.GetComponent<Pawn>() is null) continue;
+            if (!testPiece.CanBeCaptured(alignment)) continue;
+            if (!testPiece.LegalMoves().Contains(GetCoordinates())) continue;
+            return true;
+        }
+
+        return false;
     }
 }
+    

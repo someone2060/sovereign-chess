@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class Rook : Piece
 {
+    public static readonly Vector2Int[] Orthogonals =
+    {
+        Vector2Int.right, 
+        Vector2Int.up, 
+        Vector2Int.left,
+        Vector2Int.down
+    };
+    
     private bool _hasMoved;
     private Tile _startingTile;
 
@@ -40,11 +48,11 @@ public class Rook : Piece
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         Vector2Int coordinates = tile.GetCoordinates();
-        
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int(-1,  0)));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int( 1,  0)));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int( 0, -1)));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, new Vector2Int( 0,  1)));
+
+        foreach (Vector2Int direction in Orthogonals)
+        {
+            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction));
+        }
         
         return legalMoves;
     }

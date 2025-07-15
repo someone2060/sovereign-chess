@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -56,7 +57,7 @@ public class Board : MonoBehaviour
         return coords.y >= 0 && coords.y < _size && coords.x >= 0 && coords.x < _size;
     }
 
-    public bool InPromotionArea(Vector2Int coords)
+    public bool InPawnPromotionArea(Vector2Int coords)
     {
         int leftBound = _size / 2 - 2;
         int rightBound = _size / 2 + 2;
@@ -65,22 +66,20 @@ public class Board : MonoBehaviour
                && coords.y >= leftBound
                && coords.y < rightBound;
     }
-
-    public Piece FindFirstPieceInDirection()// TODO
+    
+    public Piece FindFirstPieceInDirection(Vector2Int start, Vector2Int direction, int distance)
     {
-        // Vector2Int incrementVec = Vector2Int.zero;
-        // HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
-        // for (int i = 0; i < 8; i++)
-        // {
-        //     incrementVec += dir;
-        //     Tile testTile = Board.Instance.GetTile(coordsVec + incrementVec);
-        //
-        //     if (!LegalTile(testTile)) break;
-        //     
-        //     legalMoves.Add(coordsVec + incrementVec);
-        //
-        //     if (testTile.HasPiece()) break;
-        // }
+        Vector2Int increment = Vector2Int.zero;
+        for (int i = 0; i < distance; i++)
+        {
+            increment += direction;
+            Tile testTile = GetTile(start + increment);
+
+            if (testTile is null) return null;
+            if (!testTile.HasPiece()) continue;
+            return testTile.GetPiece();
+        }
+
         return null;
     }
 }
