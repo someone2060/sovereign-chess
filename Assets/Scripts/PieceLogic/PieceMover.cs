@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PieceMover : MonoBehaviour
@@ -19,6 +20,7 @@ public class PieceMover : MonoBehaviour
 
     private Piece _piece;
     private HashSet<Vector2Int> _legalMoves;
+    private HashSet<Vector2Int> _legalCastles;
     private State _state;
     
     public event EventHandler<OnPieceEventArgs> OnPieceSelected;
@@ -101,7 +103,15 @@ public class PieceMover : MonoBehaviour
         _piece = piece;
         _piece.SetSelected(true);
         _legalMoves = _piece.LegalMoves();
+        _legalCastles = new HashSet<Vector2Int>();
         _state = State.DragSelecting;
+
+        King king = _piece.gameObject.GetComponent<King>();
+        if (king is not null)
+        {
+            _legalCastles = KingCastler.Instance.GetAllLegalCastles(king);
+            DebugDisplayHashSetCoords("Legal castles: ", _legalCastles); //TODO DEBUG
+        }
         
         InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
         
@@ -110,12 +120,6 @@ public class PieceMover : MonoBehaviour
             legalMoves = _legalMoves,
             piece = _piece
         });
-        
-        //TODO DEBUG
-        King king = _piece.gameObject.GetComponent<King>();
-        if (king is null) return;
-        HashSet<Vector2Int> legalCastles = KingCastler.Instance.GetLegalCastles(king, debugRook);
-        DebugDisplayHashSetCoords("Legal castles: ", legalCastles);
     }
 
     private bool PawnCanPromote(Tile selectedTile)

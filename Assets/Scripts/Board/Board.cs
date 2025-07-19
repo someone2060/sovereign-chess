@@ -82,4 +82,20 @@ public class Board : MonoBehaviour
 
         return null;
     }
+
+    public HashSet<Rook> GetPotentialCastlingRooks(Vector2Int coordinates, Piece.Alignment alignment)
+    {
+        HashSet<Rook> rooks = new HashSet<Rook>();
+        Row row = rows[coordinates.y];
+        foreach (Tile tile in row)
+        {
+            if (!tile.HasPiece()) continue;
+            Rook rook = tile.GetPiece().gameObject.GetComponent<Rook>();
+            if (rook is null) continue;
+            if (rook.HasMoved()) continue;
+            if (rook.GetAlignment() != alignment) continue;
+            rooks.Add(rook);
+        }
+        return rooks;
+    }
 }

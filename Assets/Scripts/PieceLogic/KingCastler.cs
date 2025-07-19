@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class KingCastler : MonoBehaviour
@@ -12,7 +12,20 @@ public class KingCastler : MonoBehaviour
         Instance = this;
     }
 
-    public HashSet<Vector2Int> GetLegalCastles(King king, Rook rook)
+    public HashSet<Vector2Int> GetAllLegalCastles(King king)
+    {
+        HashSet<Vector2Int> legalCastles = new HashSet<Vector2Int>();
+        if (king.HasMoved()) return legalCastles;
+        HashSet<Rook> castlingRooks = Board.Instance.GetPotentialCastlingRooks(
+            king.GetTile().GetCoordinates(), king.GetAlignment());
+        foreach (Rook castlingRook in castlingRooks)
+        {
+            legalCastles.AddRange(GetLegalCastles(king, castlingRook));
+        }
+        return legalCastles;
+    }
+
+    private static HashSet<Vector2Int> GetLegalCastles(King king, Rook rook)
     {
         HashSet<Vector2Int> legalCastles = new HashSet<Vector2Int>();
         
@@ -63,7 +76,7 @@ public class KingCastler : MonoBehaviour
         return legalCastles;
     }
 
-    // Assumes that GetLegalCastles() has already been ran
+    // Assumes that GetAllLegalCastles() has already been ran
     public void CastleKing(King king, Rook rook, Vector2Int targetCoordinates)
     {
         int kingXMoveDirection = king.GetTile().GetCoordinates().x < rook.GetTile().GetCoordinates().x ? 1 : -1;
