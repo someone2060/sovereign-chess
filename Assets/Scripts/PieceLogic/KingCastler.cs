@@ -18,23 +18,33 @@ public class KingCastler : MonoBehaviour
         
         if (king.HasMoved() 
             || rook.HasMoved()
-            || king.GetAlignment() == global::Piece.Alignment.Neutral
+            || king.GetAlignment() == Piece.Alignment.Neutral
             || king.GetAlignment() != rook.GetAlignment())
         {
             return legalCastles;
         }
-
+        
         Vector2Int kingCoordinates = king.GetTile().GetCoordinates();
         Vector2Int rookCoordinates = rook.GetTile().GetCoordinates();
-        
-        int leftX = kingCoordinates.x < rookCoordinates.x
-            ? kingCoordinates.x : rookCoordinates.x;
-        int rightX = kingCoordinates.x > rookCoordinates.x
-            ? kingCoordinates.x : rookCoordinates.x;
-        
-        List<Tile> tilesToSearch = new List<Tile>();
 
-        for (int x = leftX; x < rightX; x++)
+        int kingXMoveDirection = kingCoordinates.x < rookCoordinates.x ? 1 : -1;
+
+        Tile tileOneAwayFromKing = Board.Instance.GetTile(kingCoordinates + Vector2Int.right * kingXMoveDirection); 
+        if (king.GetTile().IsAttacked(king.GetAlignment())
+            || tileOneAwayFromKing.HasPiece()
+            || tileOneAwayFromKing.IsAttacked(king.GetAlignment()))
+        {
+            return legalCastles;
+        }
+        
+        Vector2Int startSearchCoordinate = kingCoordinates + Vector2Int.right * 2 * kingXMoveDirection;
+        Vector2Int endSearchCoordinate = rookCoordinates + Vector2Int.left * kingXMoveDirection;
+
+        List<Tile> tilesToSearch = new List<Tile>();
+        
+        for (int x = startSearchCoordinate.x; 
+             x != endSearchCoordinate.x + kingXMoveDirection; 
+             x += kingXMoveDirection)
         {
             tilesToSearch.Add(Board.Instance.GetTile(new Vector2Int(x, kingCoordinates.y)));
         }
@@ -53,9 +63,13 @@ public class KingCastler : MonoBehaviour
         return legalCastles;
     }
 
+    // Assumes that GetLegalCastles() has already been ran
     public void CastleKing(King king, Rook rook, Vector2Int targetCoordinates)
     {
-        // TODO
-        
+        int kingXMoveDirection = king.GetTile().GetCoordinates().x < rook.GetTile().GetCoordinates().x ? 1 : -1;
+        Tile newKingTile = Board.Instance.GetTile(targetCoordinates);
+        Tile newRookTile = Board.Instance.GetTile(targetCoordinates + (Vector2Int.right * kingXMoveDirection));
+        king.SetTile(newKingTile);
+        rook.SetTile(newRookTile);
     }
 }

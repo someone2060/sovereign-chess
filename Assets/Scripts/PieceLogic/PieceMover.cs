@@ -15,6 +15,8 @@ public class PieceMover : MonoBehaviour
     
     public static PieceMover Instance { get; private set; }
 
+    [SerializeField] private Rook debugRook; // TODO DEBUG  
+
     private Piece _piece;
     private HashSet<Vector2Int> _legalMoves;
     private State _state;
@@ -111,7 +113,9 @@ public class PieceMover : MonoBehaviour
         
         //TODO DEBUG
         King king = _piece.gameObject.GetComponent<King>();
-        if (king is not null) Debug.Log("attacked? " + king.GetTile().IsAttacked(king.GetAlignment()));
+        if (king is null) return;
+        HashSet<Vector2Int> legalCastles = KingCastler.Instance.GetLegalCastles(king, debugRook);
+        DebugDisplayHashSetCoords("Legal castles: ", legalCastles);
     }
 
     private bool PawnCanPromote(Tile selectedTile)
@@ -169,14 +173,16 @@ public class PieceMover : MonoBehaviour
         _piece.SetTile(selectedTile);
     }
 
-    private void DebugLegalMoves()
+    // used like DebugDisplayHashSetCoords("Legal moves:", _legalMoves);
+    private void DebugDisplayHashSetCoords(string preamble, HashSet<Vector2Int> coordinates)
     {
-        List<string> coordStr = _legalMoves.Select(
-            legalMove => Board.Instance.GetTile(legalMove).GetCoordinates().ToString()).ToList();
+        List<string> coordStr = coordinates.Select(
+            legalCastle => CoordinatesToString.Convert(
+                Board.Instance.GetTile(legalCastle).GetCoordinates())).ToList();
         coordStr.Sort();
         
         String debugString = coordStr.Aggregate(
-            "Legal moves: ", (current, coords) => current + coords + ", ");
+            preamble, (current, coords) => current + coords + ", ");
         Debug.Log(debugString);
     }
 }

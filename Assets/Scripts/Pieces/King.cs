@@ -65,6 +65,4 @@ public class King : Piece
         
         return legalMoves;
     }
-    
-    // public 
 }
