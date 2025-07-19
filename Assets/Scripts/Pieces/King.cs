@@ -47,18 +47,28 @@ public class King : Piece
         spriteRenderer.sprite = sovereignPiece.kingSprite;
     }
 
-    public override HashSet<Vector2Int> LegalMoves()
+    public override HashSet<Vector2Int> LegalMoves(List<Piece> piecesToIgnore = null)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
 
         Vector2Int position = tile.GetCoordinates();
 
+        if (piecesToIgnore is null)
+        {
+            piecesToIgnore = new List<Piece>{ this };
+        }
+        else
+        {
+            piecesToIgnore.Add(this);
+        }
+        
         foreach (Vector2Int offset in KingMoves)
         {
             Vector2Int testCoords = position + offset;
             Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (!LegalTile(testTile)) continue;
+            if (testTile.IsAttacked(alignment, piecesToIgnore)) continue;
             legalMoves.Add(testCoords);
         }
 

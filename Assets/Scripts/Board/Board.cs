@@ -69,7 +69,8 @@ public class Board : MonoBehaviour
                && coords.y < rightBound;
     }
     
-    public Piece FindFirstPieceInDirection(Vector2Int start, Vector2Int direction, int distance)
+    public Piece FindFirstPieceInDirection(
+        Vector2Int start, Vector2Int direction, int distance, List<Piece> piecesToIgnore = null)
     {
         Vector2Int increment = Vector2Int.zero;
         for (int i = 0; i < distance; i++)
@@ -79,9 +80,11 @@ public class Board : MonoBehaviour
 
             if (testTile is null) return null;
             if (!testTile.HasPiece()) continue;
+            if (piecesToIgnore is null) return testTile.GetPiece();
+            if (piecesToIgnore.Contains(testTile.GetPiece())) continue;
             return testTile.GetPiece();
         }
-
+        
         return null;
     }
 

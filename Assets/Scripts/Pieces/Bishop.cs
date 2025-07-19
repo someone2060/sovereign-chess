@@ -17,14 +17,14 @@ public class Bishop : Piece
         spriteRenderer.sprite = sovereignPiece.bishopSprite;
     }
 
-    public override HashSet<Vector2Int> LegalMoves()
-    {        
+    public override HashSet<Vector2Int> LegalMoves(List<Piece> piecesToIgnore = null)
+    {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         Vector2Int coordinates = tile.GetCoordinates();
 
         foreach (Vector2Int direction in Diagonals)
         {
-            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction));
+            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction, piecesToIgnore));
         }
         
         return legalMoves;

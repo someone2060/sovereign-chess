@@ -27,7 +27,7 @@ public class Pawn : Piece
         Destroy(gameObject);
     }
 
-    public override HashSet<Vector2Int> LegalMoves()
+    public override HashSet<Vector2Int> LegalMoves(List<Piece> pieceToIgnore = null)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         
@@ -91,17 +91,5 @@ public class Pawn : Piece
     public static bool CanPromote(Tile selectedTile)
     {
         return Board.Instance.InPawnPromotionArea(selectedTile.GetCoordinates());
-    }
-
-    private String DebugHashSetLog(HashSet<Vector2Int> hashSet)
-    {
-        String output = "";
-
-        foreach (Vector2Int vector in hashSet)
-        {
-            output += vector + ", ";
-        }
-        
-        return output;
     }
 }

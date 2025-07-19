@@ -9,19 +9,19 @@ public class Queen : Piece
         spriteRenderer.sprite = sovereignPiece.queenSprite;
     }
 
-    public override HashSet<Vector2Int> LegalMoves()
+    public override HashSet<Vector2Int> LegalMoves(List<Piece> pieceToIgnore = null)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         Vector2Int coordinates = tile.GetCoordinates();
 
         foreach (Vector2Int direction in Bishop.Diagonals)
         {
-            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction));
+            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction, pieceToIgnore));
         }
 
         foreach (Vector2Int direction in Rook.Orthogonals)
         {
-            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction));
+            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction, pieceToIgnore));
         }
         
         return legalMoves;

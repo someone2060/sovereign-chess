@@ -15,8 +15,6 @@ public class PieceMover : MonoBehaviour
     
     public static PieceMover Instance { get; private set; }
 
-    [SerializeField] private Rook debugRook; // TODO DEBUG  
-
     private Piece _piece;
     private HashSet<Vector2Int> _legalMoves;
     private State _state;

@@ -44,14 +44,14 @@ public class Rook : Piece
         spriteRenderer.sprite = sovereignPiece.rookSprite;
     }
 
-    public override HashSet<Vector2Int> LegalMoves()
+    public override HashSet<Vector2Int> LegalMoves(List<Piece> pieceToIgnore = null)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         Vector2Int coordinates = tile.GetCoordinates();
 
         foreach (Vector2Int direction in Orthogonals)
         {
-            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction));
+            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction, pieceToIgnore));
         }
         
         return legalMoves;

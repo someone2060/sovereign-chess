@@ -1,8 +1,27 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Piece : MonoBehaviour
 {
+    protected bool Equals(Piece other)
+    {
+        return base.Equals(other) && Equals(tile, other.tile) && alignment == other.alignment && Equals(sovereignPiece, other.sovereignPiece);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != GetType()) return false;
+        return Equals((Piece)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(base.GetHashCode(), tile, (int)alignment, sovereignPiece);
+    }
+
     public enum Alignment
     {
         Neutral,
@@ -18,7 +37,7 @@ public abstract class Piece : MonoBehaviour
     private bool _selected;
 
     public abstract void InitializeSprite();
-    public abstract HashSet<Vector2Int> LegalMoves();
+    public abstract HashSet<Vector2Int> LegalMoves(List<Piece> piecesToIgnore = null);
     
     protected void Awake()
     {
@@ -87,22 +106,38 @@ public abstract class Piece : MonoBehaviour
     
     // Extends 8 tiles in search direction until colliding with another piece or reaching end of board,
     // returning valid squares that can be occupied (including capturing)
-    protected HashSet<Vector2Int> SearchLegalTilesInDirection(Vector2Int start, Vector2Int dir)
+    protected HashSet<Vector2Int> SearchLegalTilesInDirection(
+        Vector2Int start, Vector2Int dir, List<Piece> piecesToIgnore = null)
     {
         Vector2Int increment = new Vector2Int(0, 0);
+        Vector2Int endCoordinates = start + dir * 8;
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
-        for (int i = 0; i < 8; i++)
+
+        Piece testPiece = Board.Instance.FindFirstPieceInDirection(start, dir, 8, piecesToIgnore);
+        if (testPiece is not null)
+        {
+            endCoordinates = testPiece.GetTile().GetCoordinates();
+        }
+        
+        while (!endCoordinates.Equals(start + increment))
         {
             increment += dir;
             Vector2Int testCoordinate = start + increment;
             Tile testTile = Board.Instance.GetTile(testCoordinate);
 
+            if (testTile is not null && piecesToIgnore is not null)
+            {
+                if (testTile.HasPiece() && piecesToIgnore.Contains(testTile.GetPiece()))
+                {
+                    legalMoves.Add(testCoordinate);
+                    continue;
+                }
+            }
             if (!LegalTile(testTile)) break;
             
             legalMoves.Add(testCoordinate);
-
-            if (testTile.HasPiece()) break;
         }
+        
         return legalMoves;
     }
     

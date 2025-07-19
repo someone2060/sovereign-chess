@@ -38,39 +38,53 @@ public class Tile : MonoBehaviour
         piece = null;
     }
   
-    public bool IsAttacked(Piece.Alignment alignment)
+    public bool IsAttacked(Piece.Alignment alignment, List<Piece> piecesToIgnore = null)
     {
-        return GetAllAttackers(alignment).Count > 0;
+        return GetAllAttackers(alignment, piecesToIgnore).Count > 0;
     }
 
     // Returns all pieces targeting this tile hostile to the inputted alignment;
     // no pieces can ever attack neutral alignment, and white/black alignments are hostile to each other
-    public List<Piece> GetAllAttackers(Piece.Alignment alignment)
+    public List<Piece> GetAllAttackers(Piece.Alignment alignment, List<Piece> piecesToIgnore = null)
     {
         List<Piece> attackers = new List<Piece>();
         Piece testPiece;
         
         if (alignment == Piece.Alignment.Neutral) return attackers;
         
+        if (HasPiece())
+        {
+            if (piecesToIgnore is null)
+            {
+                piecesToIgnore = new List<Piece> { piece };
+            }
+            else
+            {
+                piecesToIgnore.Add(piece);
+            }
+        }
+        
         // Search for rooks, queens along orthogonals
         foreach (Vector2Int direction in Rook.Orthogonals)
         {
-            testPiece = Board.Instance.FindFirstPieceInDirection(GetCoordinates(), direction, 8);
+            testPiece = Board.Instance.FindFirstPieceInDirection(
+                GetCoordinates(), direction, 8, piecesToIgnore);
             if (testPiece?.gameObject.GetComponent<Queen>() is null 
                 && testPiece?.gameObject.GetComponent<Rook>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            if (!testPiece.LegalMoves().Contains(_coordinates)) continue;
+            if (!testPiece.LegalMoves(piecesToIgnore).Contains(_coordinates)) continue;
             attackers.Add(testPiece);
         }
         
         // Search for bishops, queens along diagonals
         foreach (Vector2Int direction in Bishop.Diagonals)
         {
-            testPiece = Board.Instance.FindFirstPieceInDirection(GetCoordinates(), direction, 8);
+            testPiece = Board.Instance.FindFirstPieceInDirection(
+                GetCoordinates(), direction, 8, piecesToIgnore);
             if (testPiece?.gameObject.GetComponent<Queen>() is null
                 && testPiece?.gameObject.GetComponent<Bishop>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            if (!testPiece.LegalMoves().Contains(_coordinates)) continue;
+            if (!testPiece.LegalMoves(piecesToIgnore).Contains(_coordinates)) continue;
             attackers.Add(testPiece);
         }
 
@@ -81,7 +95,7 @@ public class Tile : MonoBehaviour
             testPiece = testTile?.GetPiece();
             if (testPiece?.gameObject.GetComponent<Knight>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            if (!testPiece.LegalMoves().Contains(_coordinates)) continue;
+            if (!testPiece.LegalMoves(piecesToIgnore).Contains(_coordinates)) continue;
             attackers.Add(testPiece);
         }
         
@@ -91,7 +105,7 @@ public class Tile : MonoBehaviour
             testPiece = Board.Instance.FindFirstPieceInDirection(GetCoordinates(), direction, 1);
             if (testPiece?.gameObject.GetComponent<Pawn>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            if (!testPiece.LegalMoves().Contains(_coordinates)) continue;
+            if (!testPiece.LegalMoves(piecesToIgnore).Contains(_coordinates)) continue;
             attackers.Add(testPiece);
         }
 
