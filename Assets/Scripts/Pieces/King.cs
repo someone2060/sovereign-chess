@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class King : Piece
 {
-    public static readonly Vector2Int[] KingMoves = {
+    private static readonly Vector2Int[] KingMoves = {
         new(1, -1), 
         new(1, 0), 
         new(1, 1), 
@@ -60,7 +61,15 @@ public class King : Piece
             if (!LegalTile(testTile)) continue;
             legalMoves.Add(testCoords);
         }
+
+        legalMoves.AddRange(KingCastler.Instance.GetAllLegalCastles(this));
         
         return legalMoves;
+    }
+
+    public bool IsCastling(Tile selectedTile)
+    {
+        int xAbsDelta = Mathf.Abs(GetTile().GetCoordinates().x - selectedTile.GetCoordinates().x);
+        return xAbsDelta > 1;
     }
 }

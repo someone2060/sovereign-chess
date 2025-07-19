@@ -88,6 +88,11 @@ public class Pawn : Piece
         return legalMoves;
     }
 
+    public bool CanPromote(Tile selectedTile)
+    {
+        return Board.Instance.InPawnPromotionArea(selectedTile.GetCoordinates());
+    }
+
     private String DebugHashSetLog(HashSet<Vector2Int> hashSet)
     {
         String output = "";

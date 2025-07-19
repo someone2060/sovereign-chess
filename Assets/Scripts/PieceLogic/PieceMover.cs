@@ -20,7 +20,6 @@ public class PieceMover : MonoBehaviour
 
     private Piece _piece;
     private HashSet<Vector2Int> _legalMoves;
-    private HashSet<Vector2Int> _legalCastles;
     private State _state;
     
     public event EventHandler<OnPieceEventArgs> OnPieceSelected;
@@ -103,15 +102,7 @@ public class PieceMover : MonoBehaviour
         _piece = piece;
         _piece.SetSelected(true);
         _legalMoves = _piece.LegalMoves();
-        _legalCastles = new HashSet<Vector2Int>();
         _state = State.DragSelecting;
-
-        King king = _piece.gameObject.GetComponent<King>();
-        if (king is not null)
-        {
-            _legalCastles = KingCastler.Instance.GetAllLegalCastles(king);
-            DebugDisplayHashSetCoords("Legal castles: ", _legalCastles); //TODO DEBUG
-        }
         
         InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
         
@@ -120,23 +111,6 @@ public class PieceMover : MonoBehaviour
             legalMoves = _legalMoves,
             piece = _piece
         });
-    }
-
-    private bool PawnCanPromote(Tile selectedTile)
-    {
-        Pawn pawn = _piece.GetComponent<Pawn>();
-        if (pawn is null) return false;
-        return Board.Instance.InPawnPromotionArea(selectedTile.GetCoordinates());
-    }
-
-    private void PromptPawnPromotion(Tile selectedTile)
-    {
-        Pawn pawn = _piece.GetComponent<Pawn>();
-        
-        _piece.CentreOnTile(selectedTile);
-        _state = State.PieceChanging;
-        
-        PawnPromoter.Instance.PromptPawnPromotion(pawn, selectedTile);
     }
 
     private void TryMovePiece(Tile selectedTile)
@@ -148,11 +122,26 @@ public class PieceMover : MonoBehaviour
             SetPieceTile(_piece.GetTile());
             return;
         }
-
-        if (PawnCanPromote(selectedTile))
+        
+        Pawn pawn = _piece.GetComponent<Pawn>();
+        if (pawn is not null)
         {
-            PromptPawnPromotion(selectedTile);
-            return;
+            if (pawn.CanPromote(selectedTile))
+            {
+                _piece.CentreOnTile(selectedTile);
+                _state = State.PieceChanging;
+                PawnPromoter.Instance.PromptPawnPromotion(pawn, selectedTile);
+                return;
+            }
+        }
+
+        King king = _piece.gameObject.GetComponent<King>();
+        if (king is not null)
+        {
+            if (king.IsCastling(selectedTile))
+            {
+                KingCastler.Instance.CastleKing(king, selectedTile.GetCoordinates());
+            }
         }
         
         SetPieceTile(selectedTile);

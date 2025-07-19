@@ -23,6 +23,8 @@ public class Board : MonoBehaviour
             rows[i].SetTilesCoordinateY(i);
         }
     }
+
+    public int GetSize() => _size;
     
     public Tile GetTile(Vector2Int coords)
     {

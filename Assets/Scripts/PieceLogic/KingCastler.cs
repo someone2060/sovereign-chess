@@ -77,12 +77,20 @@ public class KingCastler : MonoBehaviour
     }
 
     // Assumes that GetAllLegalCastles() has already been ran
-    public void CastleKing(King king, Rook rook, Vector2Int targetCoordinates)
+    public void CastleKing(King king, Vector2Int targetCoordinates)
     {
-        int kingXMoveDirection = king.GetTile().GetCoordinates().x < rook.GetTile().GetCoordinates().x ? 1 : -1;
+        int kingXMoveDirection = king.GetTile().GetCoordinates().x < targetCoordinates.x ? 1 : -1;
+        Rook rook = Board.Instance.FindFirstPieceInDirection(
+            king.GetTile().GetCoordinates(),
+            Vector2Int.right * kingXMoveDirection, 
+            Board.Instance.GetSize())
+            .gameObject.GetComponent<Rook>();
+        
         Tile newKingTile = Board.Instance.GetTile(targetCoordinates);
-        Tile newRookTile = Board.Instance.GetTile(targetCoordinates + (Vector2Int.right * kingXMoveDirection));
+        Tile newRookTile = Board.Instance.GetTile(targetCoordinates + (Vector2Int.left * kingXMoveDirection));
+        
         king.SetTile(newKingTile);
         rook.SetTile(newRookTile);
+        rook.CentreOnTile();
     }
 }
