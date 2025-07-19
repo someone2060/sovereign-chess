@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PieceMover : MonoBehaviour
@@ -126,7 +125,7 @@ public class PieceMover : MonoBehaviour
         Pawn pawn = _piece.GetComponent<Pawn>();
         if (pawn is not null)
         {
-            if (pawn.CanPromote(selectedTile))
+            if (Pawn.CanPromote(selectedTile))
             {
                 _piece.CentreOnTile(selectedTile);
                 _state = State.PieceChanging;

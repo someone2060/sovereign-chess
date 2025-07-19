@@ -88,7 +88,7 @@ public class Pawn : Piece
         return legalMoves;
     }
 
-    public bool CanPromote(Tile selectedTile)
+    public static bool CanPromote(Tile selectedTile)
     {
         return Board.Instance.InPawnPromotionArea(selectedTile.GetCoordinates());
     }

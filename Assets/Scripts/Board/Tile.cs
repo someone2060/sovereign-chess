@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -36,14 +37,20 @@ public class Tile : MonoBehaviour
         Destroy(piece.gameObject);
         piece = null;
     }
-
-    // Returns true if there are any pieces targeting this tile hostile to the inputted alignment;
-    // no pieces can ever attack neutral alignment, and white/black alignments are hostile to each other  
+  
     public bool IsAttacked(Piece.Alignment alignment)
     {
+        return GetAllAttackers(alignment).Count > 0;
+    }
+
+    // Returns all pieces targeting this tile hostile to the inputted alignment;
+    // no pieces can ever attack neutral alignment, and white/black alignments are hostile to each other
+    public List<Piece> GetAllAttackers(Piece.Alignment alignment)
+    {
+        List<Piece> attackers = new List<Piece>();
         Piece testPiece;
         
-        if (alignment == Piece.Alignment.Neutral) return false;
+        if (alignment == Piece.Alignment.Neutral) return attackers;
         
         // Search for rooks, queens along orthogonals
         foreach (Vector2Int direction in Rook.Orthogonals)
@@ -52,7 +59,8 @@ public class Tile : MonoBehaviour
             if (testPiece?.gameObject.GetComponent<Queen>() is null 
                 && testPiece?.gameObject.GetComponent<Rook>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            return true;
+            if (!testPiece.LegalMoves().Contains(_coordinates)) continue;
+            attackers.Add(testPiece);
         }
         
         // Search for bishops, queens along diagonals
@@ -62,7 +70,8 @@ public class Tile : MonoBehaviour
             if (testPiece?.gameObject.GetComponent<Queen>() is null
                 && testPiece?.gameObject.GetComponent<Bishop>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            return true;
+            if (!testPiece.LegalMoves().Contains(_coordinates)) continue;
+            attackers.Add(testPiece);
         }
 
         // Search for knights
@@ -72,7 +81,8 @@ public class Tile : MonoBehaviour
             testPiece = testTile?.GetPiece();
             if (testPiece?.gameObject.GetComponent<Knight>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            return true;
+            if (!testPiece.LegalMoves().Contains(_coordinates)) continue;
+            attackers.Add(testPiece);
         }
         
         // Search for pawns
@@ -81,11 +91,11 @@ public class Tile : MonoBehaviour
             testPiece = Board.Instance.FindFirstPieceInDirection(GetCoordinates(), direction, 1);
             if (testPiece?.gameObject.GetComponent<Pawn>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            if (!testPiece.LegalMoves().Contains(GetCoordinates())) continue;
-            return true;
+            if (!testPiece.LegalMoves().Contains(_coordinates)) continue;
+            attackers.Add(testPiece);
         }
 
-        return false;
+        return attackers;
     }
 }
     
