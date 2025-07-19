@@ -15,7 +15,13 @@ public class KingCastler : MonoBehaviour
     public HashSet<Vector2Int> GetAllLegalCastles(King king)
     {
         HashSet<Vector2Int> legalCastles = new HashSet<Vector2Int>();
-        if (king.HasMoved()) return legalCastles;
+        if (king.GetAlignment() == Piece.Alignment.Neutral 
+            || king.HasMoved()
+            || king.GetTile().IsAttacked(king.GetAlignment()))
+        {
+            return legalCastles;
+        }
+        
         HashSet<Rook> castlingRooks = Board.Instance.GetPotentialCastlingRooks(
             king.GetTile().GetCoordinates(), king.GetAlignment());
         foreach (Rook castlingRook in castlingRooks)
@@ -29,23 +35,13 @@ public class KingCastler : MonoBehaviour
     {
         HashSet<Vector2Int> legalCastles = new HashSet<Vector2Int>();
         
-        if (king.HasMoved() 
-            || rook.HasMoved()
-            || king.GetAlignment() == Piece.Alignment.Neutral
-            || king.GetAlignment() != rook.GetAlignment())
-        {
-            return legalCastles;
-        }
-        
         Vector2Int kingCoordinates = king.GetTile().GetCoordinates();
         Vector2Int rookCoordinates = rook.GetTile().GetCoordinates();
 
         int kingXMoveDirection = kingCoordinates.x < rookCoordinates.x ? 1 : -1;
 
         Tile tileOneAwayFromKing = Board.Instance.GetTile(kingCoordinates + Vector2Int.right * kingXMoveDirection); 
-        if (king.GetTile().IsAttacked(king.GetAlignment())
-            || tileOneAwayFromKing.HasPiece()
-            || tileOneAwayFromKing.IsAttacked(king.GetAlignment()))
+        if (tileOneAwayFromKing.HasPiece() || tileOneAwayFromKing.IsAttacked(king.GetAlignment()))
         {
             return legalCastles;
         }
