@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class King : Piece
 {
-    private static readonly Vector2Int[] KingMoves = {
+    public static readonly Vector2Int[] KingMoves = {
         new(1, -1), 
         new(1, 0), 
         new(1, 1), 

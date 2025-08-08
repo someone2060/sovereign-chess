@@ -80,6 +80,18 @@ public class Tile : MonoBehaviour
             if (!testPiece.CanBeCaptured(alignment)) continue;
             attackers.Add(testPiece);
         }
+        
+        // Search for pawns
+        foreach (Vector2Int direction in Bishop.Diagonals)
+        {
+            testPiece = Board.Instance.FindFirstPieceInDirection(
+                GetCoordinates(), direction, 1, piecesToIgnoreCopy);
+            if (testPiece?.gameObject.GetComponent<Pawn>() is null) continue;
+            if (!testPiece.CanBeCaptured(alignment)) continue;
+            Pawn testPawn = testPiece.gameObject.GetComponent<Pawn>();
+            if (!testPawn.GetAttackingCoordinates().Contains(_coordinates)) continue;
+            attackers.Add(testPiece);
+        }
 
         // Search for knights
         foreach (Vector2Int knightMove in Knight.KnightMoves)
@@ -91,23 +103,15 @@ public class Tile : MonoBehaviour
             attackers.Add(testPiece);
         }
         
-        // Search for pawns TODO DEBUG
-        foreach (Vector2Int direction in Bishop.Diagonals)
+        // Search for king
+        foreach (Vector2Int kingMove in King.KingMoves)
         {
-            testPiece = Board.Instance.FindFirstPieceInDirection(GetCoordinates(), direction, 1);
-            if (testPiece?.gameObject.GetComponent<Pawn>() is null) continue;
+            Tile testTile = Board.Instance.GetTile(_coordinates + kingMove);
+            testPiece = testTile?.GetPiece();
+            if (testPiece?.gameObject.GetComponent<King>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            Pawn testPawn = testPiece.gameObject.GetComponent<Pawn>();
-            if (!testPawn.GetAttackingCoordinates().Contains(_coordinates)) continue;
             attackers.Add(testPiece);
         }
-        
-        // TODO
-        // Search for king
-        // foreach (var VARIABLE in COLLECTION)
-        // {
-        //     
-        // }
 
         return attackers;
     }
