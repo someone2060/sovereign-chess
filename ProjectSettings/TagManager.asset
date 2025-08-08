@@ -13,7 +13,7 @@ TagManager:
   - UI
   - Piece
   - Tile
-  - 
+  - Pawn Promotion
   - 
   - 
   - 
@@ -49,6 +49,9 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 23912523
     locked: 0
   m_RenderingLayers:
   - Default

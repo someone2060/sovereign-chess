@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class Queen : Piece
 {
-    protected new void Start()
+    public override void InitializeSprite()
     {
-        base.Start();
         spriteRenderer.sprite = sovereignPiece.queenSprite;
     }
-    
-    public override HashSet<Vector2Int> LegalMoves()
+
+    public override HashSet<Vector2Int> LegalMoves(HashSet<Piece> pieceToIgnore = null)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
+        Vector2Int coordinates = tile.GetCoordinates();
+
+        foreach (Vector2Int direction in Bishop.Diagonals)
+        {
+            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction, pieceToIgnore));
+        }
+
+        foreach (Vector2Int direction in Rook.Orthogonals)
+        {
+            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction, pieceToIgnore));
+        }
         
-        Vector2Int coordsVec = GetCoordinates().GetVector2Int();
-        
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.up));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.down));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right + Vector2Int.up));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left + Vector2Int.up));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right + Vector2Int.down));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left + Vector2Int.down));
         return legalMoves;
     }
 }

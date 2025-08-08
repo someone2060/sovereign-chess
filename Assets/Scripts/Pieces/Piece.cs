@@ -1,10 +1,27 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public abstract class Piece : MonoBehaviour
 {
+    protected bool Equals(Piece other)
+    {
+        return base.Equals(other) && Equals(tile, other.tile) && alignment == other.alignment && Equals(sovereignPiece, other.sovereignPiece);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != GetType()) return false;
+        return Equals((Piece)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(base.GetHashCode(), tile, (int)alignment, sovereignPiece);
+    }
+
     public enum Alignment
     {
         Neutral,
@@ -19,13 +36,18 @@ public abstract class Piece : MonoBehaviour
 
     private bool _selected;
 
+    public abstract void InitializeSprite();
+    public abstract HashSet<Vector2Int> LegalMoves(HashSet<Piece> piecesToIgnore = null);
+    
     protected void Awake()
     {
         _selected = false;
+        InitializeSprite();
     }
 
     protected void Start()
     {
+        if (tile is null) return;
         transform.position = tile.transform.position;
         tile.SetPiece(this);
     }
@@ -35,20 +57,32 @@ public abstract class Piece : MonoBehaviour
         if (!_selected) return;
         transform.position = InputHandler.Instance.GetPositionWorld(Camera.main);
     }
-    
-    public Coordinates GetCoordinates() => tile.GetCoordinates();
 
-    public abstract HashSet<Vector2Int> LegalMoves();
+    public virtual void DestroySelf()
+    {
+        tile?.SetPiece(null);
+        Destroy(gameObject);
+    }
 
+    public Alignment GetAlignment() => alignment;
     public void SetAlignment(Alignment alignment) => this.alignment = alignment;
 
-    public void MoveTile(Tile newTile)
+    public SovereignPieceSO GetSovereignPiece() => sovereignPiece;
+    public void SetSovereignPiece(SovereignPieceSO sovereignPiece) => this.sovereignPiece = sovereignPiece;
+    
+    public Tile GetTile() => tile;
+    public void SetTile(Tile newTile)
     {
         if (tile == newTile) return;
-        tile.SetPiece(null);
+        tile?.SetPiece(null);
         tile = newTile;
         newTile.SetPiece(this);
     }
+    
+    public void SetSelected(bool selected) => _selected = selected;
+
+    public void CentreOnTile() => transform.position = tile.transform.position;
+    public void CentreOnTile(Tile selectedTile) => transform.position = selectedTile.transform.position;
 
     public bool CanBeMoved(Alignment alignmentMoving)
     {
@@ -60,60 +94,50 @@ public abstract class Piece : MonoBehaviour
         return (alignmentMoving == alignment); 
     }
 
-    private bool CanBeCaptured(Alignment alignmentCapturing)
+    public bool CanBeCaptured(Alignment alignmentCapturing)
     {
         if (alignmentCapturing == Alignment.Neutral || alignment == Alignment.Neutral)
         {
             return false;
         }
         
-        return (alignmentCapturing != alignment);
+        return alignmentCapturing != alignment;
     }
-
-    public void Select()
-    {
-        _selected = true;
-        InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
-    }
-
-    private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
-    {
-        InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
-        Tile selectedTile = TileSelector.GetTileOnWorld(transform.position);
-        _selected = false;
-
-        do
-        {
-            if (selectedTile is null) break; // no tile on where user stopped selecting 
-            if (!LegalMoves().Contains(selectedTile.GetCoordinates().GetVector2Int())) break; // invalid movement square
-            if (selectedTile.HasPiece() && selectedTile.GetPiece() != this) // moved to a different tile that has another piece
-            {
-                selectedTile.DestroyPiece();
-            }
-            
-            MoveTile(selectedTile);
-        } while (false);
-        
-        transform.position = tile.transform.position;
-    }
-
+    
     // Extends 8 tiles in search direction until colliding with another piece or reaching end of board,
     // returning valid squares that can be occupied (including capturing)
-    protected HashSet<Vector2Int> SearchLegalTilesInDirection(Vector2Int coordsVec, Vector2Int dir)
+    protected HashSet<Vector2Int> SearchLegalTilesInDirection(
+        Vector2Int start, Vector2Int dir, HashSet<Piece> piecesToIgnore = null)
     {
-        Vector2Int incrementVec = Vector2Int.zero;
+        Vector2Int increment = new Vector2Int(0, 0);
+        Vector2Int endCoordinates = start + dir * 8;
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
-        for (int i = 0; i < 8; i++)
-        {
-            incrementVec += dir;
-            Tile testTile = Board.Instance.GetTile(coordsVec + incrementVec);
 
+        Piece testPiece = Board.Instance.FindFirstPieceInDirection(start, dir, 8, piecesToIgnore);
+        if (testPiece is not null)
+        {
+            endCoordinates = testPiece.GetTile().GetCoordinates();
+        }
+        
+        while (!endCoordinates.Equals(start + increment))
+        {
+            increment += dir;
+            Vector2Int testCoordinate = start + increment;
+            Tile testTile = Board.Instance.GetTile(testCoordinate);
+
+            if (testTile is not null && piecesToIgnore is not null)
+            {
+                if (testTile.HasPiece() && piecesToIgnore.Contains(testTile.GetPiece()))
+                {
+                    legalMoves.Add(testCoordinate);
+                    continue;
+                }
+            }
             if (!LegalTile(testTile)) break;
             
-            legalMoves.Add(coordsVec + incrementVec);
-
-            if (testTile.HasPiece()) break;
+            legalMoves.Add(testCoordinate);
         }
+        
         return legalMoves;
     }
     

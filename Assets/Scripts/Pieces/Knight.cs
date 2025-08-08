@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Knight : Piece
 {
-    private static Vector2Int[] KnightPositions { get; } = {
+    public static readonly Vector2Int[] KnightMoves = {
         new(2, -1), 
         new(2, 1), 
         new(1, -2), 
@@ -15,25 +15,24 @@ public class Knight : Piece
         new(-2, 1)
     };
 
-    protected new void Start()
+    public override void InitializeSprite()
     {
-        base.Start();
         spriteRenderer.sprite = sovereignPiece.knightSprite;
     }
-    
-    public override HashSet<Vector2Int> LegalMoves()
+
+    public override HashSet<Vector2Int> LegalMoves(HashSet<Piece> pieceToIgnore = null)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
 
-        Vector2Int position = GetCoordinates().GetVector2Int();
+        Vector2Int position = tile.GetCoordinates();
 
-        foreach (Vector2Int offset in KnightPositions)
+        foreach (Vector2Int offset in KnightMoves)
         {
-            Vector2Int testVec = position + offset;
-            Tile testTile = Board.Instance.GetTile(testVec);
+            Vector2Int testCoords = position + offset;
+            Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (!LegalTile(testTile)) continue;
-            legalMoves.Add(testVec);
+            legalMoves.Add(testCoords);
         }
         
         return legalMoves;

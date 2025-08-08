@@ -4,22 +4,56 @@ using UnityEngine;
 
 public class Rook : Piece
 {
-    protected new void Start()
+    public static readonly Vector2Int[] Orthogonals =
+    {
+        Vector2Int.right, 
+        Vector2Int.up, 
+        Vector2Int.left,
+        Vector2Int.down
+    };
+    
+    private bool _hasMoved;
+    private Tile _startingTile;
+
+    private new void Awake()
+    {
+        base.Awake();
+        _hasMoved = false;
+        _startingTile = tile;
+    }
+
+    private new void Start()
     {
         base.Start();
-        spriteRenderer.sprite = sovereignPiece.rookSprite;
+        PieceMover.Instance.OnPieceDeselected += PieceMover_OnPieceDeselected;
     }
     
-    public override HashSet<Vector2Int> LegalMoves()
+    public bool HasMoved() => _hasMoved;
+
+    private void PieceMover_OnPieceDeselected(object sender, PieceMover.OnPieceEventArgs e)
+    {
+        if (!Equals(e.piece)) return;
+
+        if (GetTile().Equals(_startingTile)) return;
+        
+        _hasMoved = true;
+    }
+
+    public override void InitializeSprite()
+    {
+        spriteRenderer.sprite = sovereignPiece.rookSprite;
+    }
+
+    public override HashSet<Vector2Int> LegalMoves(HashSet<Piece> pieceToIgnore = null)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
+        Vector2Int coordinates = tile.GetCoordinates();
+
+        foreach (Vector2Int direction in Orthogonals)
+        {
+            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction, pieceToIgnore));
+        }
         
-        Vector2Int coordsVec = GetCoordinates().GetVector2Int();
-        
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.up));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.down));
         return legalMoves;
     }
 }

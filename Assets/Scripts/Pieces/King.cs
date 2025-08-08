@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class King : Piece
 {
-    private static Vector2Int[] KingPositions { get; } = {
+    public static readonly Vector2Int[] KingMoves = {
         new(1, -1), 
         new(1, 0), 
         new(1, 1), 
@@ -15,27 +16,64 @@ public class King : Piece
         new(-1, 1)
     };
 
-    protected new void Start()
+    private bool _hasMoved;
+    private Tile _startingTile;
+
+    private new void Awake()
+    {
+        base.Awake();
+        _hasMoved = false;
+        _startingTile = tile;
+    }
+
+    private new void Start()
     {
         base.Start();
+        PieceMover.Instance.OnPieceDeselected += PieceMover_OnPieceDeselected;
+    }
+
+    public bool HasMoved() => _hasMoved;
+    
+    private void PieceMover_OnPieceDeselected(object sender, PieceMover.OnPieceEventArgs e)
+    {
+        if (!Equals(e.piece)) return;
+
+        if (GetTile().Equals(_startingTile)) return;
+        
+        _hasMoved = true;
+    }
+
+    public override void InitializeSprite()
+    {
         spriteRenderer.sprite = sovereignPiece.kingSprite;
     }
-    
-    public override HashSet<Vector2Int> LegalMoves()
+
+    public override HashSet<Vector2Int> LegalMoves(HashSet<Piece> piecesToIgnore = null)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
 
-        Vector2Int position = GetCoordinates().GetVector2Int();
+        Vector2Int position = tile.GetCoordinates();
 
-        foreach (Vector2Int offset in KingPositions)
+        HashSet<Piece> piecesToIgnoreCopy = new HashSet<Piece>(piecesToIgnore ?? new HashSet<Piece>()) { this };
+
+        foreach (Vector2Int offset in KingMoves)
         {
-            Vector2Int testVec = position + offset;
-            Tile testTile = Board.Instance.GetTile(testVec);
+            Vector2Int testCoords = position + offset;
+            Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (!LegalTile(testTile)) continue;
-            legalMoves.Add(testVec);
+            if (testTile.IsAttacked(alignment, piecesToIgnoreCopy)) continue;
+            legalMoves.Add(testCoords);
         }
+
+        legalMoves.AddRange(KingCastler.Instance.GetAllLegalCastles(this));
         
         return legalMoves;
+    }
+
+    public bool IsCastling(Tile selectedTile)
+    {
+        int xAbsDelta = Mathf.Abs(GetTile().GetCoordinates().x - selectedTile.GetCoordinates().x);
+        return xAbsDelta > 1;
     }
 }

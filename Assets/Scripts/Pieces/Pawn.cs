@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -16,20 +15,25 @@ public class Pawn : Piece
     private bool _canMoveHorizontal;
     private bool _canMoveVertical;
     
-    protected new void Start()
+    public override void InitializeSprite()
     {
-        base.Start();
         spriteRenderer.sprite = sovereignPiece.pawnSprite;
     }
-    
-    public override HashSet<Vector2Int> LegalMoves()
+
+    public override void DestroySelf()
+    {
+        base.DestroySelf();
+        Destroy(gameObject);
+    }
+
+    public override HashSet<Vector2Int> LegalMoves(HashSet<Piece> pieceToIgnore = null)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         
         HashSet<Vector2Int> moveTests = new HashSet<Vector2Int>(); 
         HashSet<Vector2Int> captureTests = new HashSet<Vector2Int>();
 
-        Vector2Int position = GetCoordinates().GetVector2Int();
+        Vector2Int position = tile.GetCoordinates();
         Vector2Int quadrant = Board.Instance.GetQuadrant(position);
 
         Vector2Int potentialPosition = position + quadrant;
@@ -37,61 +41,95 @@ public class Pawn : Piece
         
         if (quadrant.x == potentialQuadrant.x)
         {
-            moveTests.Add(HorizontalMove);
-            captureTests.AddRange(HorizontalCaptures);
+            moveTests.Add(HorizontalMove * quadrant);
+            foreach (Vector2Int horizontalCapture in HorizontalCaptures)
+            {
+                captureTests.Add(horizontalCapture * quadrant);
+            }
         }
 
         if (quadrant.y == potentialQuadrant.y)
         {
-            moveTests.Add(VerticalMove);
-            captureTests.AddRange(VerticalCaptures);
+            moveTests.Add(VerticalMove * quadrant);
+            foreach (Vector2Int horizontalCapture in VerticalCaptures)
+            {
+                captureTests.Add(horizontalCapture * quadrant);
+            }
         }
 
-        if (Board.Instance.OnOuterTwoX(position)) moveTests.Add(HorizontalStartingMove);
-        if (Board.Instance.OnOuterTwoY(position)) moveTests.Add(VerticalStartingMove);
+        if (Board.Instance.OnOuterTwoX(position)) moveTests.Add(HorizontalStartingMove * quadrant);
+        if (Board.Instance.OnOuterTwoY(position)) moveTests.Add(VerticalStartingMove * quadrant);
         
-        legalMoves.AddRange(CheckForPawnMoves(position, quadrant, 
+        legalMoves.AddRange(CheckForPawnMoves(
+            position, 
             moveTests, 
             captureTests));
         
         return legalMoves;
     }
 
+    public HashSet<Vector2Int> GetAttackingCoordinates()
+    {
+        HashSet<Vector2Int> captureDirections = new HashSet<Vector2Int>();
+
+        Vector2Int position = tile.GetCoordinates();
+        Vector2Int quadrant = Board.Instance.GetQuadrant(position);
+
+        Vector2Int potentialPosition = position + quadrant;
+        Vector2Int potentialQuadrant = Board.Instance.GetQuadrant(potentialPosition);
+        
+        if (quadrant.x == potentialQuadrant.x)
+        {
+            foreach (Vector2Int horizontalCapture in HorizontalCaptures)
+            {
+                captureDirections.Add(horizontalCapture * quadrant);
+            }
+        }
+
+        if (quadrant.y == potentialQuadrant.y)
+        {
+            foreach (Vector2Int horizontalCapture in VerticalCaptures)
+            {
+                captureDirections.Add(horizontalCapture * quadrant);
+            }
+        }
+        
+        HashSet<Vector2Int> attackingCoordinates = new HashSet<Vector2Int>();
+        foreach (Vector2Int captureDirection in captureDirections)
+        {
+            attackingCoordinates.Add(position + captureDirection);
+        }
+        
+        return attackingCoordinates;
+    }
+
     private HashSet<Vector2Int> CheckForPawnMoves(
-        Vector2Int position, Vector2Int quadrant, 
-        HashSet<Vector2Int> movePositions, HashSet<Vector2Int> capturePositions)
+        Vector2Int position, HashSet<Vector2Int> movePositions, HashSet<Vector2Int> capturePositions)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         foreach (Vector2Int offset in movePositions)
         {
-            Vector2Int testVec = position + offset * quadrant;
-            Tile testTile = Board.Instance.GetTile(testVec);
+            Vector2Int testCoords = position + offset;
+            Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (!LegalTile(testTile, canCapture: false)) continue;
-            legalMoves.Add(testVec);
+            legalMoves.Add(testCoords);
         }
 
         foreach (Vector2Int offset in capturePositions)
         {
-            Vector2Int testVec = position + offset * quadrant;
-            Tile testTile = Board.Instance.GetTile(testVec);
+            Vector2Int testCoords = position + offset;
+            Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (!LegalTile(testTile, canMove: false)) continue;
-            legalMoves.Add(testVec);
+            legalMoves.Add(testCoords);
         }
         
         return legalMoves;
     }
 
-    private String DebugHashSetLog(HashSet<Vector2Int> hashSet)
+    public static bool CanPromote(Tile selectedTile)
     {
-        String output = "";
-
-        foreach (Vector2Int vector in hashSet)
-        {
-            output += vector + ", ";
-        }
-        
-        return output;
+        return Board.Instance.InPawnPromotionArea(selectedTile.GetCoordinates());
     }
 }

@@ -5,25 +5,30 @@ public class TileVisual : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer selectedEmptyVisual;
     [SerializeField] private SpriteRenderer selectedPieceVisual;
+    [SerializeField] private SpriteRenderer highlightVisual;
     [SerializeField] private Tile tile;
     
     private void Start()
     {
         HideSelectVisuals();
-        TileSelector.Instance.OnPieceSelected += TileSelector_OnPieceSelected;
+        PieceMover.Instance.OnPieceSelected += PieceMover_OnPieceSelected;
+        PieceMover.Instance.OnPieceDeselected += PieceMover_OnPieceDeselected;
     }
 
-    private void TileSelector_OnPieceSelected(object sender, TileSelector.OnPieceSelectedEventArgs e)
+    private void PieceMover_OnPieceSelected(object sender, PieceMover.OnPieceEventArgs e)
     {
-        if (!e.piece.LegalMoves().Contains(tile.GetCoordinates().GetVector2Int())) return;
+        if (e.piece.GetTile().Equals(tile))
+        {
+            highlightVisual.gameObject.SetActive(true);
+            return;
+        }
+        if (!e.legalMoves.Contains(tile.GetCoordinates())) return;
         
-        InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
         ShowSelectVisuals();
     }
 
-    private void InputHandler_OnSelectCanceled(object sender, EventArgs e)
+    private void PieceMover_OnPieceDeselected(object sender, EventArgs e)
     {
-        InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
         HideSelectVisuals();
     }
 
@@ -37,5 +42,6 @@ public class TileVisual : MonoBehaviour
     {
         selectedEmptyVisual.gameObject.SetActive(false);
         selectedPieceVisual.gameObject.SetActive(false);
+        highlightVisual.gameObject.SetActive(false);
     }
 }

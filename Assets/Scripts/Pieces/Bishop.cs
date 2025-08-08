@@ -4,22 +4,29 @@ using UnityEngine;
 
 public class Bishop : Piece
 {
-    protected new void Start()
+    public static readonly Vector2Int[] Diagonals =
     {
-        base.Start();
+        new( 1,  1),
+        new(-1,  1),
+        new( 1, -1),
+        new(-1, -1)
+    };
+    
+    public override void InitializeSprite()
+    {
         spriteRenderer.sprite = sovereignPiece.bishopSprite;
     }
-    
-    public override HashSet<Vector2Int> LegalMoves()
-    {        
+
+    public override HashSet<Vector2Int> LegalMoves(HashSet<Piece> piecesToIgnore = null)
+    {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
+        Vector2Int coordinates = tile.GetCoordinates();
+
+        foreach (Vector2Int direction in Diagonals)
+        {
+            legalMoves.AddRange(SearchLegalTilesInDirection(coordinates, direction, piecesToIgnore));
+        }
         
-        Vector2Int coordsVec = GetCoordinates().GetVector2Int();
-        
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right + Vector2Int.up));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left + Vector2Int.up));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.right + Vector2Int.down));
-        legalMoves.AddRange(SearchLegalTilesInDirection(coordsVec, Vector2Int.left + Vector2Int.down));
         return legalMoves;
     }
 }
