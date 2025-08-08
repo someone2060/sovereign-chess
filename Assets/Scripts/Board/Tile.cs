@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -38,41 +39,34 @@ public class Tile : MonoBehaviour
         piece = null;
     }
   
-    public bool IsAttacked(Piece.Alignment alignment, List<Piece> piecesToIgnore = null)
+    public bool IsAttacked(Piece.Alignment alignment, HashSet<Piece> piecesToIgnore = null)
     {
         return GetAllAttackers(alignment, piecesToIgnore).Count > 0;
     }
 
     // Returns all pieces targeting this tile hostile to the inputted alignment;
     // no pieces can ever attack neutral alignment, and white/black alignments are hostile to each other
-    public List<Piece> GetAllAttackers(Piece.Alignment alignment, List<Piece> piecesToIgnore = null)
+    public HashSet<Piece> GetAllAttackers(Piece.Alignment alignment, HashSet<Piece> piecesToIgnore = null)
     {
-        List<Piece> attackers = new List<Piece>();
+        HashSet<Piece> attackers = new HashSet<Piece>();
         Piece testPiece;
         
         if (alignment == Piece.Alignment.Neutral) return attackers;
         
+        HashSet<Piece> piecesToIgnoreCopy = new HashSet<Piece>(piecesToIgnore ?? new HashSet<Piece>());
         if (HasPiece())
         {
-            if (piecesToIgnore is null)
-            {
-                piecesToIgnore = new List<Piece> { piece };
-            }
-            else
-            {
-                piecesToIgnore.Add(piece);
-            }
+            piecesToIgnoreCopy.Add(piece);
         }
         
         // Search for rooks, queens along orthogonals
         foreach (Vector2Int direction in Rook.Orthogonals)
         {
             testPiece = Board.Instance.FindFirstPieceInDirection(
-                GetCoordinates(), direction, 8, piecesToIgnore);
+                GetCoordinates(), direction, 8, piecesToIgnoreCopy);
             if (testPiece?.gameObject.GetComponent<Queen>() is null 
                 && testPiece?.gameObject.GetComponent<Rook>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            if (!testPiece.LegalMoves(piecesToIgnore).Contains(_coordinates)) continue;
             attackers.Add(testPiece);
         }
         
@@ -80,11 +74,10 @@ public class Tile : MonoBehaviour
         foreach (Vector2Int direction in Bishop.Diagonals)
         {
             testPiece = Board.Instance.FindFirstPieceInDirection(
-                GetCoordinates(), direction, 8, piecesToIgnore);
+                GetCoordinates(), direction, 8, piecesToIgnoreCopy);
             if (testPiece?.gameObject.GetComponent<Queen>() is null
                 && testPiece?.gameObject.GetComponent<Bishop>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            if (!testPiece.LegalMoves(piecesToIgnore).Contains(_coordinates)) continue;
             attackers.Add(testPiece);
         }
 
@@ -95,19 +88,26 @@ public class Tile : MonoBehaviour
             testPiece = testTile?.GetPiece();
             if (testPiece?.gameObject.GetComponent<Knight>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            if (!testPiece.LegalMoves(piecesToIgnore).Contains(_coordinates)) continue;
             attackers.Add(testPiece);
         }
         
-        // Search for pawns
+        // Search for pawns TODO DEBUG
         foreach (Vector2Int direction in Bishop.Diagonals)
         {
             testPiece = Board.Instance.FindFirstPieceInDirection(GetCoordinates(), direction, 1);
             if (testPiece?.gameObject.GetComponent<Pawn>() is null) continue;
             if (!testPiece.CanBeCaptured(alignment)) continue;
-            if (!testPiece.LegalMoves(piecesToIgnore).Contains(_coordinates)) continue;
+            Pawn testPawn = testPiece.gameObject.GetComponent<Pawn>();
+            if (!testPawn.GetAttackingCoordinates().Contains(_coordinates)) continue;
             attackers.Add(testPiece);
         }
+        
+        // TODO
+        // Search for king
+        // foreach (var VARIABLE in COLLECTION)
+        // {
+        //     
+        // }
 
         return attackers;
     }

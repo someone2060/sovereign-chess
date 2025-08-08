@@ -20,7 +20,7 @@ public class Knight : Piece
         spriteRenderer.sprite = sovereignPiece.knightSprite;
     }
 
-    public override HashSet<Vector2Int> LegalMoves(List<Piece> pieceToIgnore = null)
+    public override HashSet<Vector2Int> LegalMoves(HashSet<Piece> pieceToIgnore = null)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class KingAttackedManager : MonoBehaviour
@@ -22,7 +23,8 @@ public class KingAttackedManager : MonoBehaviour
 
     private void PieceMover_OnPieceDeselected(object sender, PieceMover.OnPieceEventArgs e)
     {
-        _attackingPieces = king.GetTile().GetAllAttackers(king.GetAlignment());
+        HashSet<Piece> attackers = king.GetTile().GetAllAttackers(king.GetAlignment()); 
+        _attackingPieces = attackers.ToList();
         _kingAttacked = _attackingPieces.Count > 0;
     }
 

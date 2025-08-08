@@ -44,7 +44,7 @@ public class Rook : Piece
         spriteRenderer.sprite = sovereignPiece.rookSprite;
     }
 
-    public override HashSet<Vector2Int> LegalMoves(List<Piece> pieceToIgnore = null)
+    public override HashSet<Vector2Int> LegalMoves(HashSet<Piece> pieceToIgnore = null)
     {
         HashSet<Vector2Int> legalMoves = new HashSet<Vector2Int>();
         Vector2Int coordinates = tile.GetCoordinates();

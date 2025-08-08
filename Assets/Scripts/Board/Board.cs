@@ -70,7 +70,7 @@ public class Board : MonoBehaviour
     }
     
     public Piece FindFirstPieceInDirection(
-        Vector2Int start, Vector2Int direction, int distance, List<Piece> piecesToIgnore = null)
+        Vector2Int start, Vector2Int direction, int distance, HashSet<Piece> piecesToIgnore = null)
     {
         Vector2Int increment = Vector2Int.zero;
         for (int i = 0; i < distance; i++)

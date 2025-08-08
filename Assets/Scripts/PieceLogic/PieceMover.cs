@@ -48,14 +48,17 @@ public class PieceMover : MonoBehaviour
 
         Tile tile = TileSelector.GetTileOnWorld(positionWorld);
         if (tile is null) return;
-
+        
         if (!tile.HasPiece()) return;
 
         Piece piece = tile.GetPiece();
 
-        if (_state == State.ClickSelecting && piece.Equals(_piece))
+        if (_state == State.ClickSelecting)
         {
-            _piece.SetSelected(true);
+            if (piece.Equals(_piece))
+            {
+                _piece.SetSelected(true);
+            }
             return;
         }
         
@@ -91,11 +94,6 @@ public class PieceMover : MonoBehaviour
 
     private void SelectPiece(Piece piece)
     {
-        if (_state == State.ClickSelecting)
-        {
-            InputHandler_OnSelectCanceled(this, EventArgs.Empty);
-        }
-        
         _piece = piece;
         _piece.SetSelected(true);
         _legalMoves = _piece.LegalMoves();
@@ -161,18 +159,5 @@ public class PieceMover : MonoBehaviour
         }
 
         _piece.SetTile(selectedTile);
-    }
-
-    // used like DebugDisplayHashSetCoords("Legal moves:", _legalMoves);
-    private void DebugDisplayHashSetCoords(string preamble, HashSet<Vector2Int> coordinates)
-    {
-        List<string> coordStr = coordinates.Select(
-            legalCastle => CoordinatesToString.Convert(
-                Board.Instance.GetTile(legalCastle).GetCoordinates())).ToList();
-        coordStr.Sort();
-        
-        String debugString = coordStr.Aggregate(
-            preamble, (current, coords) => current + coords + ", ");
-        Debug.Log(debugString);
     }
 }

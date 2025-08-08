@@ -37,7 +37,7 @@ public abstract class Piece : MonoBehaviour
     private bool _selected;
 
     public abstract void InitializeSprite();
-    public abstract HashSet<Vector2Int> LegalMoves(List<Piece> piecesToIgnore = null);
+    public abstract HashSet<Vector2Int> LegalMoves(HashSet<Piece> piecesToIgnore = null);
     
     protected void Awake()
     {
@@ -107,7 +107,7 @@ public abstract class Piece : MonoBehaviour
     // Extends 8 tiles in search direction until colliding with another piece or reaching end of board,
     // returning valid squares that can be occupied (including capturing)
     protected HashSet<Vector2Int> SearchLegalTilesInDirection(
-        Vector2Int start, Vector2Int dir, List<Piece> piecesToIgnore = null)
+        Vector2Int start, Vector2Int dir, HashSet<Piece> piecesToIgnore = null)
     {
         Vector2Int increment = new Vector2Int(0, 0);
         Vector2Int endCoordinates = start + dir * 8;
