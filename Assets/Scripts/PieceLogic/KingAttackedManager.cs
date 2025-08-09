@@ -1,15 +1,18 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class KingAttackedManager : MonoBehaviour
 {
     [SerializeField] private King king;
     [SerializeField] private Piece.Alignment alignment;
+    [SerializeField] private bool isActive;
 
     private bool _kingAttacked;
     private List<Piece> _attackingPieces;
+
+    public event EventHandler OnUpdate;
 
     private void Awake()
     {
@@ -19,6 +22,7 @@ public class KingAttackedManager : MonoBehaviour
 
     private void Start()
     {
+        if (!isActive) return;
         PieceMover.Instance.OnPieceDeselected += PieceMover_OnPieceDeselected;
     }
 
@@ -27,6 +31,7 @@ public class KingAttackedManager : MonoBehaviour
         HashSet<Piece> attackers = king.GetTile().GetAllAttackers(king.GetAlignment()); 
         _attackingPieces = attackers.ToList();
         _kingAttacked = _attackingPieces.Count > 0;
+        OnUpdate?.Invoke(this, EventArgs.Empty);
     }
 
     public bool KingAttacked() => _kingAttacked;

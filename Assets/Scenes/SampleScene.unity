@@ -195,6 +195,53 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dc4640cde1b54b9fb8c110caeb5edd2, type: 3}
+--- !u!1 &9235151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9235153}
+  - component: {fileID: 9235152}
+  m_Layer: 0
+  m_Name: Black KingAttackedManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &9235152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9235151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a14e4593ae4459eb47030e1ec7d9e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  king: {fileID: 268534911}
+  alignment: 2
+  isActive: 1
+--- !u!4 &9235153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9235151}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &14574591
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -602,6 +649,10 @@ PrefabInstance:
       propertyPath: sovereignPiece
       value: 
       objectReference: {fileID: 11400000, guid: 393e258ce3be776d88aa3af98a3be7eb, type: 2}
+    - target: {fileID: -4798647780879673297, guid: 5acafcd703badaf708bb6c5a44465c73, type: 3}
+      propertyPath: kingAttackedManager
+      value: 
+      objectReference: {fileID: 9235152}
     - target: {fileID: 2721820931701349718, guid: 5acafcd703badaf708bb6c5a44465c73, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.5374658
@@ -676,6 +727,10 @@ PrefabInstance:
       propertyPath: sovereignPiece
       value: 
       objectReference: {fileID: 11400000, guid: a7853b8513ac241b3ad1294bea3cff87, type: 2}
+    - target: {fileID: -4798647780879673297, guid: 5acafcd703badaf708bb6c5a44465c73, type: 3}
+      propertyPath: kingAttackedManager
+      value: 
+      objectReference: {fileID: 1160625752}
     - target: {fileID: 2721820931701349718, guid: 5acafcd703badaf708bb6c5a44465c73, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.53
@@ -1672,6 +1727,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2721820931701349718, guid: 5acafcd703badaf708bb6c5a44465c73, type: 3}
   m_PrefabInstance: {fileID: 67696459}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &268534911 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -4798647780879673297, guid: 5acafcd703badaf708bb6c5a44465c73, type: 3}
+  m_PrefabInstance: {fileID: 67696459}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f2cf1c4979e4560a435a0d3a4cadcdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &268898261 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2721820931701349718, guid: 7954afd28fa2fb682bc046dd8e40a322, type: 3}
@@ -1775,6 +1841,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa934d67b4f0e44f7953b5204af32ec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &308462569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1566305462180778706, guid: 8a103b8545c3bbd0eadf4afa56216697, type: 3}
+  m_PrefabInstance: {fileID: 580747798}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f2cf1c4979e4560a435a0d3a4cadcdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &308649715
@@ -3326,6 +3403,10 @@ PrefabInstance:
       propertyPath: sovereignPiece
       value: 
       objectReference: {fileID: 11400000, guid: 693a48d04bb2cd84b9c2685308709043, type: 2}
+    - target: {fileID: 1566305462180778706, guid: 8a103b8545c3bbd0eadf4afa56216697, type: 3}
+      propertyPath: kingAttackedManager
+      value: 
+      objectReference: {fileID: 690451489}
     - target: {fileID: 2799488012858917459, guid: 8a103b8545c3bbd0eadf4afa56216697, type: 3}
       propertyPath: sovereignPiece
       value: 
@@ -3826,6 +3907,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2721820931701349718, guid: 4dc4640cde1b54b9fb8c110caeb5edd2, type: 3}
   m_PrefabInstance: {fileID: 281475077}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &690451488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 690451490}
+  - component: {fileID: 690451489}
+  m_Layer: 0
+  m_Name: placeholder KingAttackedManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &690451489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690451488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a14e4593ae4459eb47030e1ec7d9e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  king: {fileID: 308462569}
+  alignment: 0
+  isActive: 0
+--- !u!4 &690451490
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690451488}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &692244659 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 317795956313004783, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}
@@ -6098,7 +6226,7 @@ GameObject:
   - component: {fileID: 1160625753}
   - component: {fileID: 1160625752}
   m_Layer: 0
-  m_Name: Debug KingAttackedManager
+  m_Name: White KingAttackedManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6118,6 +6246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   king: {fileID: 1035050745}
   alignment: 1
+  isActive: 1
 --- !u!4 &1160625753
 Transform:
   m_ObjectHideFlags: 0
@@ -8433,7 +8562,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceb137727ab6f09fca3f5be124afd7a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugKingAttackedManager: {fileID: 1160625752}
+  whiteKingAttackedManager: {fileID: 1160625752}
+  blackKingAttackedManager: {fileID: 9235152}
 --- !u!4 &1556994570
 Transform:
   m_ObjectHideFlags: 0
@@ -10540,3 +10670,5 @@ SceneRoots:
   - {fileID: 497736095}
   - {fileID: 580747798}
   - {fileID: 1160625753}
+  - {fileID: 9235153}
+  - {fileID: 690451490}

@@ -103,7 +103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7834560955847143113
 Transform:
   m_ObjectHideFlags: 0
@@ -164,7 +164,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -6684430161380966744, guid: d22d315c578a31d31a879166a77eb878, type: 3}
-  m_Color: {r: 0.7463868, g: 0.10044288, b: 0.10044288, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -224,3 +224,5 @@ MonoBehaviour:
   alignment: 0
   sovereignPiece: {fileID: 0}
   spriteRenderer: {fileID: 1438704383160617186}
+  kingAttackedManager: {fileID: 0}
+  inCheckVisual: {fileID: 3899336510750629676}

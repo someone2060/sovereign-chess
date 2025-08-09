@@ -15,7 +15,8 @@ public class PieceMover : MonoBehaviour
     
     public static PieceMover Instance { get; private set; }
     
-    [SerializeField] private KingAttackedManager debugKingAttackedManager; //TODO DEBUG
+    [SerializeField] private KingAttackedManager whiteKingAttackedManager; //TODO DEBUG
+    [SerializeField] private KingAttackedManager blackKingAttackedManager;
 
     private Piece _piece;
     private HashSet<Vector2Int> _legalMoves;
@@ -55,7 +56,7 @@ public class PieceMover : MonoBehaviour
 
         Piece piece = tile.GetPiece();
 
-        if (_state == State.ClickSelecting)
+        if (_state == State.ClickSelecting) //TODO select other piece if same alignment
         {
             if (piece.Equals(_piece))
             {
@@ -99,10 +100,17 @@ public class PieceMover : MonoBehaviour
         _piece = piece;
         _piece.SetSelected(true);
         _legalMoves = _piece.LegalMoves();
-        if (_piece.gameObject.GetComponent<King>() is null &&
-            _piece.GetAlignment() == Piece.Alignment.White)
+        if (_piece.gameObject.GetComponent<King>() is null)
         {
-            _legalMoves = debugKingAttackedManager.FilterLegalMoves(_piece, _legalMoves);
+            if (_piece.GetAlignment() == Piece.Alignment.White)
+            {
+                _legalMoves = whiteKingAttackedManager.FilterLegalMoves(_piece, _legalMoves);
+            }
+
+            if (_piece.GetAlignment() == Piece.Alignment.Black)
+            {
+                _legalMoves = blackKingAttackedManager.FilterLegalMoves(_piece, _legalMoves);
+            }
         }
         _state = State.DragSelecting;
         
