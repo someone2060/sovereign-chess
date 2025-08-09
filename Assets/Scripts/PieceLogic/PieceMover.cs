@@ -14,6 +14,8 @@ public class PieceMover : MonoBehaviour
     }
     
     public static PieceMover Instance { get; private set; }
+    
+    [SerializeField] private KingAttackedManager debugKingAttackedManager; //TODO DEBUG
 
     private Piece _piece;
     private HashSet<Vector2Int> _legalMoves;
@@ -97,6 +99,11 @@ public class PieceMover : MonoBehaviour
         _piece = piece;
         _piece.SetSelected(true);
         _legalMoves = _piece.LegalMoves();
+        if (_piece.gameObject.GetComponent<King>() is null &&
+            _piece.GetAlignment() == Piece.Alignment.White)
+        {
+            _legalMoves = debugKingAttackedManager.FilterLegalMoves(_piece, _legalMoves);
+        }
         _state = State.DragSelecting;
         
         InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
@@ -145,13 +152,16 @@ public class PieceMover : MonoBehaviour
     private void SetPieceTile(Tile selectedTile)
     {
         _state = State.Unselected;
-        OnPieceDeselected?.Invoke(this, new OnPieceEventArgs
-        {
-            legalMoves = null,
-            piece = _piece 
-        });
         
-        if (selectedTile is null) return;
+        if (selectedTile is null)
+        {
+            OnPieceDeselected?.Invoke(this, new OnPieceEventArgs
+            {
+                legalMoves = null,
+                piece = _piece 
+            });
+            return;
+        }
         
         if (selectedTile.HasPiece() && !selectedTile.GetPiece().Equals(_piece))
         {
@@ -159,5 +169,10 @@ public class PieceMover : MonoBehaviour
         }
 
         _piece.SetTile(selectedTile);
+        OnPieceDeselected?.Invoke(this, new OnPieceEventArgs
+        {
+            legalMoves = null,
+            piece = _piece 
+        });
     }
 }
