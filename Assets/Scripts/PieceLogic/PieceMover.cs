@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PieceMover : MonoBehaviour
@@ -55,15 +54,6 @@ public class PieceMover : MonoBehaviour
         if (!tile.HasPiece()) return;
 
         Piece piece = tile.GetPiece();
-
-        if (_state == State.ClickSelecting) //TODO select other piece if same alignment
-        {
-            if (piece.Equals(_piece))
-            {
-                _piece.SetSelected(true);
-            }
-            return;
-        }
         
         SelectPiece(piece);
     }
@@ -80,6 +70,7 @@ public class PieceMover : MonoBehaviour
             if (selectedTile.Equals(_piece.GetTile()) && _state == State.DragSelecting)
             {
                 _state = State.ClickSelecting;
+                InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
                 break;
             }
             
@@ -97,6 +88,15 @@ public class PieceMover : MonoBehaviour
 
     private void SelectPiece(Piece piece)
     {
+        if (_state == State.ClickSelecting)
+        {
+            OnPieceDeselected?.Invoke(this, new OnPieceEventArgs
+            {
+                legalMoves = _legalMoves,
+                piece = _piece
+            });
+        }
+        
         _piece = piece;
         _piece.SetSelected(true);
         _legalMoves = _piece.LegalMoves();

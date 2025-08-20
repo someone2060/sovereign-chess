@@ -9,7 +9,7 @@ public class PawnPromoter : MonoBehaviour
     [SerializeField] private Transform pawnParent;
     [SerializeField] private LayerMask layerMask;
     
-    private SovereignPieceSO _sovereignPiece;
+    private SovereignPieceSO _sovereignPieceSO;
     private Pawn _pawn;
     private Tile _promotionTile;
     
@@ -22,12 +22,12 @@ public class PawnPromoter : MonoBehaviour
         Instance = this;
     }
     
-    public SovereignPieceSO GetSovereignPiece() => _sovereignPiece;
+    public SovereignPieceSO GetSovereignPiece() => _sovereignPieceSO;
 
     public void PromptPawnPromotion(Pawn pawn, Tile promotionTile)
     {
         transform.position = promotionTile.transform.position;
-        _sovereignPiece = pawn.GetSovereignPiece();
+        _sovereignPieceSO = pawn.GetSovereignPiece();
         _pawn = pawn;
         _promotionTile = promotionTile;
         
@@ -62,7 +62,7 @@ public class PawnPromoter : MonoBehaviour
     {
         GameObject newPiece = Instantiate(piece, pawnParent);
         newPiece.GetComponent<Piece>().SetAlignment(_pawn.GetAlignment());
-        newPiece.GetComponent<Piece>().SetSovereignPiece(_sovereignPiece);
+        newPiece.GetComponent<Piece>().SetSovereignPiece(_sovereignPieceSO);
         newPiece.GetComponent<Piece>().InitializeSprite();
         if (_promotionTile.HasPiece())
         {
