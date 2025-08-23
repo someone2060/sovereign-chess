@@ -17,7 +17,7 @@ public class PieceMover : MonoBehaviour
     [SerializeField] private KingAttackedManager whiteKingAttackedManager; //TODO DEBUG
     [SerializeField] private KingAttackedManager blackKingAttackedManager;
 
-    private Piece _piece;
+    [SerializeField] private Piece _piece; //TODO DEBUG
     private HashSet<Vector2Int> _legalMoves;
     private State _state;
     
@@ -54,7 +54,7 @@ public class PieceMover : MonoBehaviour
         if (!tile.HasPiece()) return;
 
         Piece piece = tile.GetPiece();
-        
+
         SelectPiece(piece);
     }
 
@@ -70,7 +70,6 @@ public class PieceMover : MonoBehaviour
             if (selectedTile.Equals(_piece.GetTile()) && _state == State.DragSelecting)
             {
                 _state = State.ClickSelecting;
-                InputHandler.Instance.OnSelectCanceled -= InputHandler_OnSelectCanceled;
                 break;
             }
             
@@ -88,13 +87,9 @@ public class PieceMover : MonoBehaviour
 
     private void SelectPiece(Piece piece)
     {
-        if (_state == State.ClickSelecting)
+        if (_state != State.ClickSelecting)
         {
-            OnPieceDeselected?.Invoke(this, new OnPieceEventArgs
-            {
-                legalMoves = _legalMoves,
-                piece = _piece
-            });
+            InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
         }
         
         _piece = piece;
@@ -113,8 +108,6 @@ public class PieceMover : MonoBehaviour
             }
         }
         _state = State.DragSelecting;
-        
-        InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
         
         OnPieceSelected?.Invoke(this, new OnPieceEventArgs
         {
