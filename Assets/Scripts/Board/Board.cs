@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public class Board : MonoBehaviour
@@ -72,11 +73,11 @@ public class Board : MonoBehaviour
     public Piece FindFirstPieceInDirection(
         Vector2Int start, Vector2Int direction, int distance, HashSet<Piece> piecesToIgnore = null)
     {
-        Vector2Int increment = Vector2Int.zero;
+        Vector2Int offset = Vector2Int.zero;
         for (int i = 0; i < distance; i++)
         {
-            increment += direction;
-            Tile testTile = GetTile(start + increment);
+            offset += direction;
+            Tile testTile = GetTile(start + offset);
 
             if (testTile is null) return null;
             if (!testTile.HasPiece()) continue;
@@ -102,5 +103,35 @@ public class Board : MonoBehaviour
             rooks.Add(rook);
         }
         return rooks;
+    }
+
+    public HashSet<Vector2Int> GetCoordinatesBetweenPoints(Vector2Int start, Vector2Int end)
+    {
+        HashSet<Vector2Int> coordinates = new HashSet<Vector2Int>();
+        Vector2Int dir = GetDirectionToCoordinate(start, end);
+        if (dir == Vector2Int.zero) return coordinates;
+
+        Vector2Int offset = dir;
+        while (start + offset != end)
+        {
+            coordinates.Add(start + offset);
+            offset += dir;
+        }
+        return coordinates;
+    }
+
+    // Returns Vector2Int.zero if no valid orthogonal/diagonal found
+    public static Vector2Int GetDirectionToCoordinate(Vector2Int start, Vector2Int end)
+    {
+        Vector2Int difference = end - start;
+        if (difference.x != 0 && difference.y != 0 && 
+            Math.Abs(difference.x) != Math.Abs(difference.y))
+        {
+            return Vector2Int.zero;
+        }
+
+        difference.x = Math.Sign(difference.x);
+        difference.y = Math.Sign(difference.y);
+        return difference;
     }
 }

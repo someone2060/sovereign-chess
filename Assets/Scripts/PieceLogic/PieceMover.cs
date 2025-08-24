@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PieceMover : MonoBehaviour
@@ -14,8 +13,11 @@ public class PieceMover : MonoBehaviour
     }
     
     public static PieceMover Instance { get; private set; }
+    
+    [SerializeField] private KingAttackedManager whiteKingAttackedManager; //TODO DEBUG
+    [SerializeField] private KingAttackedManager blackKingAttackedManager;
 
-    private Piece _piece;
+    [SerializeField] private Piece _piece; //TODO DEBUG
     private HashSet<Vector2Int> _legalMoves;
     private State _state;
     
@@ -53,15 +55,6 @@ public class PieceMover : MonoBehaviour
 
         Piece piece = tile.GetPiece();
 
-        if (_state == State.ClickSelecting)
-        {
-            if (piece.Equals(_piece))
-            {
-                _piece.SetSelected(true);
-            }
-            return;
-        }
-        
         SelectPiece(piece);
     }
 
@@ -94,12 +87,27 @@ public class PieceMover : MonoBehaviour
 
     private void SelectPiece(Piece piece)
     {
+        if (_state != State.ClickSelecting)
+        {
+            InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
+        }
+        
         _piece = piece;
         _piece.SetSelected(true);
         _legalMoves = _piece.LegalMoves();
+        if (_piece.gameObject.GetComponent<King>() is null)
+        {
+            if (_piece.GetAlignment() == Piece.Alignment.White)
+            {
+                _legalMoves = whiteKingAttackedManager.FilterLegalMoves(_piece, _legalMoves);
+            }
+
+            if (_piece.GetAlignment() == Piece.Alignment.Black)
+            {
+                _legalMoves = blackKingAttackedManager.FilterLegalMoves(_piece, _legalMoves);
+            }
+        }
         _state = State.DragSelecting;
-        
-        InputHandler.Instance.OnSelectCanceled += InputHandler_OnSelectCanceled;
         
         OnPieceSelected?.Invoke(this, new OnPieceEventArgs
         {
@@ -145,13 +153,16 @@ public class PieceMover : MonoBehaviour
     private void SetPieceTile(Tile selectedTile)
     {
         _state = State.Unselected;
-        OnPieceDeselected?.Invoke(this, new OnPieceEventArgs
-        {
-            legalMoves = null,
-            piece = _piece 
-        });
         
-        if (selectedTile is null) return;
+        if (selectedTile is null)
+        {
+            OnPieceDeselected?.Invoke(this, new OnPieceEventArgs
+            {
+                legalMoves = null,
+                piece = _piece 
+            });
+            return;
+        }
         
         if (selectedTile.HasPiece() && !selectedTile.GetPiece().Equals(_piece))
         {
@@ -159,5 +170,10 @@ public class PieceMover : MonoBehaviour
         }
 
         _piece.SetTile(selectedTile);
+        OnPieceDeselected?.Invoke(this, new OnPieceEventArgs
+        {
+            legalMoves = null,
+            piece = _piece 
+        });
     }
 }

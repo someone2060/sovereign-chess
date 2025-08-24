@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -15,6 +16,9 @@ public class King : Piece
         new(-1, 0),
         new(-1, 1)
     };
+    
+    [SerializeField] private KingAttackedManager kingAttackedManager;
+    [SerializeField] private GameObject inCheckVisual;
 
     private bool _hasMoved;
     private Tile _startingTile;
@@ -24,6 +28,14 @@ public class King : Piece
         base.Awake();
         _hasMoved = false;
         _startingTile = tile;
+        inCheckVisual.SetActive(false);
+        
+        kingAttackedManager.OnUpdate += KingAttackedManager_OnUpdate;
+    }
+
+    private void KingAttackedManager_OnUpdate(object sender, EventArgs e)
+    {
+        inCheckVisual.SetActive(kingAttackedManager.KingAttacked());
     }
 
     private new void Start()

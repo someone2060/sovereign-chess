@@ -112,8 +112,7 @@ public class Tile : MonoBehaviour
             if (!testPiece.CanBeCaptured(alignment)) continue;
             attackers.Add(testPiece);
         }
-
+        
         return attackers;
     }
 }
-    
