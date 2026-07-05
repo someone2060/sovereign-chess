@@ -9,7 +9,7 @@ public class Tile : MonoBehaviour
     
     private Vector2Int _coordinates;
 
-    protected void Awake()
+    private void Awake()
     {
         _coordinates = Vector2Int.down;
     }
