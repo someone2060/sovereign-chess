@@ -1,15 +1,15 @@
 using System.Collections.Generic;
-using System.Linq;
+using NUnit.Framework;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer tileVisual;
-    [SerializeField] private Piece piece;
+    [SerializeField] protected SpriteRenderer tileVisual;
+    [SerializeField] protected Piece piece;
     
     private Vector2Int _coordinates;
 
-    private void Awake()
+    protected void Awake()
     {
         _coordinates = Vector2Int.down;
     }

@@ -133,7 +133,14 @@ public abstract class Piece : MonoBehaviour
                     continue;
                 }
             }
-            if (!LegalTile(testTile)) break;
+            if (!LegalTile(testTile))
+            { // test for sovereign tile exception (can't move onto tile, but can move past)
+                if (testTile is null) break;
+                if (testTile.HasPiece()) break;
+                SovereignTile sovereignTile = testTile.GetComponent<SovereignTile>();
+                if (sovereignTile is null) break;
+                continue;
+            }
             
             legalMoves.Add(testCoordinate);
         }
@@ -146,6 +153,11 @@ public abstract class Piece : MonoBehaviour
     protected bool LegalTile(Tile testTile, bool canMove = true, bool canCapture = true)
     {
         if (testTile is null) return false;
+        SovereignTile sovereignTile = testTile.GetComponent<SovereignTile>();
+        if (sovereignTile is not null)
+        {
+            if (sovereignTile.PartnerOccupied()) return false;
+        }
         if (!testTile.HasPiece() && canMove) return true;
         if (testTile.HasPiece() && canCapture)
         {
