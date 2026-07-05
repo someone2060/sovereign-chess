@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 402eb053ae143cb10ab0a85d47339b04, type: 3}
-  m_Name: 10GreyLPiece
+  m_Name: 10AshPiece
   m_EditorClassIdentifier: 
   id: 10
   kingSprite: {fileID: 7863116000747165876, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}

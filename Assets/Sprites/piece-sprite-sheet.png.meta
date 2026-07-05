@@ -1633,11 +1633,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyl-king
+      name: ash-king
       rect:
         serializedVersion: 2
         x: 0
-        y: 90
+        y: 92
         width: 90
         height: 90
       alignment: 0
@@ -1655,7 +1655,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyl-queen
+      name: ash-queen
       rect:
         serializedVersion: 2
         x: 90
@@ -1677,7 +1677,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyl-bishop
+      name: ash-bishop
       rect:
         serializedVersion: 2
         x: 180
@@ -1699,7 +1699,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyl-knight
+      name: ash-knight
       rect:
         serializedVersion: 2
         x: 270
@@ -1721,7 +1721,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyl-rook
+      name: ash-rook
       rect:
         serializedVersion: 2
         x: 360
@@ -1743,7 +1743,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyl-pawn
+      name: ash-pawn
       rect:
         serializedVersion: 2
         x: 450
@@ -1765,7 +1765,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyd-king
+      name: slate-king
       rect:
         serializedVersion: 2
         x: 0
@@ -1787,7 +1787,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyd-queen
+      name: slate-queen
       rect:
         serializedVersion: 2
         x: 90
@@ -1809,7 +1809,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyd-bishop
+      name: slate-bishop
       rect:
         serializedVersion: 2
         x: 180
@@ -1831,7 +1831,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyd-knight
+      name: slate-knight
       rect:
         serializedVersion: 2
         x: 270
@@ -1853,7 +1853,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyd-rook
+      name: slate-rook
       rect:
         serializedVersion: 2
         x: 360
@@ -1875,7 +1875,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: greyd-pawn
+      name: slate-pawn
       rect:
         serializedVersion: 2
         x: 450
@@ -1910,6 +1910,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      ash-bishop: -2954067563523531155
+      ash-king: 7863116000747165876
+      ash-knight: -6082551057192524974
+      ash-pawn: 3036028845175195531
+      ash-queen: -636832371624448297
+      ash-rook: -1955747198539783271
       black-bishop: -1857470605627858951
       black-king: 6623877411877566959
       black-knight: -4197028434145729271
@@ -1934,18 +1940,6 @@ TextureImporter:
       green-pawn: -49866804924846508
       green-queen: 6822157273567248457
       green-rook: -5246439048992978073
-      greyd-bishop: -3965518425700252216
-      greyd-king: -7454198158008594613
-      greyd-knight: 636084330522639200
-      greyd-pawn: -8391159068875028524
-      greyd-queen: 7953742918557225424
-      greyd-rook: 8908252945855355190
-      greyl-bishop: -2954067563523531155
-      greyl-king: 7863116000747165876
-      greyl-knight: -6082551057192524974
-      greyl-pawn: 3036028845175195531
-      greyl-queen: -636832371624448297
-      greyl-rook: -1955747198539783271
       orange-bishop: -8584044665569649333
       orange-king: -5644065763883167484
       orange-knight: -2117197653609174116
@@ -1970,6 +1964,12 @@ TextureImporter:
       red-pawn: 872837177374826930
       red-queen: 3234430979319365072
       red-rook: -1098611099594121027
+      slate-bishop: -3965518425700252216
+      slate-king: -7454198158008594613
+      slate-knight: 636084330522639200
+      slate-pawn: -8391159068875028524
+      slate-queen: 7953742918557225424
+      slate-rook: 8908252945855355190
       white-bishop: 7801617480813344082
       white-king: 2345153007411270213
       white-knight: 4323883219751066921
