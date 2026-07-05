@@ -6,9 +6,9 @@ public class SovereignTile : Tile
     [SerializeField] private SovereignPieceSO sovereignPiece;
     [SerializeField] private Piece[] pieces;
 
-    private void PawnPromoter_OnPawnPromotion(object sender, PawnPromoter.OnPawnPromotionEventArgs e)
+    private void Start()
     {
-        throw new System.NotImplementedException();
+        tileVisual.color = sovereignPiece.color;
     }
 
     public bool PartnerOccupied()

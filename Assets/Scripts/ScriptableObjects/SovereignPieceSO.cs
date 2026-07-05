@@ -10,4 +10,5 @@ public class SovereignPieceSO : ScriptableObject
     public Sprite knightSprite;
     public Sprite rookSprite;
     public Sprite pawnSprite;
+    public Color color;
 }

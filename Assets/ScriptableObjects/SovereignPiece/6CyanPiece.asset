@@ -19,3 +19,4 @@ MonoBehaviour:
   knightSprite: {fileID: 5795441160994826743, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
   rookSprite: {fileID: -6347378181789256857, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
   pawnSprite: {fileID: 8307345927772971598, guid: 795f1bdc81a0e9ad2868d19f24c02c99, type: 3}
+  color: {r: 0.19607843, g: 0.6392157, b: 0.8117647, a: 1}

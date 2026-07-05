@@ -4787,6 +4787,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2244617529121307955, guid: 0c04718927ef7b192a30255c2fac02e6, type: 3}
   m_PrefabInstance: {fileID: 1416857111454301455}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &3374655960035566568 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4430591773708590823, guid: 0c04718927ef7b192a30255c2fac02e6, type: 3}
+  m_PrefabInstance: {fileID: 1416857111454301455}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8935942081266151750 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8046639454060629065, guid: 0c04718927ef7b192a30255c2fac02e6, type: 3}
@@ -4804,7 +4809,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d107e327ca43c6a1be2cc578a3c364, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SovereignTile
-  tileVisual: {fileID: 6104840367233217799}
+  tileVisual: {fileID: 3374655960035566568}
   piece: {fileID: 0}
   partner: {fileID: 4728433399669444561}
   sovereignPiece: {fileID: 11400000, guid: 393e258ce3be776d88aa3af98a3be7eb, type: 2}
@@ -15861,11 +15866,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d107e327ca43c6a1be2cc578a3c364, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SovereignTile
-  tileVisual: {fileID: 5494273178224705791}
+  tileVisual: {fileID: 5936982317794123906}
   piece: {fileID: 0}
   partner: {fileID: 7747520489465512441}
   sovereignPiece: {fileID: 11400000, guid: a7853b8513ac241b3ad1294bea3cff87, type: 2}
   pieces: []
+--- !u!212 &5936982317794123906 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1064922359329780614, guid: a570762968d5715c69be5781fef45645, type: 3}
+  m_PrefabInstance: {fileID: 6675241505224659716}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8088044402299896662 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3214929394119217234, guid: a570762968d5715c69be5781fef45645, type: 3}
@@ -18096,7 +18106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SovereignTile
   tileVisual: {fileID: 6104840367233217799}
   piece: {fileID: 0}
-  partner: {fileID: 0}
+  partner: {fileID: 7251692753970465663}
   sovereignPiece: {fileID: 11400000, guid: 393e258ce3be776d88aa3af98a3be7eb, type: 2}
   pieces: []
 --- !u!212 &6104840367233217799 stripped
