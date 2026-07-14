@@ -53,6 +53,7 @@ public abstract class Piece : MonoBehaviour
     public void SetAlignment(Alignment alignment) => this.alignment = alignment;
 
     public SovereignPieceSO GetSovereignPiece() => sovereignPiece;
+    public void SetSovereignPiece(SovereignPieceSO sovereignPiece) => this.sovereignPiece = sovereignPiece;
     
     public Tile GetTile() => tile;
     public void SetTile(Tile newTile)

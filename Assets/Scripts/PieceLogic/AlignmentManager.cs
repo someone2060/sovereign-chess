@@ -21,21 +21,7 @@ public class AlignmentManager : MonoBehaviour
 
     private void Start()
     {
-        PieceMover.Instance.OnPieceSelected += PieceMoverOnPieceSelected; // for debugging
-    }
-
-    private void PieceMoverOnPieceSelected(object sender, PieceMover.OnPieceEventArgs e)
-    {
-        for (int i = 0; i < sovereignPieces.Length; i++)
-        {
-            var str = "HashSet " + i + ": ";
-            List<string> coords = _pieces[i].Select(piece => CustomTools.CoordinatesToString(piece.GetTile().GetCoordinates())).ToList();
-            coords.Sort();
-            str = coords.Aggregate(str, (current, coord) => current + (coord + ", "));
-            str += " (length " + coords.Count + ")"; 
-            Debug.Log(str);
-        }
-        Debug.Log("selected piece is on " + CustomTools.CoordinatesToString(e.piece.GetTile().GetCoordinates()));
+        // PieceMover.Instance.OnPieceSelected += PieceMoverOnPieceSelected; // FOR DEBUGGING
     }
 
     public void ChangeAlignment(SovereignPieceSO sovereignPiece, Piece.Alignment newAlignment)
@@ -58,5 +44,19 @@ public class AlignmentManager : MonoBehaviour
         if (piece is null) return false;
         Debug.Log("AlignmentManager: removing piece on " + CustomTools.CoordinatesToString(piece.GetTile().GetCoordinates())); 
         return _pieces[piece.GetSovereignPiece().id].Remove(piece);
+    }
+
+    private void PieceMoverOnPieceSelected(object sender, PieceMover.OnPieceEventArgs e) // FOR DEBUGGING
+    {
+        for (int i = 0; i < sovereignPieces.Length; i++)
+        {
+            var str = "HashSet " + i + ": ";
+            List<string> coords = _pieces[i].Select(piece => CustomTools.CoordinatesToString(piece.GetTile().GetCoordinates())).ToList();
+            coords.Sort();
+            str = coords.Aggregate(str, (current, coord) => current + (coord + ", "));
+            str += " (length " + coords.Count + ")"; 
+            Debug.Log(str);
+        }
+        Debug.Log("selected piece is on " + CustomTools.CoordinatesToString(e.piece.GetTile().GetCoordinates()));
     }
 }
