@@ -4,24 +4,6 @@ using UnityEngine;
 
 public abstract class Piece : MonoBehaviour
 {
-    protected bool Equals(Piece other)
-    {
-        return base.Equals(other) && Equals(tile, other.tile) && alignment == other.alignment && Equals(sovereignPiece, other.sovereignPiece);
-    }
-
-    public override bool Equals(object obj)
-    {
-        if (obj is null) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != GetType()) return false;
-        return Equals((Piece)obj);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(base.GetHashCode(), tile, (int)alignment, sovereignPiece);
-    }
-
     public enum Alignment
     {
         Neutral,
@@ -71,7 +53,6 @@ public abstract class Piece : MonoBehaviour
     public void SetAlignment(Alignment alignment) => this.alignment = alignment;
 
     public SovereignPieceSO GetSovereignPiece() => sovereignPiece;
-    public void SetSovereignPiece(SovereignPieceSO sovereignPiece) => this.sovereignPiece = sovereignPiece;
     
     public Tile GetTile() => tile;
     public void SetTile(Tile newTile)

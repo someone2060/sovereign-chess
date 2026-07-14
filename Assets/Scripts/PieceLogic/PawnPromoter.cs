@@ -61,7 +61,6 @@ public class PawnPromoter : MonoBehaviour
     {
         GameObject newPiece = Instantiate(piece, pawnParent);
         newPiece.GetComponent<Piece>().SetAlignment(_pawn.GetAlignment());
-        newPiece.GetComponent<Piece>().SetSovereignPiece(_sovereignPieceSO);
         newPiece.GetComponent<Piece>().InitializeSprite();
         if (_promotionTile.HasPiece())
         {

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,7 +5,7 @@ using UnityEngine;
 public class AlignmentManager : MonoBehaviour
 {
     [SerializeField] private SovereignPieceSO[] sovereignPieces; // unneeded to be in correct order
-    private HashSet<Piece>[] _pieces; // don't need to manually set
+    private HashSet<Piece>[] _pieces;
     
     public static AlignmentManager Instance { get; private set; }
 
@@ -50,14 +49,14 @@ public class AlignmentManager : MonoBehaviour
     public void AddToPieces(Piece piece)
     {
         if (piece is null) return;
-        Debug.Log("piece added");
+        Debug.Log("AlignmentManager: adding piece on " + CustomTools.CoordinatesToString(piece.GetTile().GetCoordinates()));
         _pieces[piece.GetSovereignPiece().id].Add(piece);
     }
 
     public bool RemoveFromPieces(Piece piece)
     {
         if (piece is null) return false;
-        Debug.Log("piece removed");
+        Debug.Log("AlignmentManager: removing piece on " + CustomTools.CoordinatesToString(piece.GetTile().GetCoordinates())); 
         return _pieces[piece.GetSovereignPiece().id].Remove(piece);
     }
 }
