@@ -20,11 +20,11 @@ public class Pawn : Piece
         spriteRenderer.sprite = sovereignPiece.pawnSprite;
     }
 
-    public override void DestroySelf()
-    {
-        base.DestroySelf();
-        Destroy(gameObject);
-    }
+    // public override void DestroySelf()
+    // {
+    //     base.DestroySelf();
+    //     Destroy(gameObject);
+    // }
 
     public override HashSet<Vector2Int> LegalMoves(HashSet<Piece> pieceToIgnore = null)
     {

@@ -32,12 +32,6 @@ public class Tile : MonoBehaviour
         piece = newPiece;
         newPiece.SetTile(this);
     }
-
-    public void DestroyPiece()
-    {
-        Destroy(piece.gameObject);
-        piece = null;
-    }
   
     public bool IsAttacked(Piece.Alignment alignment, HashSet<Piece> piecesToIgnore = null)
     {

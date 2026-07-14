@@ -166,7 +166,7 @@ public class PieceMover : MonoBehaviour
         
         if (selectedTile.HasPiece() && !selectedTile.GetPiece().Equals(_piece))
         {
-            selectedTile.DestroyPiece();
+            selectedTile.GetPiece().DestroySelf();
         }
 
         _piece.SetTile(selectedTile);

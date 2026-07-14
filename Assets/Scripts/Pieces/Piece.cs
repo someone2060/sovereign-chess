@@ -50,6 +50,8 @@ public abstract class Piece : MonoBehaviour
         if (tile is null) return;
         transform.position = tile.transform.position;
         tile.SetPiece(this);
+        
+        AlignmentManager.Instance.AddToPieces(this);
     }
 
     protected void Update()
@@ -60,6 +62,7 @@ public abstract class Piece : MonoBehaviour
 
     public virtual void DestroySelf()
     {
+        AlignmentManager.Instance.RemoveFromPieces(this);
         tile?.SetPiece(null);
         Destroy(gameObject);
     }

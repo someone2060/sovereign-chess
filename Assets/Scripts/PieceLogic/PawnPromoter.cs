@@ -65,7 +65,7 @@ public class PawnPromoter : MonoBehaviour
         newPiece.GetComponent<Piece>().InitializeSprite();
         if (_promotionTile.HasPiece())
         {
-            _promotionTile.DestroyPiece();
+            _promotionTile.GetPiece().DestroySelf();
         }
         newPiece.GetComponent<Piece>().SetTile(_promotionTile);
         newPiece.GetComponent<Piece>().CentreOnTile();
