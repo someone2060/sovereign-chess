@@ -15,4 +15,15 @@ public class SovereignTile : Tile
     {
         return partner.HasPiece();
     }
+    
+    public override void SetPiece(Piece newPiece)
+    {
+        base.SetPiece(newPiece);
+        if (piece is null)
+        {
+            AlignmentManager.Instance.ChangeAlignment(sovereignPiece, Piece.Alignment.Neutral);
+            return;
+        }
+        AlignmentManager.Instance.ChangeAlignment(sovereignPiece, newPiece.GetAlignment());
+    }
 }

@@ -1,62 +1,38 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/**
+ * Serves as a "hub" for piece alignment management so that each piece doesn't need to link to each individual sovereign tile.
+ */
 public class AlignmentManager : MonoBehaviour
 {
-    [SerializeField] private SovereignPieceSO[] sovereignPieces; // unneeded to be in correct order
-    private HashSet<Piece>[] _pieces;
+    public event EventHandler<OnAlignmentChangeEventArgs> OnAlignmentChange;
+    public class OnAlignmentChangeEventArgs : EventArgs
+    {
+        public SovereignPieceSO sovereignPiece;
+        public Piece.Alignment newAlignment;
+    }
     
     public static AlignmentManager Instance { get; private set; }
 
     private void Awake()
     {
         Instance = this;
-        _pieces = new HashSet<Piece>[sovereignPieces.Length];
-        for (int i = 0; i < sovereignPieces.Length; i++)
-        {
-            _pieces[i] = new HashSet<Piece>();
-        }
     }
 
     private void Start()
     {
-        // PieceMover.Instance.OnPieceSelected += PieceMoverOnPieceSelected; // FOR DEBUGGING
+        // PieceMover.Instance.OnPieceSelected += PieceMover_OnPieceSelected; // FOR DEBUGGING
     }
 
     public void ChangeAlignment(SovereignPieceSO sovereignPiece, Piece.Alignment newAlignment)
     {
-        foreach (var piece in _pieces[sovereignPiece.id])
+        OnAlignmentChange?.Invoke(this, new OnAlignmentChangeEventArgs
         {
-            piece.SetAlignment(newAlignment);
-        }
-    }
-
-    public void AddToPieces(Piece piece)
-    {
-        if (piece is null) return;
-        Debug.Log("AlignmentManager: adding piece on " + CustomTools.CoordinatesToString(piece.GetTile().GetCoordinates()));
-        _pieces[piece.GetSovereignPiece().id].Add(piece);
-    }
-
-    public bool RemoveFromPieces(Piece piece)
-    {
-        if (piece is null) return false;
-        Debug.Log("AlignmentManager: removing piece on " + CustomTools.CoordinatesToString(piece.GetTile().GetCoordinates())); 
-        return _pieces[piece.GetSovereignPiece().id].Remove(piece);
-    }
-
-    private void PieceMoverOnPieceSelected(object sender, PieceMover.OnPieceEventArgs e) // FOR DEBUGGING
-    {
-        for (int i = 0; i < sovereignPieces.Length; i++)
-        {
-            var str = "HashSet " + i + ": ";
-            List<string> coords = _pieces[i].Select(piece => CustomTools.CoordinatesToString(piece.GetTile().GetCoordinates())).ToList();
-            coords.Sort();
-            str = coords.Aggregate(str, (current, coord) => current + (coord + ", "));
-            str += " (length " + coords.Count + ")"; 
-            Debug.Log(str);
-        }
-        Debug.Log("selected piece is on " + CustomTools.CoordinatesToString(e.piece.GetTile().GetCoordinates()));
+            sovereignPiece = sovereignPiece,
+            newAlignment = newAlignment
+        });
     }
 }

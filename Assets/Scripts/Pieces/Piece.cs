@@ -33,7 +33,14 @@ public abstract class Piece : MonoBehaviour
         transform.position = tile.transform.position;
         tile.SetPiece(this);
         
-        AlignmentManager.Instance.AddToPieces(this);
+        AlignmentManager.Instance.OnAlignmentChange += AlignmentManager_OnAlignmentChange;
+    }
+
+    private void AlignmentManager_OnAlignmentChange(object sender, AlignmentManager.OnAlignmentChangeEventArgs e)
+    {
+        if (e.sovereignPiece != sovereignPiece) return;
+        alignment = e.newAlignment;
+        // TODO check if piece is on sovereign tile
     }
 
     protected void Update()
@@ -44,7 +51,6 @@ public abstract class Piece : MonoBehaviour
 
     public virtual void DestroySelf()
     {
-        AlignmentManager.Instance.RemoveFromPieces(this);
         tile?.SetPiece(null);
         Destroy(gameObject);
     }

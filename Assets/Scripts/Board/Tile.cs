@@ -20,7 +20,7 @@ public class Tile : MonoBehaviour
     public bool HasPiece() => piece is not null;
     public Piece GetPiece() => piece;
 
-    public void SetPiece(Piece newPiece)
+    public virtual void SetPiece(Piece newPiece)
     {
         if (newPiece is null)
         {
