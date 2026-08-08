@@ -10,11 +10,6 @@ public class SovereignTile : Tile
     {
         tileVisual.color = sovereignPiece.color;
     }
-
-    public bool PartnerOccupied()
-    {
-        return partner.HasPiece();
-    }
     
     public override void SetPiece(Piece newPiece)
     {
@@ -30,5 +25,11 @@ public class SovereignTile : Tile
     public SovereignPieceSO GetSovereignPiece()
     {
         return sovereignPiece;
+    }
+
+    public override bool LegalTile(Piece.Alignment alignment, bool canMove = true, bool canCapture = true)
+    {
+        if (partner.HasPiece()) return false;
+        return base.LegalTile(alignment, canMove, canCapture);
     }
 }

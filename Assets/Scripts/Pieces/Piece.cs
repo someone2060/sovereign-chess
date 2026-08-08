@@ -129,9 +129,10 @@ public abstract class Piece : MonoBehaviour
                     continue;
                 }
             }
-            if (!LegalTile(testTile))
+
+            if (testTile is null) break;
+            if (!testTile.LegalTile(alignment))
             { // test for sovereign tile exception (can't move onto tile, but can move past)
-                if (testTile is null) break;
                 if (testTile.HasPiece()) break;
                 SovereignTile sovereignTile = testTile.GetComponent<SovereignTile>();
                 if (sovereignTile is null) break;
@@ -146,20 +147,20 @@ public abstract class Piece : MonoBehaviour
     
     // Returns true/false depending on whether the square can be occupied,
     // with capturing and moving optionally disabled
-    protected bool LegalTile(Tile testTile, bool canMove = true, bool canCapture = true)
-    {
-        if (testTile is null) return false;
-        SovereignTile sovereignTile = testTile.GetComponent<SovereignTile>();
-        if (sovereignTile is not null)
-        {
-            if (sovereignTile.PartnerOccupied()) return false;
-        }
-        if (!testTile.HasPiece() && canMove) return true;
-        if (testTile.HasPiece() && canCapture)
-        {
-            return testTile.GetPiece().CanBeCaptured(alignment);
-        }
-
-        return false;
-    }
+    // protected bool LegalTile(Tile testTile, bool canMove = true, bool canCapture = true)
+    // {
+    //     if (testTile is null) return false;
+    //     SovereignTile sovereignTile = testTile.GetComponent<SovereignTile>();
+    //     if (sovereignTile is not null)
+    //     {
+    //         if (sovereignTile.PartnerOccupied()) return false;
+    //     }
+    //     if (!testTile.HasPiece() && canMove) return true;
+    //     if (testTile.HasPiece() && canCapture)
+    //     {
+    //         return testTile.GetPiece().CanBeCaptured(alignment);
+    //     }
+    //
+    //     return false;
+    // }
 }

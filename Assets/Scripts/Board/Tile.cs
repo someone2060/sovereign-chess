@@ -108,4 +108,17 @@ public class Tile : MonoBehaviour
         
         return attackers;
     }
+    
+    // Returns true/false depending on whether the square can be occupied by the alignment wanting to occupy the square,
+    // with capturing and moving optionally disabled
+    public virtual bool LegalTile(Piece.Alignment alignment, bool canMove = true, bool canCapture = true)
+    {
+        if (!HasPiece() && canMove) return true;
+        if (HasPiece() && canCapture)
+        {
+            return GetPiece().CanBeCaptured(alignment);
+        }
+
+        return false;
+    }
 }

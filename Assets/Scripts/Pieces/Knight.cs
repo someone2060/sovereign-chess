@@ -30,7 +30,8 @@ public class Knight : Piece
             Vector2Int testCoords = position + offset;
             Tile testTile = Board.Instance.GetTile(testCoords);
             
-            if (!LegalTile(testTile)) continue;
+            if (testTile is null) continue;
+            if (!testTile.LegalTile(alignment)) continue;
             legalMoves.Add(testCoords);
         }
         

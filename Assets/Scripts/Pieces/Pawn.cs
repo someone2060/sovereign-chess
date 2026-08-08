@@ -106,7 +106,8 @@ public class Pawn : Piece
             Vector2Int testCoords = position + offset;
             Tile testTile = Board.Instance.GetTile(testCoords);
             
-            if (!LegalTile(testTile, canCapture: false)) continue;
+            if (testTile is null) continue;
+            if (!testTile.LegalTile(alignment, canCapture: false)) continue;
             legalMoves.Add(testCoords);
         }
 
@@ -115,7 +116,8 @@ public class Pawn : Piece
             Vector2Int testCoords = position + offset;
             Tile testTile = Board.Instance.GetTile(testCoords);
             
-            if (!LegalTile(testTile, canMove: false)) continue;
+            if (testTile is null) continue;
+            if (!testTile.LegalTile(alignment, canMove: false)) continue;
             legalMoves.Add(testCoords);
         }
         
