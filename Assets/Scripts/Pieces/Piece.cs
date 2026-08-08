@@ -131,7 +131,7 @@ public abstract class Piece : MonoBehaviour
             }
 
             if (testTile is null) break;
-            if (!testTile.LegalTile(alignment))
+            if (!testTile.LegalTile(this))
             { // test for sovereign tile exception (can't move onto tile, but can move past)
                 if (testTile.HasPiece()) break;
                 SovereignTile sovereignTile = testTile.GetComponent<SovereignTile>();

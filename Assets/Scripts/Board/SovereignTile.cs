@@ -27,9 +27,9 @@ public class SovereignTile : Tile
         return sovereignPiece;
     }
 
-    public override bool LegalTile(Piece.Alignment alignment, bool canMove = true, bool canCapture = true)
+    public override bool LegalTile(Piece piece, bool canMove = true, bool canCapture = true)
     {
-        if (partner.HasPiece()) return false;
-        return base.LegalTile(alignment, canMove, canCapture);
+        if (!partner.HasPiece() || partner.GetPiece() == piece) return base.LegalTile(piece, canMove, canCapture);
+        return false;
     }
 }

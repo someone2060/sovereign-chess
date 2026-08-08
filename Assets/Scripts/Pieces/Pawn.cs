@@ -107,7 +107,7 @@ public class Pawn : Piece
             Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (testTile is null) continue;
-            if (!testTile.LegalTile(alignment, canCapture: false)) continue;
+            if (!testTile.LegalTile(this, canCapture: false)) continue;
             legalMoves.Add(testCoords);
         }
 
@@ -117,7 +117,7 @@ public class Pawn : Piece
             Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (testTile is null) continue;
-            if (!testTile.LegalTile(alignment, canMove: false)) continue;
+            if (!testTile.LegalTile(this, canMove: false)) continue;
             legalMoves.Add(testCoords);
         }
         

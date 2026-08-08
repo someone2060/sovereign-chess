@@ -73,7 +73,7 @@ public class King : Piece
             Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (testTile is null) continue;
-            if (!testTile.LegalTile(alignment)) continue;
+            if (!testTile.LegalTile(this)) continue;
             if (testTile.IsAttacked(alignment, piecesToIgnoreCopy)) continue;
             legalMoves.Add(testCoords);
         }

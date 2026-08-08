@@ -31,7 +31,7 @@ public class Knight : Piece
             Tile testTile = Board.Instance.GetTile(testCoords);
             
             if (testTile is null) continue;
-            if (!testTile.LegalTile(alignment)) continue;
+            if (!testTile.LegalTile(this)) continue;
             legalMoves.Add(testCoords);
         }
         
