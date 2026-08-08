@@ -26,4 +26,9 @@ public class SovereignTile : Tile
         }
         AlignmentManager.Instance.ChangeAlignment(sovereignPiece, newPiece.GetAlignment());
     }
+
+    public SovereignPieceSO GetSovereignPiece()
+    {
+        return sovereignPiece;
+    }
 }

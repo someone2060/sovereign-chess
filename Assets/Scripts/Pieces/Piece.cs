@@ -40,7 +40,12 @@ public abstract class Piece : MonoBehaviour
     {
         if (e.sovereignPiece != sovereignPiece) return;
         alignment = e.newAlignment;
-        // TODO check if piece is on sovereign tile
+        
+        // check if piece is on sovereign tile
+        if (tile.GetComponent<SovereignTile>() is null) return;
+        SovereignTile sovereignTile = tile.GetComponent<SovereignTile>();
+        if (sovereignTile is null) return;
+        AlignmentManager.Instance.ChangeAlignment(sovereignTile.GetSovereignPiece(), alignment);
     }
 
     protected void Update()

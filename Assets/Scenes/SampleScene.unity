@@ -6334,19 +6334,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f5d8297391bba5fa5e49bb1b045d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PieceAligner
-  sovereignPieces:
-  - {fileID: 11400000, guid: a7853b8513ac241b3ad1294bea3cff87, type: 2}
-  - {fileID: 11400000, guid: 393e258ce3be776d88aa3af98a3be7eb, type: 2}
-  - {fileID: 11400000, guid: a59649a6607d51a38933795a8e117ca4, type: 2}
-  - {fileID: 11400000, guid: 8da5288353e2a3955accaaf0c44016d1, type: 2}
-  - {fileID: 11400000, guid: a5e447f998293bc75be8f908611bb5fb, type: 2}
-  - {fileID: 11400000, guid: f6f5ceb91b92601d2990fb98a6115357, type: 2}
-  - {fileID: 11400000, guid: 0302f657619cc55fca7e2c206e352425, type: 2}
-  - {fileID: 11400000, guid: 7fb64b8e932df5a619e151f5e03f83ea, type: 2}
-  - {fileID: 11400000, guid: cd2d4a7d6ce39d7ca861eba0bc6e881e, type: 2}
-  - {fileID: 11400000, guid: 693a48d04bb2cd84b9c2685308709043, type: 2}
-  - {fileID: 11400000, guid: 288f00ea8ed7a1d8f816e61d1fba0a02, type: 2}
-  - {fileID: 11400000, guid: e8cb8161a5261ce26bd09ada71534c2d, type: 2}
+  whiteKing: {fileID: 1035050745}
+  blackKing: {fileID: 268534911}
 --- !u!114 &1185981028 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2039012802138490233, guid: f346ec9e9a700e5fe924fed613c2d971, type: 3}

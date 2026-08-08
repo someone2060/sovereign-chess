@@ -8,6 +8,9 @@ using UnityEngine;
  */
 public class AlignmentManager : MonoBehaviour
 {
+    [SerializeField] private King whiteKing;
+    [SerializeField] private King blackKing;
+    
     public event EventHandler<OnAlignmentChangeEventArgs> OnAlignmentChange;
     public class OnAlignmentChangeEventArgs : EventArgs
     {
@@ -22,13 +25,10 @@ public class AlignmentManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-        // PieceMover.Instance.OnPieceSelected += PieceMover_OnPieceSelected; // FOR DEBUGGING
-    }
-
     public void ChangeAlignment(SovereignPieceSO sovereignPiece, Piece.Alignment newAlignment)
     {
+        if (sovereignPiece == whiteKing.GetSovereignPiece() || sovereignPiece == blackKing.GetSovereignPiece()) return;
+        Debug.Log("broadcasting " + newAlignment + " to " + sovereignPiece.id);
         OnAlignmentChange?.Invoke(this, new OnAlignmentChangeEventArgs
         {
             sovereignPiece = sovereignPiece,
